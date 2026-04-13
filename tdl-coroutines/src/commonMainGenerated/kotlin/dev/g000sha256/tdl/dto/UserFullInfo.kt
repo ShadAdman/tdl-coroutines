@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ import kotlin.String
  * @property hasSponsoredMessagesEnabled True, if the user always enabled sponsored messages; known only for the current user.
  * @property needPhoneNumberPrivacyException True, if the current user needs to explicitly allow to share their phone number with the user when the method addContact is used.
  * @property setChatBackground True, if the user set chat background for both chat users and it wasn't reverted yet.
+ * @property usesUnofficialApp True, if the user uses an unofficial application that poses a security risk.
  * @property bio A short user bio; may be null for bots.
  * @property birthdate Birthdate of the user; may be null if unknown.
  * @property personalChatId Identifier of the personal chat of the user; 0 if none.
@@ -70,6 +71,7 @@ public class UserFullInfo public constructor(
     public val hasSponsoredMessagesEnabled: Boolean,
     public val needPhoneNumberPrivacyException: Boolean,
     public val setChatBackground: Boolean,
+    public val usesUnofficialApp: Boolean,
     public val bio: FormattedText?,
     public val birthdate: Birthdate?,
     public val personalChatId: Long,
@@ -138,6 +140,9 @@ public class UserFullInfo public constructor(
         if (other.setChatBackground != setChatBackground) {
             return false
         }
+        if (other.usesUnofficialApp != usesUnofficialApp) {
+            return false
+        }
         if (other.bio != bio) {
             return false
         }
@@ -204,6 +209,7 @@ public class UserFullInfo public constructor(
         hashCode = 31 * hashCode + hasSponsoredMessagesEnabled.hashCode()
         hashCode = 31 * hashCode + needPhoneNumberPrivacyException.hashCode()
         hashCode = 31 * hashCode + setChatBackground.hashCode()
+        hashCode = 31 * hashCode + usesUnofficialApp.hashCode()
         hashCode = 31 * hashCode + bio.hashCode()
         hashCode = 31 * hashCode + birthdate.hashCode()
         hashCode = 31 * hashCode + personalChatId.hashCode()
@@ -266,6 +272,9 @@ public class UserFullInfo public constructor(
             append(", ")
             append("setChatBackground=")
             append(setChatBackground)
+            append(", ")
+            append("usesUnofficialApp=")
+            append(usesUnofficialApp)
             append(", ")
             append("bio=")
             append(bio)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,12 @@ import kotlin.String
 
 /**
  * The media is a photo. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20.
+ *
+ * @property video Video of the live photo; pass null if the photo isn't a live photo.
  */
-public class InputPaidMediaTypePhoto public constructor() : InputPaidMediaType() {
+public class InputPaidMediaTypePhoto public constructor(
+    public val video: InputFile?,
+) : InputPaidMediaType() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
             return true
@@ -32,14 +36,26 @@ public class InputPaidMediaTypePhoto public constructor() : InputPaidMediaType()
         if (other == null) {
             return false
         }
-        return this::class == other::class
+        if (other::class != this::class) {
+            return false
+        }
+        other as InputPaidMediaTypePhoto
+        return other.video == video
     }
 
     override fun hashCode(): Int {
-        return this::class.hashCode()
+        var hashCode = this::class.hashCode()
+        hashCode = 31 * hashCode + video.hashCode()
+        return hashCode
     }
 
     override fun toString(): String {
-        return "InputPaidMediaTypePhoto()"
+        return buildString {
+            append("InputPaidMediaTypePhoto")
+            append("(")
+            append("video=")
+            append(video)
+            append(")")
+        }
     }
 }

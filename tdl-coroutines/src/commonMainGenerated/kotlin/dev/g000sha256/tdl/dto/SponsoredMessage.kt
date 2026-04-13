@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import kotlin.String
  * @property messageId Message identifier; unique for the chat to which the sponsored message belongs among both ordinary and sponsored messages.
  * @property isRecommended True, if the message needs to be labeled as &quot;recommended&quot; instead of &quot;sponsored&quot;.
  * @property canBeReported True, if the message can be reported to Telegram moderators through reportChatSponsoredMessage.
- * @property content Content of the message. Currently, can be only of the types messageText, messageAnimation, messagePhoto, or messageVideo. Video messages can be viewed fullscreen.
+ * @property content Content of the message. Currently, can be only of the types messageText, messageAnimation, messagePhoto, or messageVideo. Video messages can be viewed fullscreen. The content must be fully downloaded before the message is shown.
  * @property sponsor Information about the sponsor of the message.
  * @property title Title of the sponsored message.
  * @property buttonText Text for the message action button.

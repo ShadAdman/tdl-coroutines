@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,20 @@ package dev.g000sha256.tdl.dto
 import kotlin.Any
 import kotlin.Boolean
 import kotlin.Int
+import kotlin.IntArray
 import kotlin.String
 
 /**
- * A poll in quiz mode, which has exactly one correct answer option and can be answered only once.
+ * A poll in quiz mode, which has predefined correct answers.
  *
- * @property correctOptionId 0-based identifier of the correct answer option; -1 for a yet unanswered poll.
- * @property explanation Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; 0-200 characters with at most 2 line feeds; empty for a yet unanswered poll.
+ * @property correctOptionIds Increasing list of 0-based identifiers of the correct answer options; empty for a yet unanswered poll.
+ * @property explanation Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; empty for a yet unanswered poll.
+ * @property explanationMedia Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; may be null if none or the poll is unanswered yet. Currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption.
  */
 public class PollTypeQuiz public constructor(
-    public val correctOptionId: Int,
+    public val correctOptionIds: IntArray,
     public val explanation: FormattedText,
+    public val explanationMedia: MessageContent?,
 ) : PollType() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -42,16 +45,21 @@ public class PollTypeQuiz public constructor(
             return false
         }
         other as PollTypeQuiz
-        if (other.correctOptionId != correctOptionId) {
+        val correctOptionIdsEquals = other.correctOptionIds.contentEquals(correctOptionIds)
+        if (!correctOptionIdsEquals) {
             return false
         }
-        return other.explanation == explanation
+        if (other.explanation != explanation) {
+            return false
+        }
+        return other.explanationMedia == explanationMedia
     }
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
-        hashCode = 31 * hashCode + correctOptionId.hashCode()
+        hashCode = 31 * hashCode + correctOptionIds.contentHashCode()
         hashCode = 31 * hashCode + explanation.hashCode()
+        hashCode = 31 * hashCode + explanationMedia.hashCode()
         return hashCode
     }
 
@@ -59,11 +67,16 @@ public class PollTypeQuiz public constructor(
         return buildString {
             append("PollTypeQuiz")
             append("(")
-            append("correctOptionId=")
-            append(correctOptionId)
+            append("correctOptionIds=")
+            correctOptionIds
+                .contentToString()
+                .also { append(it) }
             append(", ")
             append("explanation=")
             append(explanation)
+            append(", ")
+            append("explanationMedia=")
+            append(explanationMedia)
             append(")")
         }
     }

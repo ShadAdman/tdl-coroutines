@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,16 +23,18 @@ import kotlin.Long
 import kotlin.String
 
 /**
- * Contains information about notification settings for reactions.
+ * Contains information about notification settings for reactions and poll votes.
  *
  * @property messageReactionSource Source of message reactions for which notifications are shown.
  * @property storyReactionSource Source of story reactions for which notifications are shown.
+ * @property pollVoteSource Source of poll votes for which notifications are shown.
  * @property soundId Identifier of the notification sound to be played; 0 if sound is disabled.
  * @property showPreview True, if reaction sender and emoji must be displayed in notifications.
  */
 public class ReactionNotificationSettings public constructor(
     public val messageReactionSource: ReactionNotificationSource,
     public val storyReactionSource: ReactionNotificationSource,
+    public val pollVoteSource: ReactionNotificationSource,
     public val soundId: Long,
     public val showPreview: Boolean,
 ) {
@@ -53,6 +55,9 @@ public class ReactionNotificationSettings public constructor(
         if (other.storyReactionSource != storyReactionSource) {
             return false
         }
+        if (other.pollVoteSource != pollVoteSource) {
+            return false
+        }
         if (other.soundId != soundId) {
             return false
         }
@@ -63,6 +68,7 @@ public class ReactionNotificationSettings public constructor(
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + messageReactionSource.hashCode()
         hashCode = 31 * hashCode + storyReactionSource.hashCode()
+        hashCode = 31 * hashCode + pollVoteSource.hashCode()
         hashCode = 31 * hashCode + soundId.hashCode()
         hashCode = 31 * hashCode + showPreview.hashCode()
         return hashCode
@@ -77,6 +83,9 @@ public class ReactionNotificationSettings public constructor(
             append(", ")
             append("storyReactionSource=")
             append(storyReactionSource)
+            append(", ")
+            append("pollVoteSource=")
+            append(pollVoteSource)
             append(", ")
             append("soundId=")
             append(soundId)

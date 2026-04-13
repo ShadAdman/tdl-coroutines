@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,11 @@ import kotlin.String
  * The media is a photo.
  *
  * @property photo The photo.
+ * @property video The video representing the live photo; may be null if the photo is static.
  */
 public class PaidMediaPhoto public constructor(
     public val photo: Photo,
+    public val video: Video?,
 ) : PaidMedia() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -40,12 +42,16 @@ public class PaidMediaPhoto public constructor(
             return false
         }
         other as PaidMediaPhoto
-        return other.photo == photo
+        if (other.photo != photo) {
+            return false
+        }
+        return other.video == video
     }
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + photo.hashCode()
+        hashCode = 31 * hashCode + video.hashCode()
         return hashCode
     }
 
@@ -55,6 +61,9 @@ public class PaidMediaPhoto public constructor(
             append("(")
             append("photo=")
             append(photo)
+            append(", ")
+            append("video=")
+            append(video)
             append(")")
         }
     }

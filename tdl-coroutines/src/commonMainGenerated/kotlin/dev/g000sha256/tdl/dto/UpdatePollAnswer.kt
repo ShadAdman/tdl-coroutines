@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package dev.g000sha256.tdl.dto
 
 import kotlin.Any
+import kotlin.Array
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.IntArray
@@ -28,12 +29,14 @@ import kotlin.String
  *
  * @property pollId Unique poll identifier.
  * @property voterId Identifier of the message sender that changed the answer to the poll.
- * @property optionIds 0-based identifiers of answer options, chosen by the user.
+ * @property optionIds Unique identifiers of answer options, that were chosen by the user.
+ * @property optionPositions 0-based identifiers of answer options, that were chosen by the user.
  */
 public class UpdatePollAnswer public constructor(
     public val pollId: Long,
     public val voterId: MessageSender,
-    public val optionIds: IntArray,
+    public val optionIds: Array<String>,
+    public val optionPositions: IntArray,
 ) : Update() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -52,14 +55,19 @@ public class UpdatePollAnswer public constructor(
         if (other.voterId != voterId) {
             return false
         }
-        return other.optionIds.contentEquals(optionIds)
+        val optionIdsEquals = other.optionIds.contentDeepEquals(optionIds)
+        if (!optionIdsEquals) {
+            return false
+        }
+        return other.optionPositions.contentEquals(optionPositions)
     }
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + pollId.hashCode()
         hashCode = 31 * hashCode + voterId.hashCode()
-        hashCode = 31 * hashCode + optionIds.contentHashCode()
+        hashCode = 31 * hashCode + optionIds.contentDeepHashCode()
+        hashCode = 31 * hashCode + optionPositions.contentHashCode()
         return hashCode
     }
 
@@ -75,6 +83,11 @@ public class UpdatePollAnswer public constructor(
             append(", ")
             append("optionIds=")
             optionIds
+                .contentDeepToString()
+                .also { append(it) }
+            append(", ")
+            append("optionPositions=")
+            optionPositions
                 .contentToString()
                 .also { append(it) }
             append(")")

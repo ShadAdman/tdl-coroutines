@@ -23,4 +23,5 @@ internal class SummarizeMessage internal constructor(
     internal val chatId: Long,
     internal val messageId: Long,
     internal val translateToLanguageCode: String,
+    internal val tone: String,
 )

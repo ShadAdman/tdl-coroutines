@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,12 +29,14 @@ import kotlin.String
  * @property messageId The identifier of the message to be replied in the specified chat. A message can be replied in another chat or forum topic only if messageProperties.canBeRepliedInAnotherChat.
  * @property quote Quote from the message to be replied; pass null if none.
  * @property checklistTaskId Identifier of the checklist task in the message to be replied; pass 0 to reply to the whole message.
+ * @property pollOptionId Identifier of the poll option in the message to be replied; pass an empty string if none.
  */
 public class InputMessageReplyToExternalMessage public constructor(
     public val chatId: Long,
     public val messageId: Long,
     public val quote: InputTextQuote?,
     public val checklistTaskId: Int,
+    public val pollOptionId: String,
 ) : InputMessageReplyTo() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -56,7 +58,10 @@ public class InputMessageReplyToExternalMessage public constructor(
         if (other.quote != quote) {
             return false
         }
-        return other.checklistTaskId == checklistTaskId
+        if (other.checklistTaskId != checklistTaskId) {
+            return false
+        }
+        return other.pollOptionId == pollOptionId
     }
 
     override fun hashCode(): Int {
@@ -65,6 +70,7 @@ public class InputMessageReplyToExternalMessage public constructor(
         hashCode = 31 * hashCode + messageId.hashCode()
         hashCode = 31 * hashCode + quote.hashCode()
         hashCode = 31 * hashCode + checklistTaskId.hashCode()
+        hashCode = 31 * hashCode + pollOptionId.hashCode()
         return hashCode
     }
 
@@ -83,6 +89,9 @@ public class InputMessageReplyToExternalMessage public constructor(
             append(", ")
             append("checklistTaskId=")
             append(checklistTaskId)
+            append(", ")
+            append("pollOptionId=")
+            append(pollOptionId)
             append(")")
         }
     }

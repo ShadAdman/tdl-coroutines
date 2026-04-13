@@ -26,9 +26,11 @@ import kotlin.String
 /**
  * Information about the OAuth authorization.
  *
- * @property userId Identifier of the user for which the link was generated; may be 0 if unknown. The corresponding user may be unknown. If the user is logged in the app, then they must be chosen for authorization by default.
+ * @property userId Identifier of the user for which the link was generated; may be 0 if unknown. The corresponding user may be unknown. If the user is logged in the application, then they must be chosen for authorization by default.
  * @property url An HTTP URL where the user authorizes.
  * @property domain A domain of the URL.
+ * @property fromApp True, if the authorization originates from an application.
+ * @property verifiedAppName Verified name of the application; if empty, then &quot;Unverified App&quot; must be shown instead.
  * @property botUserId User identifier of a bot linked with the website.
  * @property requestWriteAccess True, if the user must be asked for the permission to the bot to send them messages.
  * @property requestPhoneNumberAccess True, if the user must be asked for the permission to share their phone number.
@@ -43,6 +45,8 @@ public class OauthLinkInfo public constructor(
     public val userId: Long,
     public val url: String,
     public val domain: String,
+    public val fromApp: Boolean,
+    public val verifiedAppName: String,
     public val botUserId: Long,
     public val requestWriteAccess: Boolean,
     public val requestPhoneNumberAccess: Boolean,
@@ -71,6 +75,12 @@ public class OauthLinkInfo public constructor(
             return false
         }
         if (other.domain != domain) {
+            return false
+        }
+        if (other.fromApp != fromApp) {
+            return false
+        }
+        if (other.verifiedAppName != verifiedAppName) {
             return false
         }
         if (other.botUserId != botUserId) {
@@ -105,6 +115,8 @@ public class OauthLinkInfo public constructor(
         hashCode = 31 * hashCode + userId.hashCode()
         hashCode = 31 * hashCode + url.hashCode()
         hashCode = 31 * hashCode + domain.hashCode()
+        hashCode = 31 * hashCode + fromApp.hashCode()
+        hashCode = 31 * hashCode + verifiedAppName.hashCode()
         hashCode = 31 * hashCode + botUserId.hashCode()
         hashCode = 31 * hashCode + requestWriteAccess.hashCode()
         hashCode = 31 * hashCode + requestPhoneNumberAccess.hashCode()
@@ -129,6 +141,12 @@ public class OauthLinkInfo public constructor(
             append(", ")
             append("domain=")
             append(domain)
+            append(", ")
+            append("fromApp=")
+            append(fromApp)
+            append(", ")
+            append("verifiedAppName=")
+            append(verifiedAppName)
             append(", ")
             append("botUserId=")
             append(botUserId)

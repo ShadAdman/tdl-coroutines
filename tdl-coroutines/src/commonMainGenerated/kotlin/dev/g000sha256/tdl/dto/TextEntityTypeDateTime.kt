@@ -22,9 +22,9 @@ import kotlin.Int
 import kotlin.String
 
 /**
- * A data and time.
+ * A date and time.
  *
- * @property unixTime Point in time (Unix timestamp) representing the data and time.
+ * @property unixTime Point in time (Unix timestamp) representing the date and time.
  * @property formattingType Date and time formatting type; may be null if none and the original text must not be changed.
  */
 public class TextEntityTypeDateTime public constructor(

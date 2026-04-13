@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,13 @@ import kotlin.String
  * @property userId User identifier of the administrator.
  * @property customTitle Custom title of the administrator.
  * @property isOwner True, if the user is the owner of the chat.
+ * @property canBeEdited True, if the current user can edit the administrator privileges for the administrator.
  */
 public class ChatAdministrator public constructor(
     public val userId: Long,
     public val customTitle: String,
     public val isOwner: Boolean,
+    public val canBeEdited: Boolean,
 ) {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -51,7 +53,10 @@ public class ChatAdministrator public constructor(
         if (other.customTitle != customTitle) {
             return false
         }
-        return other.isOwner == isOwner
+        if (other.isOwner != isOwner) {
+            return false
+        }
+        return other.canBeEdited == canBeEdited
     }
 
     override fun hashCode(): Int {
@@ -59,6 +64,7 @@ public class ChatAdministrator public constructor(
         hashCode = 31 * hashCode + userId.hashCode()
         hashCode = 31 * hashCode + customTitle.hashCode()
         hashCode = 31 * hashCode + isOwner.hashCode()
+        hashCode = 31 * hashCode + canBeEdited.hashCode()
         return hashCode
     }
 
@@ -74,6 +80,9 @@ public class ChatAdministrator public constructor(
             append(", ")
             append("isOwner=")
             append(isOwner)
+            append(", ")
+            append("canBeEdited=")
+            append(canBeEdited)
             append(")")
         }
     }

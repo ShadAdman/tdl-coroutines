@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,8 @@ import kotlin.String
  * @property topicId Identifier of the specific topic in which the message must be opened, or a topic to open if the message is missing; may be null if none.
  * @property message If found, the linked message; may be null.
  * @property mediaTimestamp Timestamp from which the video/audio/video note/voice note/story playing must start, in seconds; 0 if not specified. The media can be in the message content or in its link preview.
+ * @property checklistTaskId Identifier of the checklist task that is linked; 0 if none.
+ * @property pollOptionId Identifier of the poll option that is linked; empty if none.
  * @property forAlbum True, if the whole media album to which the message belongs is linked.
  */
 public class MessageLinkInfo public constructor(
@@ -38,6 +40,8 @@ public class MessageLinkInfo public constructor(
     public val topicId: MessageTopic?,
     public val message: Message?,
     public val mediaTimestamp: Int,
+    public val checklistTaskId: Int,
+    public val pollOptionId: String,
     public val forAlbum: Boolean,
 ) {
     override fun equals(other: Any?): Boolean {
@@ -66,6 +70,12 @@ public class MessageLinkInfo public constructor(
         if (other.mediaTimestamp != mediaTimestamp) {
             return false
         }
+        if (other.checklistTaskId != checklistTaskId) {
+            return false
+        }
+        if (other.pollOptionId != pollOptionId) {
+            return false
+        }
         return other.forAlbum == forAlbum
     }
 
@@ -76,6 +86,8 @@ public class MessageLinkInfo public constructor(
         hashCode = 31 * hashCode + topicId.hashCode()
         hashCode = 31 * hashCode + message.hashCode()
         hashCode = 31 * hashCode + mediaTimestamp.hashCode()
+        hashCode = 31 * hashCode + checklistTaskId.hashCode()
+        hashCode = 31 * hashCode + pollOptionId.hashCode()
         hashCode = 31 * hashCode + forAlbum.hashCode()
         return hashCode
     }
@@ -98,6 +110,12 @@ public class MessageLinkInfo public constructor(
             append(", ")
             append("mediaTimestamp=")
             append(mediaTimestamp)
+            append(", ")
+            append("checklistTaskId=")
+            append(checklistTaskId)
+            append(", ")
+            append("pollOptionId=")
+            append(pollOptionId)
             append(", ")
             append("forAlbum=")
             append(forAlbum)

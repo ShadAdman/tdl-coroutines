@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ import kotlin.String
  * @property lastReadOutboxMessageId Identifier of the last read outgoing message.
  * @property unreadMentionCount Number of unread messages with a mention/reply in the topic.
  * @property unreadReactionCount Number of messages with unread reactions in the topic.
+ * @property unreadPollVoteCount Number of messages with unread poll votes in the topic.
  * @property notificationSettings Notification settings for the topic.
  * @property draftMessage A draft of a message in the topic; may be null if none.
  */
@@ -43,6 +44,7 @@ public class UpdateForumTopic public constructor(
     public val lastReadOutboxMessageId: Long,
     public val unreadMentionCount: Int,
     public val unreadReactionCount: Int,
+    public val unreadPollVoteCount: Int,
     public val notificationSettings: ChatNotificationSettings,
     public val draftMessage: DraftMessage?,
 ) : Update() {
@@ -78,6 +80,9 @@ public class UpdateForumTopic public constructor(
         if (other.unreadReactionCount != unreadReactionCount) {
             return false
         }
+        if (other.unreadPollVoteCount != unreadPollVoteCount) {
+            return false
+        }
         if (other.notificationSettings != notificationSettings) {
             return false
         }
@@ -93,6 +98,7 @@ public class UpdateForumTopic public constructor(
         hashCode = 31 * hashCode + lastReadOutboxMessageId.hashCode()
         hashCode = 31 * hashCode + unreadMentionCount.hashCode()
         hashCode = 31 * hashCode + unreadReactionCount.hashCode()
+        hashCode = 31 * hashCode + unreadPollVoteCount.hashCode()
         hashCode = 31 * hashCode + notificationSettings.hashCode()
         hashCode = 31 * hashCode + draftMessage.hashCode()
         return hashCode
@@ -122,6 +128,9 @@ public class UpdateForumTopic public constructor(
             append(", ")
             append("unreadReactionCount=")
             append(unreadReactionCount)
+            append(", ")
+            append("unreadPollVoteCount=")
+            append(unreadPollVoteCount)
             append(", ")
             append("notificationSettings=")
             append(notificationSettings)
