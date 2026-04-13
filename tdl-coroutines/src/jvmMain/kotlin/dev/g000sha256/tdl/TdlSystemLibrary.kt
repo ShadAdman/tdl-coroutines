@@ -26,16 +26,16 @@ internal fun loadSystemLibrary() {
         is OsName.Linux -> {
             val osArch = getOsArch()
             when (osArch) {
-                is OsArch.Arm64 -> load(platform = "linux-arm64", libraryName = "libtdjsonjava.so")
-                is OsArch.X64 -> load(platform = "linux-x64", libraryName = "libtdjsonjava.so")
+                is OsArch.Arm64 -> load(platform = "linux/arm64", libraryName = "libtdjsonjava.so")
+                is OsArch.X64 -> load(platform = "linux/x64", libraryName = "libtdjsonjava.so")
                 is OsArch.Unknown -> error(message = "Unknown OS arch: ${osArch.arch}")
             }
         }
         is OsName.MacOs -> {
             val osArch = getOsArch()
             when (osArch) {
-                is OsArch.Arm64 -> load(platform = "macos-arm64", libraryName = "libtdjsonjava.dylib")
-                is OsArch.X64 -> load(platform = "macos-x64", libraryName = "libtdjsonjava.dylib")
+                is OsArch.Arm64 -> load(platform = "macos/arm64", libraryName = "libtdjsonjava.dylib")
+                is OsArch.X64 -> load(platform = "macos/x64", libraryName = "libtdjsonjava.dylib")
                 is OsArch.Unknown -> error(message = "Unknown OS arch: ${osArch.arch}")
             }
         }
@@ -44,7 +44,7 @@ internal fun loadSystemLibrary() {
             when (osArch) {
                 is OsArch.Arm64 -> {
                     load(
-                        platform = "windows-arm64",
+                        platform = "windows/arm64",
                         libraryNames = buildList {
                             add(element = "libcrypto-3-arm64.dll")
                             add(element = "libssl-3-arm64.dll")
@@ -55,7 +55,7 @@ internal fun loadSystemLibrary() {
                 }
                 is OsArch.X64 -> {
                     load(
-                        platform = "windows-x64",
+                        platform = "windows/x64",
                         libraryNames = buildList {
                             add(element = "libcrypto-3-x64.dll")
                             add(element = "libssl-3-x64.dll")
@@ -124,7 +124,7 @@ private fun load(libraryNames: List<String>, directory: File, platform: String) 
 }
 
 private fun copyTo(platform: String, libraryName: String, file: File) {
-    val resourceName = "/libs/$platform/$libraryName"
+    val resourceName = "/$platform/$libraryName"
     TdlClient::class
         .java
         .getResourceAsStream(resourceName)
