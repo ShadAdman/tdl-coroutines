@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,13 @@
 
 package dev.g000sha256.tdl.function
 
+import dev.g000sha256.tdl.dto.KeyboardButtonSource
 import kotlin.Boolean
 import kotlin.Int
-import kotlin.Long
 import kotlin.LongArray
 
 internal class ShareUsersWithBot internal constructor(
-    internal val chatId: Long,
-    internal val messageId: Long,
+    internal val source: KeyboardButtonSource,
     internal val buttonId: Int,
     internal val sharedUserIds: LongArray,
     internal val onlyCheck: Boolean,

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import kotlin.Any
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Int
+import kotlin.Long
 import kotlin.String
 
 /**
@@ -29,6 +30,7 @@ import kotlin.String
  * @property description The text shown in the chat with the bot if the chat is empty.
  * @property photo Photo shown in the chat with the bot if the chat is empty; may be null.
  * @property animation Animation shown in the chat with the bot if the chat is empty; may be null.
+ * @property managerBotUserId Identifier of the bot, which manages the bot; 0 if none or unknown; for owner of the bot only.
  * @property menuButton Information about a button to show instead of the bot commands menu button; may be null if ordinary bot commands menu must be shown.
  * @property commands List of the bot commands.
  * @property privacyPolicyUrl The HTTP link to the privacy policy of the bot. If empty, then /privacy command must be used if supported by the bot. If the command isn't supported, then https://telegram.org/privacy-tpa must be opened.
@@ -53,6 +55,7 @@ public class BotInfo public constructor(
     public val description: String,
     public val photo: Photo?,
     public val animation: Animation?,
+    public val managerBotUserId: Long,
     public val menuButton: BotMenuButton?,
     public val commands: Array<BotCommand>,
     public val privacyPolicyUrl: String,
@@ -93,6 +96,9 @@ public class BotInfo public constructor(
             return false
         }
         if (other.animation != animation) {
+            return false
+        }
+        if (other.managerBotUserId != managerBotUserId) {
             return false
         }
         if (other.menuButton != menuButton) {
@@ -156,6 +162,7 @@ public class BotInfo public constructor(
         hashCode = 31 * hashCode + description.hashCode()
         hashCode = 31 * hashCode + photo.hashCode()
         hashCode = 31 * hashCode + animation.hashCode()
+        hashCode = 31 * hashCode + managerBotUserId.hashCode()
         hashCode = 31 * hashCode + menuButton.hashCode()
         hashCode = 31 * hashCode + commands.contentDeepHashCode()
         hashCode = 31 * hashCode + privacyPolicyUrl.hashCode()
@@ -192,6 +199,9 @@ public class BotInfo public constructor(
             append(", ")
             append("animation=")
             append(animation)
+            append(", ")
+            append("managerBotUserId=")
+            append(managerBotUserId)
             append(", ")
             append("menuButton=")
             append(menuButton)

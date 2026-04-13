@@ -28,6 +28,7 @@ internal class SearchGiftsForResale internal constructor(
     internal val giftId: Long,
     internal val order: GiftForResaleOrder,
     internal val forCrafting: Boolean,
+    internal val forStars: Boolean,
     internal val attributes: Array<UpgradedGiftAttributeId>,
     internal val offset: String,
     internal val limit: Int,

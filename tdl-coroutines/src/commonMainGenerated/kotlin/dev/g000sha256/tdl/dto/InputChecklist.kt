@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import kotlin.String
 /**
  * Describes a checklist to be sent.
  *
- * @property title Title of the checklist; 1-getOption(&quot;checklist_title_length_max&quot;) characters. May contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities.
+ * @property title Title of the checklist; 1-getOption(&quot;checklist_title_length_max&quot;) characters. May contain only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities.
  * @property tasks List of tasks in the checklist; 1-getOption(&quot;checklist_task_count_max&quot;) tasks.
  * @property othersCanAddTasks True, if other users can add tasks to the list.
  * @property othersCanMarkTasksAsDone True, if other users can mark tasks as done or not done.

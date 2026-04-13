@@ -151,6 +151,7 @@ import dev.g000sha256.tdl.dto.FailedToAddMembers
 import dev.g000sha256.tdl.dto.File
 import dev.g000sha256.tdl.dto.FileDownloadedPrefixSize
 import dev.g000sha256.tdl.dto.FileType
+import dev.g000sha256.tdl.dto.FixedText
 import dev.g000sha256.tdl.dto.FormattedText
 import dev.g000sha256.tdl.dto.ForumTopic
 import dev.g000sha256.tdl.dto.ForumTopicIcon
@@ -215,6 +216,7 @@ import dev.g000sha256.tdl.dto.InputMessageContent
 import dev.g000sha256.tdl.dto.InputMessageReplyTo
 import dev.g000sha256.tdl.dto.InputPassportElement
 import dev.g000sha256.tdl.dto.InputPassportElementError
+import dev.g000sha256.tdl.dto.InputPollOption
 import dev.g000sha256.tdl.dto.InputSticker
 import dev.g000sha256.tdl.dto.InputStoryAreas
 import dev.g000sha256.tdl.dto.InputStoryContent
@@ -222,6 +224,8 @@ import dev.g000sha256.tdl.dto.InputTextQuote
 import dev.g000sha256.tdl.dto.InternalLinkType
 import dev.g000sha256.tdl.dto.InviteGroupCallParticipantResult
 import dev.g000sha256.tdl.dto.JsonValue
+import dev.g000sha256.tdl.dto.KeyboardButton
+import dev.g000sha256.tdl.dto.KeyboardButtonSource
 import dev.g000sha256.tdl.dto.LanguagePackInfo
 import dev.g000sha256.tdl.dto.LanguagePackString
 import dev.g000sha256.tdl.dto.LanguagePackStringValue
@@ -285,6 +289,7 @@ import dev.g000sha256.tdl.dto.PaymentResult
 import dev.g000sha256.tdl.dto.PhoneNumberAuthenticationSettings
 import dev.g000sha256.tdl.dto.PhoneNumberCodeType
 import dev.g000sha256.tdl.dto.PhoneNumberInfo
+import dev.g000sha256.tdl.dto.PollOptionProperties
 import dev.g000sha256.tdl.dto.PollVoters
 import dev.g000sha256.tdl.dto.PremiumFeature
 import dev.g000sha256.tdl.dto.PremiumFeatures
@@ -444,6 +449,7 @@ import dev.g000sha256.tdl.dto.UpdateChatRevenueAmount
 import dev.g000sha256.tdl.dto.UpdateChatTheme
 import dev.g000sha256.tdl.dto.UpdateChatTitle
 import dev.g000sha256.tdl.dto.UpdateChatUnreadMentionCount
+import dev.g000sha256.tdl.dto.UpdateChatUnreadPollVoteCount
 import dev.g000sha256.tdl.dto.UpdateChatUnreadReactionCount
 import dev.g000sha256.tdl.dto.UpdateChatVideoChat
 import dev.g000sha256.tdl.dto.UpdateChatViewAsTopics
@@ -479,6 +485,7 @@ import dev.g000sha256.tdl.dto.UpdateHavePendingNotifications
 import dev.g000sha256.tdl.dto.UpdateInstalledStickerSets
 import dev.g000sha256.tdl.dto.UpdateLanguagePackStrings
 import dev.g000sha256.tdl.dto.UpdateLiveStoryTopDonors
+import dev.g000sha256.tdl.dto.UpdateManagedBot
 import dev.g000sha256.tdl.dto.UpdateMessageContent
 import dev.g000sha256.tdl.dto.UpdateMessageContentOpened
 import dev.g000sha256.tdl.dto.UpdateMessageEdited
@@ -550,6 +557,7 @@ import dev.g000sha256.tdl.dto.UpdateSuggestedActions
 import dev.g000sha256.tdl.dto.UpdateSupergroup
 import dev.g000sha256.tdl.dto.UpdateSupergroupFullInfo
 import dev.g000sha256.tdl.dto.UpdateTermsOfService
+import dev.g000sha256.tdl.dto.UpdateTextCompositionStyles
 import dev.g000sha256.tdl.dto.UpdateTonRevenueStatus
 import dev.g000sha256.tdl.dto.UpdateTopicMessageCount
 import dev.g000sha256.tdl.dto.UpdateTrendingStickerSets
@@ -806,6 +814,11 @@ public abstract class TdlClient internal constructor() {
      * The chat unreadReactionCount has changed.
      */
     public abstract val chatUnreadReactionCountUpdates: Flow<UpdateChatUnreadReactionCount>
+
+    /**
+     * The chat unreadPollVoteCount has changed.
+     */
+    public abstract val chatUnreadPollVoteCountUpdates: Flow<UpdateChatUnreadPollVoteCount>
 
     /**
      * A chat video chat state has changed.
@@ -1357,6 +1370,11 @@ public abstract class TdlClient internal constructor() {
     public abstract val animationSearchParametersUpdates: Flow<UpdateAnimationSearchParameters>
 
     /**
+     * The styles supported for text composition have changed.
+     */
+    public abstract val textCompositionStylesUpdates: Flow<UpdateTextCompositionStyles>
+
+    /**
      * The list of suggested to the user actions has changed.
      */
     public abstract val suggestedActionsUpdates: Flow<UpdateSuggestedActions>
@@ -1450,6 +1468,11 @@ public abstract class TdlClient internal constructor() {
      * A user changed the answer to a poll; for bots only.
      */
     public abstract val pollAnswerUpdates: Flow<UpdatePollAnswer>
+
+    /**
+     * A bot that can be managed by the current bot was created or updated; for bots only.
+     */
+    public abstract val managedBotUpdates: Flow<UpdateManagedBot>
 
     /**
      * User rights changed in a chat; for bots only.
@@ -1725,6 +1748,19 @@ public abstract class TdlClient internal constructor() {
         messageId: Long,
         starCount: Long,
         type: PaidReactionType? = null,
+    ): TdlResult<Ok>
+
+    /**
+     * Adds an option to a poll.
+     *
+     * @param chatId Identifier of the chat to which the poll belongs.
+     * @param messageId Identifier of the message containing the poll. Use messagePoll.canAddOption to check whether an option can be added.
+     * @param option The new option.
+     */
+    public abstract suspend fun addPollOption(
+        chatId: Long,
+        messageId: Long,
+        option: InputPollOption,
     ): TdlResult<Ok>
 
     /**
@@ -2162,6 +2198,13 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun checkAuthenticationPremiumPurchase(currency: String, amount: Long): TdlResult<Ok>
 
     /**
+     * Checks whether a username can be set for a new bot. Use checkChatUsername to check username for other chat types.
+     *
+     * @param username Username to be checked.
+     */
+    public abstract suspend fun checkBotUsername(username: String): TdlResult<CheckChatUsernameResult>
+
+    /**
      * Checks the validity of an invite link for a chat folder and returns information about the corresponding chat folder.
      *
      * @param inviteLink Invite link to be checked.
@@ -2412,6 +2455,21 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun commitPendingPaidMessageReactions(chatId: Long, messageId: Long): TdlResult<Ok>
 
     /**
+     * Changes text using an AI model; must not be used in secret chats. May return an error with a message &quot;AICOMPOSE_FLOOD_PREMIUM&quot; if Telegram Premium is required to send further requests.
+     *
+     * @param text The original text.
+     * @param translateToLanguageCode Pass a language code to which the text will be translated; pass an empty string if translation isn't needed. See translateText.toLanguageCode for the list of supported values.
+     * @param styleName Name of the style of the resulted text; handle updateTextCompositionStyles to get the list of supported styles; pass an empty string to keep the current style of the text.
+     * @param addEmojis Pass true to add emoji to the text.
+     */
+    public abstract suspend fun composeTextWithAi(
+        text: FormattedText,
+        translateToLanguageCode: String,
+        styleName: String,
+        addEmojis: Boolean,
+    ): TdlResult<FormattedText>
+
+    /**
      * Confirms QR code authentication on another device. Returns created session on success.
      *
      * @param link A link from a QR code. The link must be scanned by the in-app camera.
@@ -2447,6 +2505,21 @@ public abstract class TdlClient internal constructor() {
      * @param force Pass true to create the chat without a network request. In this case all information about the chat except its type, title and photo can be incorrect.
      */
     public abstract suspend fun createBasicGroupChat(basicGroupId: Long, force: Boolean): TdlResult<Chat>
+
+    /**
+     * Creates a bot which will be managed by another bot. Returns the created bot. May return an error with a message &quot;BOT_CREATE_LIMIT_EXCEEDED&quot; if the user already owns the maximum allowed number of bots as per premiumLimitTypeOwnedBotCount. An internal link &quot;https://t.me/BotFather?start=deletebot&quot; can be processed to handle the error.
+     *
+     * @param managerBotUserId Identifier of the bot that will manage the created bot.
+     * @param name Name of the bot; 1-64 characters.
+     * @param username Username of the bot. The username must end with &quot;bot&quot;. Use checkBotUsername to find whether the name is suitable.
+     * @param viaLink Pass true if the bot is created from an internalLinkTypeRequestManagedBot link.
+     */
+    public abstract suspend fun createBot(
+        managerBotUserId: Long,
+        name: String,
+        username: String,
+        viaLink: Boolean,
+    ): TdlResult<User>
 
     /**
      * Creates a business chat link for the current account. Requires Telegram Business subscription. There can be up to getOption(&quot;business_chat_link_count_max&quot;) links created. Returns the created link.
@@ -2979,6 +3052,19 @@ public abstract class TdlClient internal constructor() {
      * @param type Element type.
      */
     public abstract suspend fun deletePassportElement(type: PassportElementType): TdlResult<Ok>
+
+    /**
+     * Adds an option to a poll.
+     *
+     * @param chatId Identifier of the chat to which the poll belongs.
+     * @param messageId Identifier of the message containing the poll.
+     * @param optionId Unique identifier of the option. Use pollOptionProperties.canBeDeleted to check whether the option can be deleted by the user.
+     */
+    public abstract suspend fun deletePollOption(
+        chatId: Long,
+        messageId: Long,
+        optionId: String,
+    ): TdlResult<Ok>
 
     /**
      * Deletes a profile photo.
@@ -3679,6 +3765,13 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun finishFileGeneration(generationId: Long, error: Error? = null): TdlResult<Ok>
 
     /**
+     * Fixes text using an AI model; must not be used in secret chats. May return an error with a message &quot;AICOMPOSE_FLOOD_PREMIUM&quot; if Telegram Premium is required to send further requests.
+     *
+     * @param text The original text.
+     */
+    public abstract suspend fun fixTextWithAi(text: FormattedText): TdlResult<FixedText>
+
+    /**
      * Forwards previously sent messages. Returns the forwarded messages in the same order as the message identifiers passed in messageIds. If a message can't be forwarded, null will be returned instead of the message.
      *
      * @param chatId Identifier of the chat to which to forward messages.
@@ -3905,6 +3998,14 @@ public abstract class TdlClient internal constructor() {
      * @param botUserId User identifier of the target bot.
      */
     public abstract suspend fun getBotSimilarBots(botUserId: Long): TdlResult<Users>
+
+    /**
+     * Returns token of a created bot; for bots only.
+     *
+     * @param botUserId Identifier of the created bot.
+     * @param revoke Pass true to revoke the current token and create a new one.
+     */
+    public abstract suspend fun getBotToken(botUserId: Long, revoke: Boolean): TdlResult<Text>
 
     /**
      * Returns the Telegram Star amount owned by a business account; for bots only.
@@ -4243,7 +4344,7 @@ public abstract class TdlClient internal constructor() {
      *
      * @param chatId Identifier of the chat in which to return information about messages.
      * @param topicId Pass topic identifier to get the result only in specific topic; pass null to get the result in all topics; forum topics and message threads aren't supported.
-     * @param filter Filter for message content. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, and searchMessagesFilterUnreadReaction are unsupported in this function.
+     * @param filter Filter for message content. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, and searchMessagesFilterUnreadPollVote are unsupported in this function.
      * @param fromMessageId The message identifier from which to return information about messages; use 0 to get results from the last message.
      */
     public abstract suspend fun getChatMessageCalendar(
@@ -4273,7 +4374,7 @@ public abstract class TdlClient internal constructor() {
      *
      * @param chatId Identifier of the chat in which to find message position.
      * @param topicId Pass topic identifier to get position among messages only in specific topic; pass null to get position among all chat messages; message threads aren't supported.
-     * @param filter Filter for message content; searchMessagesFilterEmpty, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, and searchMessagesFilterFailedToSend are unsupported in this function.
+     * @param filter Filter for message content; searchMessagesFilterEmpty, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, searchMessagesFilterUnreadPollVote, and searchMessagesFilterFailedToSend are unsupported in this function.
      * @param messageId Message identifier.
      */
     public abstract suspend fun getChatMessagePosition(
@@ -4373,7 +4474,7 @@ public abstract class TdlClient internal constructor() {
      * Returns sparse positions of messages of the specified type in the chat to be used for shared media scroll implementation. Returns the results in reverse chronological order (i.e., in order of decreasing messageId). Cannot be used in secret chats or with searchMessagesFilterFailedToSend filter without an enabled message database.
      *
      * @param chatId Identifier of the chat in which to return information about message positions.
-     * @param filter Filter for message content. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, and searchMessagesFilterUnreadReaction are unsupported in this function.
+     * @param filter Filter for message content. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, and searchMessagesFilterUnreadPollVote are unsupported in this function.
      * @param fromMessageId The message identifier from which to return information about message positions.
      * @param limit The expected number of message positions to be returned; 50-2000. A smaller number of positions can be returned, if there are not enough appropriate messages.
      * @param savedMessagesTopicId If not 0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all messages, or for chats other than Saved Messages.
@@ -5254,6 +5355,8 @@ public abstract class TdlClient internal constructor() {
      * @param chatId Identifier of the chat to which the message belongs.
      * @param messageId Identifier of the message.
      * @param mediaTimestamp If not 0, timestamp from which the video/audio/video note/voice note/story playing must start, in seconds. The media can be in the message content or in its link preview.
+     * @param checklistTaskId If not 0, identifier of the checklist task in the message to be linked.
+     * @param pollOptionId If not empty, identifier of the poll option in the message to be linked.
      * @param forAlbum Pass true to create a link for the whole media album.
      * @param inMessageThread Pass true to create a link to the message as a channel post comment, in a message thread, or a forum topic.
      */
@@ -5261,6 +5364,8 @@ public abstract class TdlClient internal constructor() {
         chatId: Long,
         messageId: Long,
         mediaTimestamp: Int,
+        checklistTaskId: Int,
+        pollOptionId: String,
         forAlbum: Boolean,
         inMessageThread: Boolean,
     ): TdlResult<MessageLink>
@@ -5485,7 +5590,20 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun getPhoneNumberInfoSync(languageCode: String, phoneNumberPrefix: String): TdlResult<PhoneNumberInfo>
 
     /**
-     * Returns message senders voted for the specified option in a non-anonymous polls. For optimal performance, the number of returned users is chosen by TDLib.
+     * Returns properties of a poll option. This is an offline method.
+     *
+     * @param chatId Chat identifier.
+     * @param messageId Identifier of the message.
+     * @param pollOptionId Unique identifier of the answer option, which properties will be returned.
+     */
+    public abstract suspend fun getPollOptionProperties(
+        chatId: Long,
+        messageId: Long,
+        pollOptionId: String,
+    ): TdlResult<PollOptionProperties>
+
+    /**
+     * Returns message senders voted for the specified option in a poll; use poll.canGetVoters to check whether the method can be used. For optimal performance, the number of returned users is chosen by TDLib.
      *
      * @param chatId Identifier of the chat to which the poll belongs.
      * @param messageId Identifier of the message containing the poll.
@@ -5565,6 +5683,14 @@ public abstract class TdlClient internal constructor() {
      * @param preparedMessageId Identifier of the prepared message.
      */
     public abstract suspend fun getPreparedInlineMessage(botUserId: Long, preparedMessageId: String): TdlResult<PreparedInlineMessage>
+
+    /**
+     * Returns a keyboard button prepared by the bot for the user. The button will be of the type keyboardButtonTypeRequestUsers, keyboardButtonTypeRequestChat, or keyboardButtonTypeRequestManagedBot.
+     *
+     * @param botUserId Identifier of the bot that created the button.
+     * @param preparedButtonId Identifier of the prepared button.
+     */
+    public abstract suspend fun getPreparedKeyboardButton(botUserId: Long, preparedButtonId: String): TdlResult<KeyboardButton>
 
     /**
      * Returns the list of proxies that are currently set up. Can be called before authorization.
@@ -5689,7 +5815,7 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun getRemoteFile(remoteFileId: String, fileType: FileType? = null): TdlResult<File>
 
     /**
-     * Returns information about a non-bundled message that is replied by a given message. Also, returns the pinned message for messagePinMessage, the game message for messageGameScore, the invoice message for messagePaymentSuccessful, the message with a previously set same background for messageChatSetBackground, the giveaway message for messageGiveawayCompleted, the checklist message for messageChecklistTasksDone, messageChecklistTasksAdded, the message with suggested post information for messageSuggestedPostApprovalFailed, messageSuggestedPostApproved, messageSuggestedPostDeclined, messageSuggestedPostPaid, messageSuggestedPostRefunded, the message with the regular gift that was upgraded for messageUpgradedGift with origin of the type upgradedGiftOriginUpgrade, the message with gift purchase offer for messageUpgradedGiftPurchaseOfferRejected, the message with the request to disable content protection for messageChatHasProtectedContentToggled, and the topic creation message for topic messages without non-bundled replied message. Returns a 404 error if the message doesn't exist.
+     * Returns information about a non-bundled message that is replied by a given message. Also, returns the pinned message for messagePinMessage, the game message for messageGameScore, the invoice message for messagePaymentSuccessful, the message with a previously set same background for messageChatSetBackground, the giveaway message for messageGiveawayCompleted, the checklist message for messageChecklistTasksDone, messageChecklistTasksAdded, the message with suggested post information for messageSuggestedPostApprovalFailed, messageSuggestedPostApproved, messageSuggestedPostDeclined, messageSuggestedPostPaid, messageSuggestedPostRefunded, the message with the regular gift that was upgraded for messageUpgradedGift with origin of the type upgradedGiftOriginUpgrade, the message with gift purchase offer for messageUpgradedGiftPurchaseOfferRejected, the message with the request to disable content protection for messageChatHasProtectedContentToggled, the message with the poll for messagePollOptionAdded and messagePollOptionDeleted, and the topic creation message for topic messages without non-bundled replied message. Returns a 404 error if the message doesn't exist.
      *
      * @param chatId Identifier of the chat the message belongs to.
      * @param messageId Identifier of the reply message.
@@ -6369,7 +6495,7 @@ public abstract class TdlClient internal constructor() {
      * @param userId Identifier of the user which will receive Telegram Premium.
      * @param starCount The number of Telegram Stars to pay for subscription.
      * @param monthCount Number of months the Telegram Premium subscription will be active for the user.
-     * @param text Text to show to the user receiving Telegram Premium; 0-getOption(&quot;gift_text_length_max&quot;) characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed.
+     * @param text Text to show to the user receiving Telegram Premium; 0-getOption(&quot;gift_text_length_max&quot;) characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed.
      */
     public abstract suspend fun giftPremiumWithStars(
         userId: Long,
@@ -6398,7 +6524,7 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun importContacts(contacts: Array<ImportedContact>): TdlResult<ImportedContacts>
 
     /**
-     * Imports messages exported from another app.
+     * Imports messages exported from another application.
      *
      * @param chatId Identifier of a chat to which the messages will be imported. It must be an identifier of a private chat with a mutual contact or an identifier of a supergroup chat with canChangeInfo member right.
      * @param messageFile File with messages to import. Only inputFileLocal and inputFileGenerated are supported. The file must not be previously uploaded.
@@ -6524,6 +6650,14 @@ public abstract class TdlClient internal constructor() {
      * @param groupCallId Group call identifier.
      */
     public abstract suspend fun leaveGroupCall(groupCallId: Int): TdlResult<Ok>
+
+    /**
+     * Informs TDLib that an audio was listened by the user.
+     *
+     * @param audioFileId Identifier of the file with an audio.
+     * @param duration Duration of the listening to the audio, in seconds.
+     */
+    public abstract suspend fun listenToAudio(audioFileId: Int, duration: Int): TdlResult<Ok>
 
     /**
      * Loads more active stories from a story list. The loaded stories will be sent through updates. Active stories are sorted by the pair (activeStories.order, activeStories.storyPosterChatId) in descending order. Returns a 404 error if all active stories have been loaded.
@@ -6700,7 +6834,7 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun parseMarkdown(text: FormattedText): TdlResult<FormattedText>
 
     /**
-     * Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities from a marked-up text. Can be called synchronously.
+     * Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl, MentionName, and DateTime entities from a marked-up text. Can be called synchronously.
      *
      * @param text The text to parse.
      * @param parseMode Text parse mode.
@@ -6735,7 +6869,7 @@ public abstract class TdlClient internal constructor() {
      * @param giftId Identifier of the gift to place the bid on.
      * @param starCount The number of Telegram Stars to place in the bid.
      * @param userId Identifier of the user who will receive the gift.
-     * @param text Text to show along with the gift; 0-getOption(&quot;gift_text_length_max&quot;) characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed. Must be empty if the receiver enabled paid messages.
+     * @param text Text to show along with the gift; 0-getOption(&quot;gift_text_length_max&quot;) characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed. Must be empty if the receiver enabled paid messages.
      * @param isPrivate Pass true to show gift text and sender only to the gift receiver; otherwise, everyone will be able to see them.
      */
     public abstract suspend fun placeGiftAuctionBid(
@@ -6869,6 +7003,13 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun readAllChatMentions(chatId: Long): TdlResult<Ok>
 
     /**
+     * Marks all poll votes in a chat as read.
+     *
+     * @param chatId Chat identifier.
+     */
+    public abstract suspend fun readAllChatPollVotes(chatId: Long): TdlResult<Ok>
+
+    /**
      * Marks all reactions in a chat as read.
      *
      * @param chatId Chat identifier.
@@ -6890,6 +7031,14 @@ public abstract class TdlClient internal constructor() {
      * @param forumTopicId Forum topic identifier in which mentions are marked as read.
      */
     public abstract suspend fun readAllForumTopicMentions(chatId: Long, forumTopicId: Int): TdlResult<Ok>
+
+    /**
+     * Marks all poll votes in a topic in a forum supergroup chat as read.
+     *
+     * @param chatId Chat identifier.
+     * @param forumTopicId Forum topic identifier in which poll votes are marked as read.
+     */
+    public abstract suspend fun readAllForumTopicPollVotes(chatId: Long, forumTopicId: Int): TdlResult<Ok>
 
     /**
      * Marks all reactions in a topic in a forum supergroup chat or a chat with a bot with topics as read.
@@ -7605,6 +7754,14 @@ public abstract class TdlClient internal constructor() {
     ): TdlResult<PreparedInlineMessageId>
 
     /**
+     * Saves a keyboard button to be shown to the given user; for bots only.
+     *
+     * @param userId Identifier of the user.
+     * @param button The button; must be of the type keyboardButtonTypeRequestUsers, keyboardButtonTypeRequestChat, or keyboardButtonTypeRequestManagedBot.
+     */
+    public abstract suspend fun savePreparedKeyboardButton(userId: Long, button: KeyboardButton): TdlResult<Text>
+
+    /**
      * Searches affiliate programs that can be connected to the given affiliate.
      *
      * @param affiliate The affiliate for which affiliate programs are searched for.
@@ -7748,6 +7905,7 @@ public abstract class TdlClient internal constructor() {
      * @param giftId Identifier of the regular gift that was upgraded to a unique gift.
      * @param order Order in which the results will be sorted.
      * @param forCrafting Pass true to get only gifts suitable for crafting.
+     * @param forStars Pass true to get only gifts that can be bought using Telegram Stars.
      * @param attributes Attributes used to filter received gifts. If multiple attributes of the same type are specified, then all of them are allowed. If none attributes of specific type are specified, then all values for this attribute type are allowed.
      * @param offset Offset of the first entry to return as received from the previous request with the same order and attributes; use empty string to get the first chunk of results.
      * @param limit The maximum number of gifts to return.
@@ -7756,6 +7914,7 @@ public abstract class TdlClient internal constructor() {
         giftId: Long,
         order: GiftForResaleOrder,
         forCrafting: Boolean,
+        forStars: Boolean,
         attributes: Array<UpgradedGiftAttributeId>,
         offset: String,
         limit: Int,
@@ -7789,7 +7948,7 @@ public abstract class TdlClient internal constructor() {
      * @param query Query to search for.
      * @param offset Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results.
      * @param limit The maximum number of messages to be returned; up to 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit.
-     * @param filter Additional filter for messages to search; pass null to search for all messages. Filters searchMessagesFilterMention, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, searchMessagesFilterFailedToSend, and searchMessagesFilterPinned are unsupported in this function.
+     * @param filter Additional filter for messages to search; pass null to search for all messages. Filters searchMessagesFilterMention, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, searchMessagesFilterUnreadPollVote, searchMessagesFilterFailedToSend, and searchMessagesFilterPinned are unsupported in this function.
      * @param chatTypeFilter Additional filter for type of the chat of the searched messages; pass null to search for messages in all chats.
      * @param minDate If not 0, the minimum date of the messages to return.
      * @param maxDate If not 0, the maximum date of the messages to return.
@@ -8174,7 +8333,7 @@ public abstract class TdlClient internal constructor() {
      *
      * @param giftId Identifier of the gift to send.
      * @param ownerId Identifier of the user or the channel chat that will receive the gift; limited gifts can't be sent to channel chats.
-     * @param text Text to show along with the gift; 0-getOption(&quot;gift_text_length_max&quot;) characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed. Must be empty if the receiver enabled paid messages.
+     * @param text Text to show along with the gift; 0-getOption(&quot;gift_text_length_max&quot;) characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed. Must be empty if the receiver enabled paid messages.
      * @param isPrivate Pass true to show gift text and sender only to the gift receiver; otherwise, everyone will be able to see them.
      * @param payForUpgrade Pass true to additionally pay for the gift upgrade and allow the receiver to upgrade it for free.
      */
@@ -8207,7 +8366,7 @@ public abstract class TdlClient internal constructor() {
      * Sends a message to other participants of a group call. Requires groupCall.canSendMessages right.
      *
      * @param groupCallId Group call identifier.
-     * @param text Text of the message to send; 1-getOption(&quot;group_call_message_text_length_max&quot;) characters for non-live-stories; see updateGroupCallMessageLevels for live story restrictions, which depends on paidMessageStarCount. Can't contain line feeds for live stories.
+     * @param text Text of the message to send; 1-getOption(&quot;group_call_message_text_length_max&quot;) characters for non-live-stories; see updateGroupCallMessageLevels for live story restrictions, which depends on paidMessageStarCount. Can't contain line feeds for live stories. Can contain only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities for live stories.
      * @param paidMessageStarCount The number of Telegram Stars the user agreed to pay to send the message; for live stories only; 0-getOption(&quot;paid_group_call_message_star_count_max&quot;). Must be 0 for messages sent to live stories posted by the current user.
      */
     public abstract suspend fun sendGroupCallMessage(
@@ -8272,6 +8431,25 @@ public abstract class TdlClient internal constructor() {
         options: MessageSendOptions? = null,
         inputMessageContents: Array<InputMessageContent>,
     ): TdlResult<Messages>
+
+    /**
+     * Informs TDLib about details of a message view by the user from a chat, a message thread or a forum topic history. The method must be called if the message wasn't seen for more than 300 milliseconds, the viewport was destroyed, or the total view duration exceeded 5 minutes.
+     *
+     * @param chatId Chat identifier.
+     * @param messageId The identifier of the message being viewed.
+     * @param timeInViewMs The amount of time the message was seen by at least 1 pixel; in milliseconds.
+     * @param activeTimeInViewMs The amount of time the message was seen by at least 1 pixel within 15 seconds after any action from the user; in milliseconds.
+     * @param heightToViewportRatioPerMille The ratio of the post height to the viewport height in 1/1000 fractions.
+     * @param seenRangeRatioPerMille The ratio of the viewed post height to the full post height in 1/1000 fractions; 0-1000.
+     */
+    public abstract suspend fun sendMessageViewMetrics(
+        chatId: Long,
+        messageId: Long,
+        timeInViewMs: Int,
+        activeTimeInViewMs: Int,
+        heightToViewportRatioPerMille: Int,
+        seenRangeRatioPerMille: Int,
+    ): TdlResult<Ok>
 
     /**
      * Sends a Telegram Passport authorization form, effectively sharing data with the service. This method must be called after getPassportAuthorizationFormAvailableElements if some previously available elements are going to be reused.
@@ -9344,7 +9522,7 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun setPinnedSavedMessagesTopics(savedMessagesTopicIds: LongArray): TdlResult<Ok>
 
     /**
-     * Changes the user answer to a poll. A poll in quiz mode can be answered only once.
+     * Changes the user answer to a poll.
      *
      * @param chatId Identifier of the chat to which the poll belongs.
      * @param messageId Identifier of the message containing the poll.
@@ -9611,7 +9789,7 @@ public abstract class TdlClient internal constructor() {
      * Changes a note of a contact user.
      *
      * @param userId User identifier.
-     * @param note Note to set for the user; 0-getOption(&quot;user_note_text_length_max&quot;) characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed.
+     * @param note Note to set for the user; 0-getOption(&quot;user_note_text_length_max&quot;) characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities are allowed.
      */
     public abstract suspend fun setUserNote(userId: Long, note: FormattedText): TdlResult<Ok>
 
@@ -9665,15 +9843,13 @@ public abstract class TdlClient internal constructor() {
     /**
      * Shares a chat after pressing a keyboardButtonTypeRequestChat button with the bot.
      *
-     * @param chatId Identifier of the chat with the bot.
-     * @param messageId Identifier of the message with the button.
+     * @param source Source of the button.
      * @param buttonId Identifier of the button.
      * @param sharedChatId Identifier of the shared chat.
      * @param onlyCheck Pass true to check that the chat can be shared by the button instead of actually sharing it. Doesn't check botIsMember and botAdministratorRights restrictions. If the bot must be a member, then all chats from getGroupsInCommon and all chats, where the user can add the bot, are suitable. In the latter case the bot will be automatically added to the chat. If the bot must be an administrator, then all chats, where the bot already has requested rights or can be added to administrators by the user, are suitable. In the latter case the bot will be automatically granted requested rights.
      */
     public abstract suspend fun shareChatWithBot(
-        chatId: Long,
-        messageId: Long,
+        source: KeyboardButtonSource,
         buttonId: Int,
         sharedChatId: Long,
         onlyCheck: Boolean,
@@ -9689,15 +9865,13 @@ public abstract class TdlClient internal constructor() {
     /**
      * Shares users after pressing a keyboardButtonTypeRequestUsers button with the bot.
      *
-     * @param chatId Identifier of the chat with the bot.
-     * @param messageId Identifier of the message with the button.
+     * @param source Source of the button.
      * @param buttonId Identifier of the button.
      * @param sharedUserIds Identifiers of the shared users.
      * @param onlyCheck Pass true to check that the users can be shared by the button instead of actually sharing them.
      */
     public abstract suspend fun shareUsersWithBot(
-        chatId: Long,
-        messageId: Long,
+        source: KeyboardButtonSource,
         buttonId: Int,
         sharedUserIds: LongArray,
         onlyCheck: Boolean,
@@ -9806,12 +9980,14 @@ public abstract class TdlClient internal constructor() {
      *
      * @param chatId Identifier of the chat to which the message belongs.
      * @param messageId Identifier of the message.
-     * @param translateToLanguageCode Pass a language code to which the summary will be translated; may be empty if translation isn't needed. See translateText.toLanguageCode for the list of supported values.
+     * @param translateToLanguageCode Pass a language code to which the summary will be translated; pass an empty string if translation isn't needed. See translateText.toLanguageCode for the list of supported values.
+     * @param tone Tone of the summarization; see translateText.tone for the list of supported values.
      */
     public abstract suspend fun summarizeMessage(
         chatId: Long,
         messageId: Long,
         translateToLanguageCode: String,
+        tone: String,
     ): TdlResult<FormattedText>
 
     /**
@@ -10369,25 +10545,32 @@ public abstract class TdlClient internal constructor() {
     ): TdlResult<Ok>
 
     /**
-     * Extracts text or caption of the given message and translates it to the given language. If the current user is a Telegram Premium user, then text formatting is preserved.
+     * Extracts text or caption of the given message and translates it to the given language; must not be used in secret chats. If the current user is a Telegram Premium user, then text formatting is preserved.
      *
      * @param chatId Identifier of the chat to which the message belongs.
      * @param messageId Identifier of the message.
      * @param toLanguageCode Language code of the language to which the message is translated. See translateText.toLanguageCode for the list of supported values.
+     * @param tone Tone of the translation; see translateText.tone for the list of supported values.
      */
     public abstract suspend fun translateMessageText(
         chatId: Long,
         messageId: Long,
         toLanguageCode: String,
+        tone: String,
     ): TdlResult<FormattedText>
 
     /**
-     * Translates a text to the given language. If the current user is a Telegram Premium user, then text formatting is preserved.
+     * Translates a text to the given language; must not be used in secret chats. If the current user is a Telegram Premium user, then text formatting is preserved.
      *
      * @param text Text to translate.
      * @param toLanguageCode Language code of the language to which the message is translated. Must be one of &quot;af&quot;, &quot;sq&quot;, &quot;am&quot;, &quot;ar&quot;, &quot;hy&quot;, &quot;az&quot;, &quot;eu&quot;, &quot;be&quot;, &quot;bn&quot;, &quot;bs&quot;, &quot;bg&quot;, &quot;ca&quot;, &quot;ceb&quot;, &quot;zh-CN&quot;, &quot;zh&quot;, &quot;zh-Hans&quot;, &quot;zh-TW&quot;, &quot;zh-Hant&quot;, &quot;co&quot;, &quot;hr&quot;, &quot;cs&quot;, &quot;da&quot;, &quot;nl&quot;, &quot;en&quot;, &quot;eo&quot;, &quot;et&quot;, &quot;fi&quot;, &quot;fr&quot;, &quot;fy&quot;, &quot;gl&quot;, &quot;ka&quot;, &quot;de&quot;, &quot;el&quot;, &quot;gu&quot;, &quot;ht&quot;, &quot;ha&quot;, &quot;haw&quot;, &quot;he&quot;, &quot;iw&quot;, &quot;hi&quot;, &quot;hmn&quot;, &quot;hu&quot;, &quot;is&quot;, &quot;ig&quot;, &quot;id&quot;, &quot;in&quot;, &quot;ga&quot;, &quot;it&quot;, &quot;ja&quot;, &quot;jv&quot;, &quot;kn&quot;, &quot;kk&quot;, &quot;km&quot;, &quot;rw&quot;, &quot;ko&quot;, &quot;ku&quot;, &quot;ky&quot;, &quot;lo&quot;, &quot;la&quot;, &quot;lv&quot;, &quot;lt&quot;, &quot;lb&quot;, &quot;mk&quot;, &quot;mg&quot;, &quot;ms&quot;, &quot;ml&quot;, &quot;mt&quot;, &quot;mi&quot;, &quot;mr&quot;, &quot;mn&quot;, &quot;my&quot;, &quot;ne&quot;, &quot;no&quot;, &quot;ny&quot;, &quot;or&quot;, &quot;ps&quot;, &quot;fa&quot;, &quot;pl&quot;, &quot;pt&quot;, &quot;pa&quot;, &quot;ro&quot;, &quot;ru&quot;, &quot;sm&quot;, &quot;gd&quot;, &quot;sr&quot;, &quot;st&quot;, &quot;sn&quot;, &quot;sd&quot;, &quot;si&quot;, &quot;sk&quot;, &quot;sl&quot;, &quot;so&quot;, &quot;es&quot;, &quot;su&quot;, &quot;sw&quot;, &quot;sv&quot;, &quot;tl&quot;, &quot;tg&quot;, &quot;ta&quot;, &quot;tt&quot;, &quot;te&quot;, &quot;th&quot;, &quot;tr&quot;, &quot;tk&quot;, &quot;uk&quot;, &quot;ur&quot;, &quot;ug&quot;, &quot;uz&quot;, &quot;vi&quot;, &quot;cy&quot;, &quot;xh&quot;, &quot;yi&quot;, &quot;ji&quot;, &quot;yo&quot;, &quot;zu&quot;.
+     * @param tone Tone of the translation; must be one of &quot;&quot;, &quot;formal&quot;, &quot;neutral&quot;, &quot;casual&quot;; defaults to &quot;neutral&quot;.
      */
-    public abstract suspend fun translateText(text: FormattedText, toLanguageCode: String): TdlResult<FormattedText>
+    public abstract suspend fun translateText(
+        text: FormattedText,
+        toLanguageCode: String,
+        tone: String,
+    ): TdlResult<FormattedText>
 
     /**
      * Removes all pinned messages from a chat; requires canPinMessages member right if the chat is a basic group or supergroup, or canEditMessages administrator right if the chat is a channel.
@@ -10528,12 +10711,12 @@ public abstract class TdlClient internal constructor() {
         /**
          * The Git commit hash of the TDLib.
          */
-        public const val TDL_GIT_COMMIT_HASH: String = "e597838871547131ef92332fca601f5effba4e8a"
+        public const val TDL_GIT_COMMIT_HASH: String = "f06b0bac65278b03d26414c096080e7bfecfef52"
 
         /**
          * The version of the TDLib.
          */
-        public const val TDL_VERSION: String = "1.8.62"
+        public const val TDL_VERSION: String = "1.8.63"
 
         /**
          * Creates a new instance of the [TdlClient].

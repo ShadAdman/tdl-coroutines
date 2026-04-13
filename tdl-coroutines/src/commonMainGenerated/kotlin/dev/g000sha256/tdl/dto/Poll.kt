@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import kotlin.Any
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Int
+import kotlin.IntArray
 import kotlin.Long
 import kotlin.String
 
@@ -27,11 +28,15 @@ import kotlin.String
  * Describes a poll.
  *
  * @property id Unique poll identifier.
- * @property question Poll question; 1-300 characters. Only custom emoji entities are allowed.
+ * @property question Poll question; 1-300 characters; may contain only custom emoji entities.
  * @property options List of poll answer options.
  * @property totalVoterCount Total number of voters, participating in the poll.
- * @property recentVoterIds Identifiers of recent voters, if the poll is non-anonymous.
+ * @property recentVoterIds Identifiers of recent voters, if the poll is non-anonymous and poll results are available.
+ * @property canGetVoters True, if the current user can get voters in the poll.
  * @property isAnonymous True, if the poll is anonymous.
+ * @property allowsMultipleAnswers True, if multiple answer options can be chosen simultaneously.
+ * @property allowsRevoting True, if the poll can be answered multiple times.
+ * @property optionOrder The list of 0-based poll identifiers in which the options of the poll must be shown; empty if the order of options must not be changed.
  * @property type Type of the poll.
  * @property openPeriod Amount of time the poll will be active after creation, in seconds.
  * @property closeDate Point in time (Unix timestamp) when the poll will automatically be closed.
@@ -43,7 +48,11 @@ public class Poll public constructor(
     public val options: Array<PollOption>,
     public val totalVoterCount: Int,
     public val recentVoterIds: Array<MessageSender>,
+    public val canGetVoters: Boolean,
     public val isAnonymous: Boolean,
+    public val allowsMultipleAnswers: Boolean,
+    public val allowsRevoting: Boolean,
+    public val optionOrder: IntArray,
     public val type: PollType,
     public val openPeriod: Int,
     public val closeDate: Int,
@@ -77,7 +86,20 @@ public class Poll public constructor(
         if (!recentVoterIdsEquals) {
             return false
         }
+        if (other.canGetVoters != canGetVoters) {
+            return false
+        }
         if (other.isAnonymous != isAnonymous) {
+            return false
+        }
+        if (other.allowsMultipleAnswers != allowsMultipleAnswers) {
+            return false
+        }
+        if (other.allowsRevoting != allowsRevoting) {
+            return false
+        }
+        val optionOrderEquals = other.optionOrder.contentEquals(optionOrder)
+        if (!optionOrderEquals) {
             return false
         }
         if (other.type != type) {
@@ -99,7 +121,11 @@ public class Poll public constructor(
         hashCode = 31 * hashCode + options.contentDeepHashCode()
         hashCode = 31 * hashCode + totalVoterCount.hashCode()
         hashCode = 31 * hashCode + recentVoterIds.contentDeepHashCode()
+        hashCode = 31 * hashCode + canGetVoters.hashCode()
         hashCode = 31 * hashCode + isAnonymous.hashCode()
+        hashCode = 31 * hashCode + allowsMultipleAnswers.hashCode()
+        hashCode = 31 * hashCode + allowsRevoting.hashCode()
+        hashCode = 31 * hashCode + optionOrder.contentHashCode()
         hashCode = 31 * hashCode + type.hashCode()
         hashCode = 31 * hashCode + openPeriod.hashCode()
         hashCode = 31 * hashCode + closeDate.hashCode()
@@ -130,8 +156,22 @@ public class Poll public constructor(
                 .contentDeepToString()
                 .also { append(it) }
             append(", ")
+            append("canGetVoters=")
+            append(canGetVoters)
+            append(", ")
             append("isAnonymous=")
             append(isAnonymous)
+            append(", ")
+            append("allowsMultipleAnswers=")
+            append(allowsMultipleAnswers)
+            append(", ")
+            append("allowsRevoting=")
+            append(allowsRevoting)
+            append(", ")
+            append("optionOrder=")
+            optionOrder
+                .contentToString()
+                .also { append(it) }
             append(", ")
             append("type=")
             append(type)

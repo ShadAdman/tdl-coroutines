@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import kotlin.String
 /**
  * Describes a checklist.
  *
- * @property title Title of the checklist; may contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities.
+ * @property title Title of the checklist; may contain only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, and DateTime entities.
  * @property tasks List of tasks in the checklist.
  * @property othersCanAddTasks True, if users other than creator of the list can add tasks to the list.
  * @property canAddTasks True, if the current user can add tasks to the list if they have Telegram Premium subscription.

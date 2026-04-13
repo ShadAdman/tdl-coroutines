@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,12 +23,8 @@ import kotlin.String
 
 /**
  * A regular poll.
- *
- * @property allowMultipleAnswers True, if multiple answer options can be chosen simultaneously.
  */
-public class PollTypeRegular public constructor(
-    public val allowMultipleAnswers: Boolean,
-) : PollType() {
+public class PollTypeRegular public constructor() : PollType() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
             return true
@@ -36,26 +32,14 @@ public class PollTypeRegular public constructor(
         if (other == null) {
             return false
         }
-        if (other::class != this::class) {
-            return false
-        }
-        other as PollTypeRegular
-        return other.allowMultipleAnswers == allowMultipleAnswers
+        return this::class == other::class
     }
 
     override fun hashCode(): Int {
-        var hashCode = this::class.hashCode()
-        hashCode = 31 * hashCode + allowMultipleAnswers.hashCode()
-        return hashCode
+        return this::class.hashCode()
     }
 
     override fun toString(): String {
-        return buildString {
-            append("PollTypeRegular")
-            append("(")
-            append("allowMultipleAnswers=")
-            append(allowMultipleAnswers)
-            append(")")
-        }
+        return "PollTypeRegular()"
     }
 }

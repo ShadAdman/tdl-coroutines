@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import kotlin.String
  *
  * @property photo Photo to send. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20.
  * @property thumbnail Photo thumbnail to be sent; pass null to skip thumbnail uploading. The thumbnail is sent to the other party only in secret chats.
+ * @property video Video of the live photo; not supported in secret chats; pass null if the photo isn't a live photo.
  * @property addedStickerFileIds File identifiers of the stickers added to the photo, if applicable.
  * @property width Photo width.
  * @property height Photo height.
@@ -38,6 +39,7 @@ import kotlin.String
 public class InputMessagePhoto public constructor(
     public val photo: InputFile,
     public val thumbnail: InputThumbnail?,
+    public val video: InputFile?,
     public val addedStickerFileIds: IntArray,
     public val width: Int,
     public val height: Int,
@@ -61,6 +63,9 @@ public class InputMessagePhoto public constructor(
             return false
         }
         if (other.thumbnail != thumbnail) {
+            return false
+        }
+        if (other.video != video) {
             return false
         }
         val addedStickerFileIdsEquals = other.addedStickerFileIds.contentEquals(addedStickerFileIds)
@@ -89,6 +94,7 @@ public class InputMessagePhoto public constructor(
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + photo.hashCode()
         hashCode = 31 * hashCode + thumbnail.hashCode()
+        hashCode = 31 * hashCode + video.hashCode()
         hashCode = 31 * hashCode + addedStickerFileIds.contentHashCode()
         hashCode = 31 * hashCode + width.hashCode()
         hashCode = 31 * hashCode + height.hashCode()
@@ -108,6 +114,9 @@ public class InputMessagePhoto public constructor(
             append(", ")
             append("thumbnail=")
             append(thumbnail)
+            append(", ")
+            append("video=")
+            append(video)
             append(", ")
             append("addedStickerFileIds=")
             addedStickerFileIds

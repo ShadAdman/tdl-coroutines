@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,16 @@ import kotlin.String
 /**
  * A message with a poll.
  *
- * @property poll The poll description.
+ * @property poll Information about the poll.
+ * @property description Description of the poll.
+ * @property media Media attached to the poll. Currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption.
+ * @property canAddOption True, if an option can be added to the poll using addPollOption.
  */
 public class MessagePoll public constructor(
     public val poll: Poll,
+    public val description: FormattedText,
+    public val media: MessageContent,
+    public val canAddOption: Boolean,
 ) : MessageContent() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -40,12 +46,24 @@ public class MessagePoll public constructor(
             return false
         }
         other as MessagePoll
-        return other.poll == poll
+        if (other.poll != poll) {
+            return false
+        }
+        if (other.description != description) {
+            return false
+        }
+        if (other.media != media) {
+            return false
+        }
+        return other.canAddOption == canAddOption
     }
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + poll.hashCode()
+        hashCode = 31 * hashCode + description.hashCode()
+        hashCode = 31 * hashCode + media.hashCode()
+        hashCode = 31 * hashCode + canAddOption.hashCode()
         return hashCode
     }
 
@@ -55,6 +73,15 @@ public class MessagePoll public constructor(
             append("(")
             append("poll=")
             append(poll)
+            append(", ")
+            append("description=")
+            append(description)
+            append(", ")
+            append("media=")
+            append(media)
+            append(", ")
+            append("canAddOption=")
+            append(canAddOption)
             append(")")
         }
     }

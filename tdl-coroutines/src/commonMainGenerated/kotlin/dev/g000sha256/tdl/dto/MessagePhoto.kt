@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import kotlin.String
  * A photo message.
  *
  * @property photo The photo.
+ * @property video The video representing the live photo; may be null if the photo is static.
  * @property caption Photo caption.
  * @property showCaptionAboveMedia True, if the caption must be shown above the photo; otherwise, the caption must be shown below the photo.
  * @property hasSpoiler True, if the photo preview must be covered by a spoiler animation.
@@ -32,6 +33,7 @@ import kotlin.String
  */
 public class MessagePhoto public constructor(
     public val photo: Photo,
+    public val video: Video?,
     public val caption: FormattedText,
     public val showCaptionAboveMedia: Boolean,
     public val hasSpoiler: Boolean,
@@ -51,6 +53,9 @@ public class MessagePhoto public constructor(
         if (other.photo != photo) {
             return false
         }
+        if (other.video != video) {
+            return false
+        }
         if (other.caption != caption) {
             return false
         }
@@ -66,6 +71,7 @@ public class MessagePhoto public constructor(
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + photo.hashCode()
+        hashCode = 31 * hashCode + video.hashCode()
         hashCode = 31 * hashCode + caption.hashCode()
         hashCode = 31 * hashCode + showCaptionAboveMedia.hashCode()
         hashCode = 31 * hashCode + hasSpoiler.hashCode()
@@ -79,6 +85,9 @@ public class MessagePhoto public constructor(
             append("(")
             append("photo=")
             append(photo)
+            append(", ")
+            append("video=")
+            append(video)
             append(", ")
             append("caption=")
             append(caption)
