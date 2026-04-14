@@ -61,6 +61,9 @@ jobs:
       - name: Run generator
         run: ./gradlew tdl-coroutines-generator:run
 
+      - name: Dump API
+        run: ./gradlew apiDump
+
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
         with:
