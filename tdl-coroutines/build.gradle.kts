@@ -47,7 +47,7 @@ android {
 
     sourceSets {
         getByName("main") {
-            jniLibs.srcDir(srcDir = "src/androidMainGenerated/jniLibs")
+            jniLibs.srcDir(srcDir = "generated/android")
         }
     }
 }
@@ -74,27 +74,27 @@ kotlin {
 
     iosArm64 {
         configureBinaries()
-        configureCompilations(platform = "iosArm64")
+        configureCompilations(platform = "ios/arm64")
     }
 
     iosSimulatorArm64(name = "iosArm64Simulator") {
         configureBinaries()
-        configureCompilations(platform = "iosArm64Simulator")
+        configureCompilations(platform = "ios/arm64Simulator")
     }
 
     iosX64(name = "iosX64Simulator") {
         configureBinaries()
-        configureCompilations(platform = "iosX64Simulator")
+        configureCompilations(platform = "ios/x64Simulator")
     }
 
     macosArm64 {
         configureBinaries()
-        configureCompilations(platform = "macosArm64")
+        configureCompilations(platform = "macos/arm64")
     }
 
     macosX64 {
         configureBinaries()
-        configureCompilations(platform = "macosX64")
+        configureCompilations(platform = "macos/x64")
     }
 
     sourceSets {
@@ -113,7 +113,7 @@ kotlin {
         }
 
         jvmMain {
-            resources.srcDirs("src/jvmMainGenerated/resources")
+            resources.srcDirs("generated/jvm")
         }
 
         iosArm64Main {
