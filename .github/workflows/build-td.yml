@@ -52,9 +52,6 @@ jobs:
       - name: Set up Java
         uses: ./.github/actions/set-up-java
 
-      - name: Set up Gradle
-        uses: ./.github/actions/set-up-gradle
-
       - name: Assemble generator
         run: ./gradlew tdl-coroutines-generator:assemble
 
