@@ -337,6 +337,10 @@ jobs:
     permissions:
       contents: write
 
+    env:
+      SOURCE_DATE_EPOCH: "1"
+      VCPKG_KEEP_ENV_VARS: "SOURCE_DATE_EPOCH"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -349,6 +353,8 @@ jobs:
           git clone https://github.com/Microsoft/vcpkg.git
           cd vcpkg
           ./bootstrap-vcpkg.bat
+          $triplet = "triplets/arm64-windows.cmake"
+          Add-Content $triplet "`nset(VCPKG_LINKER_FLAGS `"/Brepro`")"
           ./vcpkg.exe install gperf:arm64-windows openssl:arm64-windows zlib:arm64-windows
 
       - name: Build TDLib
@@ -356,12 +362,12 @@ jobs:
           cd td
           mkdir build
           cd build
-          cmake -A ARM64 -DCMAKE_INSTALL_PREFIX:PATH=../example/java/td -DTD_ENABLE_JNI=ON -DCMAKE_TOOLCHAIN_FILE:FILEPATH=../../vcpkg/scripts/buildsystems/vcpkg.cmake ..
+          cmake -A ARM64 -DCMAKE_INSTALL_PREFIX:PATH=../example/java/td -DTD_ENABLE_JNI=ON -DCMAKE_TOOLCHAIN_FILE:FILEPATH=../../vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_SHARED_LINKER_FLAGS="/Brepro" ..
           cmake --build . --target install --config Release
           cd ../example/java
           mkdir build
           cd build
-          cmake -A ARM64 -DCMAKE_INSTALL_PREFIX:PATH=../../../tdlib -DCMAKE_TOOLCHAIN_FILE:FILEPATH=../../../../vcpkg/scripts/buildsystems/vcpkg.cmake -DTd_DIR:PATH=$(Resolve-Path ../td/lib/cmake/Td) -DTD_JSON_JAVA=ON ..
+          cmake -A ARM64 -DCMAKE_INSTALL_PREFIX:PATH=../../../tdlib -DCMAKE_TOOLCHAIN_FILE:FILEPATH=../../../../vcpkg/scripts/buildsystems/vcpkg.cmake -DTd_DIR:PATH=$(Resolve-Path ../td/lib/cmake/Td) -DTD_JSON_JAVA=ON -DCMAKE_SHARED_LINKER_FLAGS="/Brepro" ..
           cmake --build . --target install --config Release
 
       - name: SHA256 checksums
@@ -386,6 +392,10 @@ jobs:
     permissions:
       contents: write
 
+    env:
+      SOURCE_DATE_EPOCH: "1"
+      VCPKG_KEEP_ENV_VARS: "SOURCE_DATE_EPOCH"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -398,6 +408,8 @@ jobs:
           git clone https://github.com/Microsoft/vcpkg.git
           cd vcpkg
           ./bootstrap-vcpkg.bat
+          $triplet = "triplets/x64-windows.cmake"
+          Add-Content $triplet "`nset(VCPKG_LINKER_FLAGS `"/Brepro`")"
           ./vcpkg.exe install gperf:x64-windows openssl:x64-windows zlib:x64-windows
 
       - name: Build TDLib
@@ -405,12 +417,12 @@ jobs:
           cd td
           mkdir build
           cd build
-          cmake -A x64 -DCMAKE_INSTALL_PREFIX:PATH=../example/java/td -DTD_ENABLE_JNI=ON -DCMAKE_TOOLCHAIN_FILE:FILEPATH=../../vcpkg/scripts/buildsystems/vcpkg.cmake ..
+          cmake -A x64 -DCMAKE_INSTALL_PREFIX:PATH=../example/java/td -DTD_ENABLE_JNI=ON -DCMAKE_TOOLCHAIN_FILE:FILEPATH=../../vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_SHARED_LINKER_FLAGS="/Brepro" ..
           cmake --build . --target install --config Release
           cd ../example/java
           mkdir build
           cd build
-          cmake -A x64 -DCMAKE_INSTALL_PREFIX:PATH=../../../tdlib -DCMAKE_TOOLCHAIN_FILE:FILEPATH=../../../../vcpkg/scripts/buildsystems/vcpkg.cmake -DTd_DIR:PATH=$(Resolve-Path ../td/lib/cmake/Td) -DTD_JSON_JAVA=ON ..
+          cmake -A x64 -DCMAKE_INSTALL_PREFIX:PATH=../../../tdlib -DCMAKE_TOOLCHAIN_FILE:FILEPATH=../../../../vcpkg/scripts/buildsystems/vcpkg.cmake -DTd_DIR:PATH=$(Resolve-Path ../td/lib/cmake/Td) -DTD_JSON_JAVA=ON -DCMAKE_SHARED_LINKER_FLAGS="/Brepro" ..
           cmake --build . --target install --config Release
 
       - name: SHA256 checksums
