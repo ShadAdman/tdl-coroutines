@@ -59,6 +59,10 @@ kotlin {
         enabled = true
     }
 
+    compilerOptions {
+        allWarningsAsErrors = true
+    }
+
     androidTarget {
         publishLibraryVariants("release")
 

@@ -10,6 +10,10 @@ application {
 kotlin {
     explicitApi()
     jvmToolchain(jdkVersion = 17)
+
+    compilerOptions {
+        allWarningsAsErrors = true
+    }
 }
 
 dependencies {

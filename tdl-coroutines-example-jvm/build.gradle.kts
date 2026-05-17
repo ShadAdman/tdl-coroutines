@@ -14,6 +14,7 @@ kotlin {
     jvmToolchain(jdkVersion = 11)
 
     compilerOptions {
+        allWarningsAsErrors = true
         moduleName = "dev.g000sha256.tdl.example"
     }
 }

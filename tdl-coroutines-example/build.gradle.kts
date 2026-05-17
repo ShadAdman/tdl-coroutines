@@ -62,6 +62,7 @@ kotlin {
     jvmToolchain(jdkVersion = 11)
 
     compilerOptions {
+        allWarningsAsErrors = true
         moduleName = android.namespace
     }
 }
