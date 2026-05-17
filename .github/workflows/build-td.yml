@@ -59,7 +59,7 @@ jobs:
         run: ./gradlew tdl-coroutines-generator:run
 
       - name: Dump API
-        run: ./gradlew apiDump
+        run: ./gradlew updateKotlinAbi
 
       - name: Commit and push
         uses: ./.github/actions/commit-and-push

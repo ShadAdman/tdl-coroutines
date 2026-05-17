@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.AbstractKotlinNativeBinaryContainer
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinOnlyTarget
@@ -10,7 +11,6 @@ version = "11.0.0"
 plugins {
     alias(notation = catalog.plugins.android.library)
     alias(notation = catalog.plugins.g000sha256.sonatypeMavenCentral)
-    alias(notation = catalog.plugins.jetBrains.binaryCompatibilityValidator)
     alias(notation = catalog.plugins.jetBrains.dokka)
     alias(notation = catalog.plugins.jetBrains.kotlin.multiplatform)
 }
@@ -53,6 +53,11 @@ kotlin {
     explicitApi()
     jvmToolchain(jdkVersion = 11)
     withSourcesJar(publish = true)
+
+    @OptIn(ExperimentalAbiValidation::class)
+    abiValidation {
+        enabled = true
+    }
 
     androidTarget {
         publishLibraryVariants("release")

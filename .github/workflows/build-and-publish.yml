@@ -41,7 +41,7 @@ jobs:
             tdl-coroutines-example-jvm:assemble
 
       - name: Check API compatibility
-        run: ./gradlew apiCheck
+        run: ./gradlew checkKotlinAbi
 
       - name: Publish
         env:
