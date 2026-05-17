@@ -27,10 +27,12 @@ import kotlin.String
  *
  * @property correctOptionIds Increasing list of 0-based identifiers of the correct answer options; must be non-empty.
  * @property explanation Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; 0-200 characters with at most 2 line feeds.
+ * @property explanationMedia Media that is shown when the user chooses an incorrect answer or taps on the lamp icon; pass null if none. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, non-live inputMessageLocation, inputMessagePhoto, inputMessageVenue, or inputMessageVideo without caption.
  */
 public class InputPollTypeQuiz public constructor(
     public val correctOptionIds: IntArray,
     public val explanation: FormattedText,
+    public val explanationMedia: InputMessageContent?,
 ) : InputPollType() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -47,13 +49,17 @@ public class InputPollTypeQuiz public constructor(
         if (!correctOptionIdsEquals) {
             return false
         }
-        return other.explanation == explanation
+        if (other.explanation != explanation) {
+            return false
+        }
+        return other.explanationMedia == explanationMedia
     }
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + correctOptionIds.contentHashCode()
         hashCode = 31 * hashCode + explanation.hashCode()
+        hashCode = 31 * hashCode + explanationMedia.hashCode()
         return hashCode
     }
 
@@ -68,6 +74,9 @@ public class InputPollTypeQuiz public constructor(
             append(", ")
             append("explanation=")
             append(explanation)
+            append(", ")
+            append("explanationMedia=")
+            append(explanationMedia)
             append(")")
         }
     }

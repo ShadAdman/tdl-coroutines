@@ -25,9 +25,11 @@ import kotlin.String
  * Describes one answer option of a poll to be created.
  *
  * @property text Option text; 1-100 characters. Only custom emoji entities are allowed to be added and only by Premium users.
+ * @property media Option media; pass null if none; ignored in addPollOption. Must be one of the following types: inputMessageAnimation, non-live inputMessageLocation, inputMessagePhoto, inputMessageSticker, inputMessageVenue, or inputMessageVideo without caption.
  */
 public class InputPollOption public constructor(
     public val text: FormattedText,
+    public val media: InputMessageContent?,
 ) {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -40,12 +42,16 @@ public class InputPollOption public constructor(
             return false
         }
         other as InputPollOption
-        return other.text == text
+        if (other.text != text) {
+            return false
+        }
+        return other.media == media
     }
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + text.hashCode()
+        hashCode = 31 * hashCode + media.hashCode()
         return hashCode
     }
 
@@ -55,6 +61,9 @@ public class InputPollOption public constructor(
             append("(")
             append("text=")
             append(text)
+            append(", ")
+            append("media=")
+            append(media)
             append(")")
         }
     }

@@ -26,13 +26,25 @@ import kotlin.String
  * Describes a style that can be used to compose a text.
  *
  * @property name Name of the style.
- * @property customEmojiId Identifier of the custom emoji corresponding to the style.
+ * @property customEmojiId Identifier of the custom emoji corresponding to the style; 0 if none.
  * @property title Title of the style in the user application's language.
+ * @property isCustom True, if the style is created by a user.
+ * @property isCreator True, if the user is creator of the style.
+ * @property installCount Number of users that installed the style; for created custom styles only; 0 if unknown.
+ * @property prompt Prompt of the style; for created custom styles only.
+ * @property creatorUserId User identifier of the creator of the style; 0 if none of unknown.
+ * @property englishExample Example of the style usage in English; may be null if unknown.
  */
 public class TextCompositionStyle public constructor(
     public val name: String,
     public val customEmojiId: Long,
     public val title: String,
+    public val isCustom: Boolean,
+    public val isCreator: Boolean,
+    public val installCount: Int,
+    public val prompt: String,
+    public val creatorUserId: Long,
+    public val englishExample: TextCompositionStyleExample?,
 ) {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -51,7 +63,25 @@ public class TextCompositionStyle public constructor(
         if (other.customEmojiId != customEmojiId) {
             return false
         }
-        return other.title == title
+        if (other.title != title) {
+            return false
+        }
+        if (other.isCustom != isCustom) {
+            return false
+        }
+        if (other.isCreator != isCreator) {
+            return false
+        }
+        if (other.installCount != installCount) {
+            return false
+        }
+        if (other.prompt != prompt) {
+            return false
+        }
+        if (other.creatorUserId != creatorUserId) {
+            return false
+        }
+        return other.englishExample == englishExample
     }
 
     override fun hashCode(): Int {
@@ -59,6 +89,12 @@ public class TextCompositionStyle public constructor(
         hashCode = 31 * hashCode + name.hashCode()
         hashCode = 31 * hashCode + customEmojiId.hashCode()
         hashCode = 31 * hashCode + title.hashCode()
+        hashCode = 31 * hashCode + isCustom.hashCode()
+        hashCode = 31 * hashCode + isCreator.hashCode()
+        hashCode = 31 * hashCode + installCount.hashCode()
+        hashCode = 31 * hashCode + prompt.hashCode()
+        hashCode = 31 * hashCode + creatorUserId.hashCode()
+        hashCode = 31 * hashCode + englishExample.hashCode()
         return hashCode
     }
 
@@ -74,6 +110,24 @@ public class TextCompositionStyle public constructor(
             append(", ")
             append("title=")
             append(title)
+            append(", ")
+            append("isCustom=")
+            append(isCustom)
+            append(", ")
+            append("isCreator=")
+            append(isCreator)
+            append(", ")
+            append("installCount=")
+            append(installCount)
+            append(", ")
+            append("prompt=")
+            append(prompt)
+            append(", ")
+            append("creatorUserId=")
+            append(creatorUserId)
+            append(", ")
+            append("englishExample=")
+            append(englishExample)
             append(")")
         }
     }

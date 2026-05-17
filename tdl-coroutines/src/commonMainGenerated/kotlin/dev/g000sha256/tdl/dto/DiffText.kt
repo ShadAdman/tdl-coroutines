@@ -26,7 +26,7 @@ import kotlin.String
  * A text with some changes highlighted.
  *
  * @property text The text.
- * @property entities Entities describing changes in the text. Entities doesn't mutually intersect with each other.
+ * @property entities Entities describing changes in the text. Entities don't mutually intersect with each other.
  */
 public class DiffText public constructor(
     public val text: String,

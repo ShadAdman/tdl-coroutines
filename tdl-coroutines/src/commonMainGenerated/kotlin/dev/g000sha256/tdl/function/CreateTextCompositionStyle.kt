@@ -18,8 +18,11 @@ package dev.g000sha256.tdl.function
 
 import kotlin.Boolean
 import kotlin.Long
+import kotlin.String
 
-internal class GetBotToken internal constructor(
-    internal val botUserId: Long,
-    internal val revoke: Boolean,
+internal class CreateTextCompositionStyle internal constructor(
+    internal val title: String,
+    internal val customEmojiId: Long,
+    internal val prompt: String,
+    internal val showCreator: Boolean,
 )

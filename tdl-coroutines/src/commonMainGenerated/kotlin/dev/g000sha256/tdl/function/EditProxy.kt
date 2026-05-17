@@ -19,9 +19,11 @@ package dev.g000sha256.tdl.function
 import dev.g000sha256.tdl.dto.Proxy
 import kotlin.Boolean
 import kotlin.Int
+import kotlin.String
 
 internal class EditProxy internal constructor(
     internal val proxyId: Int,
     internal val proxy: Proxy,
     internal val enable: Boolean,
+    internal val comment: String,
 )

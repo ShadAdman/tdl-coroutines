@@ -27,12 +27,14 @@ import kotlin.String
  * @property id Unique identifier of the proxy.
  * @property lastUsedDate Point in time (Unix timestamp) when the proxy was last used; 0 if never.
  * @property isEnabled True, if the proxy is enabled now.
+ * @property comment Comment for the proxy added by the user.
  * @property proxy The proxy.
  */
 public class AddedProxy public constructor(
     public val id: Int,
     public val lastUsedDate: Int,
     public val isEnabled: Boolean,
+    public val comment: String,
     public val proxy: Proxy,
 ) {
     override fun equals(other: Any?): Boolean {
@@ -55,6 +57,9 @@ public class AddedProxy public constructor(
         if (other.isEnabled != isEnabled) {
             return false
         }
+        if (other.comment != comment) {
+            return false
+        }
         return other.proxy == proxy
     }
 
@@ -63,6 +68,7 @@ public class AddedProxy public constructor(
         hashCode = 31 * hashCode + id.hashCode()
         hashCode = 31 * hashCode + lastUsedDate.hashCode()
         hashCode = 31 * hashCode + isEnabled.hashCode()
+        hashCode = 31 * hashCode + comment.hashCode()
         hashCode = 31 * hashCode + proxy.hashCode()
         return hashCode
     }
@@ -79,6 +85,9 @@ public class AddedProxy public constructor(
             append(", ")
             append("isEnabled=")
             append(isEnabled)
+            append(", ")
+            append("comment=")
+            append(comment)
             append(", ")
             append("proxy=")
             append(proxy)

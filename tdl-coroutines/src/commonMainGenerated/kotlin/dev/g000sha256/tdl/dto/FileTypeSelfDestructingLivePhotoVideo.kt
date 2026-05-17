@@ -22,7 +22,7 @@ import kotlin.Int
 import kotlin.String
 
 /**
- * The file is a seld-destructing video for a live photo in a private chat.
+ * The file is a self-destructing video for a live photo in a private chat.
  */
 public class FileTypeSelfDestructingLivePhotoVideo public constructor() : FileType() {
     override fun equals(other: Any?): Boolean {

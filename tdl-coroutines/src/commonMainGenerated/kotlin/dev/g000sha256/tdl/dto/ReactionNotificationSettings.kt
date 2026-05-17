@@ -28,7 +28,7 @@ import kotlin.String
  * @property messageReactionSource Source of message reactions for which notifications are shown.
  * @property storyReactionSource Source of story reactions for which notifications are shown.
  * @property pollVoteSource Source of poll votes for which notifications are shown.
- * @property soundId Identifier of the notification sound to be played; 0 if sound is disabled.
+ * @property soundId Identifier of the notification sound to be played; 0 if sound is disabled; pass -1 to use the app-dependent default sound.
  * @property showPreview True, if reaction sender and emoji must be displayed in notifications.
  */
 public class ReactionNotificationSettings public constructor(

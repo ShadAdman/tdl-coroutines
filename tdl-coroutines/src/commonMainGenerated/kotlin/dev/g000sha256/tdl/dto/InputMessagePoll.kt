@@ -26,11 +26,14 @@ import kotlin.String
  * A message with a poll. Polls can't be sent to secret chats and channel direct messages chats. Polls can be sent to a private chat only if the chat is a chat with a bot or the Saved Messages chat.
  *
  * @property question Poll question; 1-255 characters (up to 300 characters for bots). Only custom emoji entities are allowed to be added and only by Premium users.
- * @property options List of poll answer options; 2-getOption(&quot;poll_answer_count_max&quot;) options.
+ * @property options List of poll answer options; 1-getOption(&quot;poll_answer_count_max&quot;) options.
  * @property description Poll description; pass null to use an empty description; 0-getOption(&quot;message_caption_length_max&quot;) characters.
+ * @property media Media attached to the poll; pass null if none. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, non-live inputMessageLocation, inputMessagePhoto, inputMessageVenue, or inputMessageVideo without caption.
  * @property isAnonymous True, if the poll voters are anonymous. Non-anonymous polls can't be sent or forwarded to channels.
  * @property allowsMultipleAnswers True, if multiple answer options can be chosen simultaneously.
  * @property allowsRevoting True, if the poll can be answered multiple times.
+ * @property membersOnly True, if only the users that are members of the chat for more than a day will be able to vote; for channel chats only.
+ * @property countryCodes The list of two-letter ISO 3166-1 alpha-2 codes of countries, users from which will be able to vote; for channel chats only. If empty, then all users can participate in the poll. There can be up to getOption(&quot;poll_country_count_max&quot;) chosen countries.
  * @property shuffleOptions True, if poll options must be shown in a fixed random order.
  * @property hideResultsUntilCloses True, if the poll results will appear only after the poll closes.
  * @property type Type of the poll.
@@ -42,9 +45,12 @@ public class InputMessagePoll public constructor(
     public val question: FormattedText,
     public val options: Array<InputPollOption>,
     public val description: FormattedText?,
+    public val media: InputMessageContent?,
     public val isAnonymous: Boolean,
     public val allowsMultipleAnswers: Boolean,
     public val allowsRevoting: Boolean,
+    public val membersOnly: Boolean,
+    public val countryCodes: Array<String>,
     public val shuffleOptions: Boolean,
     public val hideResultsUntilCloses: Boolean,
     public val type: InputPollType,
@@ -73,6 +79,9 @@ public class InputMessagePoll public constructor(
         if (other.description != description) {
             return false
         }
+        if (other.media != media) {
+            return false
+        }
         if (other.isAnonymous != isAnonymous) {
             return false
         }
@@ -80,6 +89,13 @@ public class InputMessagePoll public constructor(
             return false
         }
         if (other.allowsRevoting != allowsRevoting) {
+            return false
+        }
+        if (other.membersOnly != membersOnly) {
+            return false
+        }
+        val countryCodesEquals = other.countryCodes.contentDeepEquals(countryCodes)
+        if (!countryCodesEquals) {
             return false
         }
         if (other.shuffleOptions != shuffleOptions) {
@@ -105,9 +121,12 @@ public class InputMessagePoll public constructor(
         hashCode = 31 * hashCode + question.hashCode()
         hashCode = 31 * hashCode + options.contentDeepHashCode()
         hashCode = 31 * hashCode + description.hashCode()
+        hashCode = 31 * hashCode + media.hashCode()
         hashCode = 31 * hashCode + isAnonymous.hashCode()
         hashCode = 31 * hashCode + allowsMultipleAnswers.hashCode()
         hashCode = 31 * hashCode + allowsRevoting.hashCode()
+        hashCode = 31 * hashCode + membersOnly.hashCode()
+        hashCode = 31 * hashCode + countryCodes.contentDeepHashCode()
         hashCode = 31 * hashCode + shuffleOptions.hashCode()
         hashCode = 31 * hashCode + hideResultsUntilCloses.hashCode()
         hashCode = 31 * hashCode + type.hashCode()
@@ -132,6 +151,9 @@ public class InputMessagePoll public constructor(
             append("description=")
             append(description)
             append(", ")
+            append("media=")
+            append(media)
+            append(", ")
             append("isAnonymous=")
             append(isAnonymous)
             append(", ")
@@ -140,6 +162,14 @@ public class InputMessagePoll public constructor(
             append(", ")
             append("allowsRevoting=")
             append(allowsRevoting)
+            append(", ")
+            append("membersOnly=")
+            append(membersOnly)
+            append(", ")
+            append("countryCodes=")
+            countryCodes
+                .contentDeepToString()
+                .also { append(it) }
             append(", ")
             append("shuffleOptions=")
             append(shuffleOptions)

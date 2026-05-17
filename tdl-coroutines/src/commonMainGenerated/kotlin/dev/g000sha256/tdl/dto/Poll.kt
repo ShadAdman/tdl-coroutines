@@ -32,15 +32,18 @@ import kotlin.String
  * @property options List of poll answer options.
  * @property totalVoterCount Total number of voters, participating in the poll.
  * @property recentVoterIds Identifiers of recent voters, if the poll is non-anonymous and poll results are available.
- * @property canGetVoters True, if the current user can get voters in the poll.
+ * @property canGetVoters True, if the current user can get voters in the poll using getPollVoters.
  * @property isAnonymous True, if the poll is anonymous.
  * @property allowsMultipleAnswers True, if multiple answer options can be chosen simultaneously.
  * @property allowsRevoting True, if the poll can be answered multiple times.
+ * @property membersOnly True, if only the users that are members of the chat for more than a day will be able to vote.
+ * @property countryCodes The list of two-letter ISO 3166-1 alpha-2 codes of countries, users from which will be able to vote. If empty, then all users can participate in the poll.
  * @property optionOrder The list of 0-based poll identifiers in which the options of the poll must be shown; empty if the order of options must not be changed.
  * @property type Type of the poll.
  * @property openPeriod Amount of time the poll will be active after creation, in seconds.
  * @property closeDate Point in time (Unix timestamp) when the poll will automatically be closed.
  * @property isClosed True, if the poll is closed.
+ * @property voteRestrictionReason The reason describing, why the current user can't vote in the poll; may be null if the user can vote in the poll.
  */
 public class Poll public constructor(
     public val id: Long,
@@ -52,11 +55,14 @@ public class Poll public constructor(
     public val isAnonymous: Boolean,
     public val allowsMultipleAnswers: Boolean,
     public val allowsRevoting: Boolean,
+    public val membersOnly: Boolean,
+    public val countryCodes: Array<String>,
     public val optionOrder: IntArray,
     public val type: PollType,
     public val openPeriod: Int,
     public val closeDate: Int,
     public val isClosed: Boolean,
+    public val voteRestrictionReason: PollVoteRestrictionReason?,
 ) {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -98,6 +104,13 @@ public class Poll public constructor(
         if (other.allowsRevoting != allowsRevoting) {
             return false
         }
+        if (other.membersOnly != membersOnly) {
+            return false
+        }
+        val countryCodesEquals = other.countryCodes.contentDeepEquals(countryCodes)
+        if (!countryCodesEquals) {
+            return false
+        }
         val optionOrderEquals = other.optionOrder.contentEquals(optionOrder)
         if (!optionOrderEquals) {
             return false
@@ -111,7 +124,10 @@ public class Poll public constructor(
         if (other.closeDate != closeDate) {
             return false
         }
-        return other.isClosed == isClosed
+        if (other.isClosed != isClosed) {
+            return false
+        }
+        return other.voteRestrictionReason == voteRestrictionReason
     }
 
     override fun hashCode(): Int {
@@ -125,11 +141,14 @@ public class Poll public constructor(
         hashCode = 31 * hashCode + isAnonymous.hashCode()
         hashCode = 31 * hashCode + allowsMultipleAnswers.hashCode()
         hashCode = 31 * hashCode + allowsRevoting.hashCode()
+        hashCode = 31 * hashCode + membersOnly.hashCode()
+        hashCode = 31 * hashCode + countryCodes.contentDeepHashCode()
         hashCode = 31 * hashCode + optionOrder.contentHashCode()
         hashCode = 31 * hashCode + type.hashCode()
         hashCode = 31 * hashCode + openPeriod.hashCode()
         hashCode = 31 * hashCode + closeDate.hashCode()
         hashCode = 31 * hashCode + isClosed.hashCode()
+        hashCode = 31 * hashCode + voteRestrictionReason.hashCode()
         return hashCode
     }
 
@@ -168,6 +187,14 @@ public class Poll public constructor(
             append("allowsRevoting=")
             append(allowsRevoting)
             append(", ")
+            append("membersOnly=")
+            append(membersOnly)
+            append(", ")
+            append("countryCodes=")
+            countryCodes
+                .contentDeepToString()
+                .also { append(it) }
+            append(", ")
             append("optionOrder=")
             optionOrder
                 .contentToString()
@@ -184,6 +211,9 @@ public class Poll public constructor(
             append(", ")
             append("isClosed=")
             append(isClosed)
+            append(", ")
+            append("voteRestrictionReason=")
+            append(voteRestrictionReason)
             append(")")
         }
     }

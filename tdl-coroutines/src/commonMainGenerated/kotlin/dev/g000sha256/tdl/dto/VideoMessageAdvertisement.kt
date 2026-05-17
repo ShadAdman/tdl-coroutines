@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import kotlin.Long
 import kotlin.String
 
 /**
- * Describes an advertisent to be shown while a video from a message is watched.
+ * Describes an advertisement to be shown while a video from a message is watched.
  *
  * @property uniqueId Unique identifier of this result.
  * @property text Text of the advertisement.

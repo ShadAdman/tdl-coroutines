@@ -45,6 +45,7 @@ import dev.g000sha256.tdl.dto.BasicGroup
 import dev.g000sha256.tdl.dto.BasicGroupFullInfo
 import dev.g000sha256.tdl.dto.Birthdate
 import dev.g000sha256.tdl.dto.BlockList
+import dev.g000sha256.tdl.dto.BotAccessSettings
 import dev.g000sha256.tdl.dto.BotCommand
 import dev.g000sha256.tdl.dto.BotCommandScope
 import dev.g000sha256.tdl.dto.BotCommands
@@ -197,6 +198,7 @@ import dev.g000sha256.tdl.dto.Hashtags
 import dev.g000sha256.tdl.dto.HttpUrl
 import dev.g000sha256.tdl.dto.ImportedContact
 import dev.g000sha256.tdl.dto.ImportedContacts
+import dev.g000sha256.tdl.dto.InlineMessageId
 import dev.g000sha256.tdl.dto.InlineQueryResults
 import dev.g000sha256.tdl.dto.InlineQueryResultsButton
 import dev.g000sha256.tdl.dto.InputBackground
@@ -290,6 +292,7 @@ import dev.g000sha256.tdl.dto.PhoneNumberAuthenticationSettings
 import dev.g000sha256.tdl.dto.PhoneNumberCodeType
 import dev.g000sha256.tdl.dto.PhoneNumberInfo
 import dev.g000sha256.tdl.dto.PollOptionProperties
+import dev.g000sha256.tdl.dto.PollVoteStatistics
 import dev.g000sha256.tdl.dto.PollVoters
 import dev.g000sha256.tdl.dto.PremiumFeature
 import dev.g000sha256.tdl.dto.PremiumFeatures
@@ -332,7 +335,6 @@ import dev.g000sha256.tdl.dto.SearchMessagesChatTypeFilter
 import dev.g000sha256.tdl.dto.SearchMessagesFilter
 import dev.g000sha256.tdl.dto.Seconds
 import dev.g000sha256.tdl.dto.SecretChat
-import dev.g000sha256.tdl.dto.SentWebAppMessage
 import dev.g000sha256.tdl.dto.Session
 import dev.g000sha256.tdl.dto.Sessions
 import dev.g000sha256.tdl.dto.ShippingOption
@@ -383,6 +385,8 @@ import dev.g000sha256.tdl.dto.TestVectorIntObject
 import dev.g000sha256.tdl.dto.TestVectorString
 import dev.g000sha256.tdl.dto.TestVectorStringObject
 import dev.g000sha256.tdl.dto.Text
+import dev.g000sha256.tdl.dto.TextCompositionStyle
+import dev.g000sha256.tdl.dto.TextCompositionStyleExample
 import dev.g000sha256.tdl.dto.TextEntities
 import dev.g000sha256.tdl.dto.TextParseMode
 import dev.g000sha256.tdl.dto.ThemeParameters
@@ -486,6 +490,7 @@ import dev.g000sha256.tdl.dto.UpdateInstalledStickerSets
 import dev.g000sha256.tdl.dto.UpdateLanguagePackStrings
 import dev.g000sha256.tdl.dto.UpdateLiveStoryTopDonors
 import dev.g000sha256.tdl.dto.UpdateManagedBot
+import dev.g000sha256.tdl.dto.UpdateMessageContainsUnreadPollVotes
 import dev.g000sha256.tdl.dto.UpdateMessageContent
 import dev.g000sha256.tdl.dto.UpdateMessageContentOpened
 import dev.g000sha256.tdl.dto.UpdateMessageEdited
@@ -512,6 +517,7 @@ import dev.g000sha256.tdl.dto.UpdateNewCustomEvent
 import dev.g000sha256.tdl.dto.UpdateNewCustomQuery
 import dev.g000sha256.tdl.dto.UpdateNewGroupCallMessage
 import dev.g000sha256.tdl.dto.UpdateNewGroupCallPaidReaction
+import dev.g000sha256.tdl.dto.UpdateNewGuestQuery
 import dev.g000sha256.tdl.dto.UpdateNewInlineCallbackQuery
 import dev.g000sha256.tdl.dto.UpdateNewInlineQuery
 import dev.g000sha256.tdl.dto.UpdateNewMessage
@@ -623,10 +629,12 @@ import dev.g000sha256.tdl.function.AddSavedAnimation
 import dev.g000sha256.tdl.function.AddSavedNotificationSound
 import dev.g000sha256.tdl.function.AddStickerToSet
 import dev.g000sha256.tdl.function.AddStoryAlbumStories
+import dev.g000sha256.tdl.function.AddTextCompositionStyle
 import dev.g000sha256.tdl.function.AllowBotToSendMessages
 import dev.g000sha256.tdl.function.AllowUnpaidMessagesFromUser
 import dev.g000sha256.tdl.function.AnswerCallbackQuery
 import dev.g000sha256.tdl.function.AnswerCustomQuery
+import dev.g000sha256.tdl.function.AnswerGuestQuery
 import dev.g000sha256.tdl.function.AnswerInlineQuery
 import dev.g000sha256.tdl.function.AnswerPreCheckoutQuery
 import dev.g000sha256.tdl.function.AnswerShippingQuery
@@ -720,6 +728,7 @@ import dev.g000sha256.tdl.function.CreateSecretChat
 import dev.g000sha256.tdl.function.CreateStoryAlbum
 import dev.g000sha256.tdl.function.CreateSupergroupChat
 import dev.g000sha256.tdl.function.CreateTemporaryPassword
+import dev.g000sha256.tdl.function.CreateTextCompositionStyle
 import dev.g000sha256.tdl.function.CreateVideoChat
 import dev.g000sha256.tdl.function.DeclineGroupCallInvitation
 import dev.g000sha256.tdl.function.DeclineOauthRequest
@@ -727,6 +736,7 @@ import dev.g000sha256.tdl.function.DeclineSuggestedPost
 import dev.g000sha256.tdl.function.DecryptGroupCallData
 import dev.g000sha256.tdl.function.DeleteAccount
 import dev.g000sha256.tdl.function.DeleteAllCallMessages
+import dev.g000sha256.tdl.function.DeleteAllRecentMessageReactionsFromSender
 import dev.g000sha256.tdl.function.DeleteAllRevokedChatInviteLinks
 import dev.g000sha256.tdl.function.DeleteBotMediaPreviews
 import dev.g000sha256.tdl.function.DeleteBusinessChatLink
@@ -751,6 +761,7 @@ import dev.g000sha256.tdl.function.DeleteGiftCollection
 import dev.g000sha256.tdl.function.DeleteGroupCallMessages
 import dev.g000sha256.tdl.function.DeleteGroupCallMessagesBySender
 import dev.g000sha256.tdl.function.DeleteLanguagePack
+import dev.g000sha256.tdl.function.DeleteMessageReactionsFromSender
 import dev.g000sha256.tdl.function.DeleteMessages
 import dev.g000sha256.tdl.function.DeletePassportElement
 import dev.g000sha256.tdl.function.DeletePollOption
@@ -765,6 +776,7 @@ import dev.g000sha256.tdl.function.DeleteSavedOrderInfo
 import dev.g000sha256.tdl.function.DeleteStickerSet
 import dev.g000sha256.tdl.function.DeleteStory
 import dev.g000sha256.tdl.function.DeleteStoryAlbum
+import dev.g000sha256.tdl.function.DeleteTextCompositionStyle
 import dev.g000sha256.tdl.function.Destroy
 import dev.g000sha256.tdl.function.DisableAllSupergroupUsernames
 import dev.g000sha256.tdl.function.DisableProxy
@@ -806,6 +818,7 @@ import dev.g000sha256.tdl.function.EditQuickReplyMessage
 import dev.g000sha256.tdl.function.EditStarSubscription
 import dev.g000sha256.tdl.function.EditStory
 import dev.g000sha256.tdl.function.EditStoryCover
+import dev.g000sha256.tdl.function.EditTextCompositionStyle
 import dev.g000sha256.tdl.function.EditUserStarSubscription
 import dev.g000sha256.tdl.function.EnableProxy
 import dev.g000sha256.tdl.function.EncryptGroupCallData
@@ -844,7 +857,6 @@ import dev.g000sha256.tdl.function.GetBotMediaPreviews
 import dev.g000sha256.tdl.function.GetBotName
 import dev.g000sha256.tdl.function.GetBotSimilarBotCount
 import dev.g000sha256.tdl.function.GetBotSimilarBots
-import dev.g000sha256.tdl.function.GetBotToken
 import dev.g000sha256.tdl.function.GetBusinessAccountStarAmount
 import dev.g000sha256.tdl.function.GetBusinessChatLinkInfo
 import dev.g000sha256.tdl.function.GetBusinessChatLinks
@@ -988,6 +1000,8 @@ import dev.g000sha256.tdl.function.GetLoginPasskeys
 import dev.g000sha256.tdl.function.GetLoginUrl
 import dev.g000sha256.tdl.function.GetLoginUrlInfo
 import dev.g000sha256.tdl.function.GetMainWebApp
+import dev.g000sha256.tdl.function.GetManagedBotAccessSettings
+import dev.g000sha256.tdl.function.GetManagedBotToken
 import dev.g000sha256.tdl.function.GetMapThumbnailFile
 import dev.g000sha256.tdl.function.GetMarkdownText
 import dev.g000sha256.tdl.function.GetMe
@@ -1025,9 +1039,11 @@ import dev.g000sha256.tdl.function.GetPassportElement
 import dev.g000sha256.tdl.function.GetPasswordState
 import dev.g000sha256.tdl.function.GetPaymentForm
 import dev.g000sha256.tdl.function.GetPaymentReceipt
+import dev.g000sha256.tdl.function.GetPersonalChatHistory
 import dev.g000sha256.tdl.function.GetPhoneNumberInfo
 import dev.g000sha256.tdl.function.GetPhoneNumberInfoSync
 import dev.g000sha256.tdl.function.GetPollOptionProperties
+import dev.g000sha256.tdl.function.GetPollVoteStatistics
 import dev.g000sha256.tdl.function.GetPollVoters
 import dev.g000sha256.tdl.function.GetPreferredCountryLanguage
 import dev.g000sha256.tdl.function.GetPremiumFeatures
@@ -1102,6 +1118,7 @@ import dev.g000sha256.tdl.function.GetSupergroupMembers
 import dev.g000sha256.tdl.function.GetSupportName
 import dev.g000sha256.tdl.function.GetSupportUser
 import dev.g000sha256.tdl.function.GetTemporaryPasswordState
+import dev.g000sha256.tdl.function.GetTextCompositionStyleExample
 import dev.g000sha256.tdl.function.GetTextEntities
 import dev.g000sha256.tdl.function.GetThemeParametersJsonString
 import dev.g000sha256.tdl.function.GetThemedChatEmojiStatuses
@@ -1227,6 +1244,7 @@ import dev.g000sha256.tdl.function.RemoveSavedNotificationSound
 import dev.g000sha256.tdl.function.RemoveSearchedForTag
 import dev.g000sha256.tdl.function.RemoveStickerFromSet
 import dev.g000sha256.tdl.function.RemoveStoryAlbumStories
+import dev.g000sha256.tdl.function.RemoveTextCompositionStyle
 import dev.g000sha256.tdl.function.RemoveTopChat
 import dev.g000sha256.tdl.function.ReorderActiveUsernames
 import dev.g000sha256.tdl.function.ReorderBotActiveUsernames
@@ -1306,6 +1324,7 @@ import dev.g000sha256.tdl.function.SearchStickerSet
 import dev.g000sha256.tdl.function.SearchStickerSets
 import dev.g000sha256.tdl.function.SearchStickers
 import dev.g000sha256.tdl.function.SearchStringsByPrefix
+import dev.g000sha256.tdl.function.SearchTextCompositionStyle
 import dev.g000sha256.tdl.function.SearchUserByPhoneNumber
 import dev.g000sha256.tdl.function.SearchUserByToken
 import dev.g000sha256.tdl.function.SearchWebApp
@@ -1421,6 +1440,7 @@ import dev.g000sha256.tdl.function.SetLogTagVerbosityLevel
 import dev.g000sha256.tdl.function.SetLogVerbosityLevel
 import dev.g000sha256.tdl.function.SetLoginEmailAddress
 import dev.g000sha256.tdl.function.SetMainProfileTab
+import dev.g000sha256.tdl.function.SetManagedBotAccessSettings
 import dev.g000sha256.tdl.function.SetMenuButton
 import dev.g000sha256.tdl.function.SetMessageFactCheck
 import dev.g000sha256.tdl.function.SetMessageReactions
@@ -1616,6 +1636,9 @@ internal class TdlClientImpl internal constructor(
         get() = repository.updates.filterIsInstance()
 
     override val messageUnreadReactionsUpdates: Flow<UpdateMessageUnreadReactions>
+        get() = repository.updates.filterIsInstance()
+
+    override val messageContainsUnreadPollVotesUpdates: Flow<UpdateMessageContainsUnreadPollVotes>
         get() = repository.updates.filterIsInstance()
 
     override val messageFactCheckUpdates: Flow<UpdateMessageFactCheck>
@@ -2069,6 +2092,9 @@ internal class TdlClientImpl internal constructor(
     override val newChosenInlineResultUpdates: Flow<UpdateNewChosenInlineResult>
         get() = repository.updates.filterIsInstance()
 
+    override val newGuestQueryUpdates: Flow<UpdateNewGuestQuery>
+        get() = repository.updates.filterIsInstance()
+
     override val newCallbackQueryUpdates: Flow<UpdateNewCallbackQuery>
         get() = repository.updates.filterIsInstance()
 
@@ -2376,17 +2402,30 @@ internal class TdlClientImpl internal constructor(
         return repository.send(function = function)
     }
 
-    override suspend fun addProfileAudio(fileId: Int): TdlResult<Ok> {
+    override suspend fun addProfileAudio(
+        audio: InputFile,
+        duration: Int,
+        title: String,
+        performer: String,
+    ): TdlResult<Ok> {
         val function = AddProfileAudio(
-            fileId = fileId,
+            audio = audio,
+            duration = duration,
+            title = title,
+            performer = performer,
         )
         return repository.send(function = function)
     }
 
-    override suspend fun addProxy(proxy: Proxy, enable: Boolean): TdlResult<AddedProxy> {
+    override suspend fun addProxy(
+        proxy: Proxy,
+        enable: Boolean,
+        comment: String,
+    ): TdlResult<AddedProxy> {
         val function = AddProxy(
             proxy = proxy,
             enable = enable,
+            comment = comment,
         )
         return repository.send(function = function)
     }
@@ -2489,6 +2528,13 @@ internal class TdlClientImpl internal constructor(
         return repository.send(function = function)
     }
 
+    override suspend fun addTextCompositionStyle(name: String): TdlResult<Ok> {
+        val function = AddTextCompositionStyle(
+            name = name,
+        )
+        return repository.send(function = function)
+    }
+
     override suspend fun allowBotToSendMessages(botUserId: Long): TdlResult<Ok> {
         val function = AllowBotToSendMessages(
             botUserId = botUserId,
@@ -2525,6 +2571,14 @@ internal class TdlClientImpl internal constructor(
         val function = AnswerCustomQuery(
             customQueryId = customQueryId,
             data = data,
+        )
+        return repository.send(function = function)
+    }
+
+    override suspend fun answerGuestQuery(guestQueryId: Long, result: InputInlineQueryResult): TdlResult<InlineMessageId> {
+        val function = AnswerGuestQuery(
+            guestQueryId = guestQueryId,
+            result = result,
         )
         return repository.send(function = function)
     }
@@ -2569,7 +2623,7 @@ internal class TdlClientImpl internal constructor(
         return repository.send(function = function)
     }
 
-    override suspend fun answerWebAppQuery(webAppQueryId: String, result: InputInlineQueryResult): TdlResult<SentWebAppMessage> {
+    override suspend fun answerWebAppQuery(webAppQueryId: String, result: InputInlineQueryResult): TdlResult<InlineMessageId> {
         val function = AnswerWebAppQuery(
             webAppQueryId = webAppQueryId,
             result = result,
@@ -2802,8 +2856,13 @@ internal class TdlClientImpl internal constructor(
         return repository.send(function = function)
     }
 
-    override suspend fun checkAuthenticationPremiumPurchase(currency: String, amount: Long): TdlResult<Ok> {
+    override suspend fun checkAuthenticationPremiumPurchase(
+        premiumDayCount: Int,
+        currency: String,
+        amount: Long,
+    ): TdlResult<Ok> {
         val function = CheckAuthenticationPremiumPurchase(
+            premiumDayCount = premiumDayCount,
             currency = currency,
             amount = amount,
         )
@@ -3353,6 +3412,21 @@ internal class TdlClientImpl internal constructor(
         return repository.send(function = function)
     }
 
+    override suspend fun createTextCompositionStyle(
+        title: String,
+        customEmojiId: Long,
+        prompt: String,
+        showCreator: Boolean,
+    ): TdlResult<TextCompositionStyle> {
+        val function = CreateTextCompositionStyle(
+            title = title,
+            customEmojiId = customEmojiId,
+            prompt = prompt,
+            showCreator = showCreator,
+        )
+        return repository.send(function = function)
+    }
+
     override suspend fun createVideoChat(
         chatId: Long,
         title: String,
@@ -3422,6 +3496,14 @@ internal class TdlClientImpl internal constructor(
     override suspend fun deleteAllCallMessages(revoke: Boolean): TdlResult<Ok> {
         val function = DeleteAllCallMessages(
             revoke = revoke,
+        )
+        return repository.send(function = function)
+    }
+
+    override suspend fun deleteAllRecentMessageReactionsFromSender(chatId: Long, senderId: MessageSender): TdlResult<Ok> {
+        val function = DeleteAllRecentMessageReactionsFromSender(
+            chatId = chatId,
+            senderId = senderId,
         )
         return repository.send(function = function)
     }
@@ -3646,6 +3728,19 @@ internal class TdlClientImpl internal constructor(
         return repository.send(function = function)
     }
 
+    override suspend fun deleteMessageReactionsFromSender(
+        chatId: Long,
+        messageId: Long,
+        senderId: MessageSender,
+    ): TdlResult<Ok> {
+        val function = DeleteMessageReactionsFromSender(
+            chatId = chatId,
+            messageId = messageId,
+            senderId = senderId,
+        )
+        return repository.send(function = function)
+    }
+
     override suspend fun deleteMessages(
         chatId: Long,
         messageIds: LongArray,
@@ -3758,6 +3853,13 @@ internal class TdlClientImpl internal constructor(
         val function = DeleteStoryAlbum(
             chatId = chatId,
             storyAlbumId = storyAlbumId,
+        )
+        return repository.send(function = function)
+    }
+
+    override suspend fun deleteTextCompositionStyle(name: String): TdlResult<Ok> {
+        val function = DeleteTextCompositionStyle(
+            name = name,
         )
         return repository.send(function = function)
     }
@@ -4253,11 +4355,13 @@ internal class TdlClientImpl internal constructor(
         proxyId: Int,
         proxy: Proxy,
         enable: Boolean,
+        comment: String,
     ): TdlResult<AddedProxy> {
         val function = EditProxy(
             proxyId = proxyId,
             proxy = proxy,
             enable = enable,
+            comment = comment,
         )
         return repository.send(function = function)
     }
@@ -4309,6 +4413,23 @@ internal class TdlClientImpl internal constructor(
             storyPosterChatId = storyPosterChatId,
             storyId = storyId,
             coverFrameTimestamp = coverFrameTimestamp,
+        )
+        return repository.send(function = function)
+    }
+
+    override suspend fun editTextCompositionStyle(
+        name: String,
+        title: String,
+        customEmojiId: Long,
+        prompt: String,
+        showCreator: Boolean,
+    ): TdlResult<TextCompositionStyle> {
+        val function = EditTextCompositionStyle(
+            name = name,
+            title = title,
+            customEmojiId = customEmojiId,
+            prompt = prompt,
+            showCreator = showCreator,
         )
         return repository.send(function = function)
     }
@@ -4608,14 +4729,6 @@ internal class TdlClientImpl internal constructor(
     override suspend fun getBotSimilarBots(botUserId: Long): TdlResult<Users> {
         val function = GetBotSimilarBots(
             botUserId = botUserId,
-        )
-        return repository.send(function = function)
-    }
-
-    override suspend fun getBotToken(botUserId: Long, revoke: Boolean): TdlResult<Text> {
-        val function = GetBotToken(
-            botUserId = botUserId,
-            revoke = revoke,
         )
         return repository.send(function = function)
     }
@@ -5844,6 +5957,21 @@ internal class TdlClientImpl internal constructor(
         return repository.send(function = function)
     }
 
+    override suspend fun getManagedBotAccessSettings(botUserId: Long): TdlResult<BotAccessSettings> {
+        val function = GetManagedBotAccessSettings(
+            botUserId = botUserId,
+        )
+        return repository.send(function = function)
+    }
+
+    override suspend fun getManagedBotToken(botUserId: Long, revoke: Boolean): TdlResult<Text> {
+        val function = GetManagedBotToken(
+            botUserId = botUserId,
+            revoke = revoke,
+        )
+        return repository.send(function = function)
+    }
+
     override suspend fun getMapThumbnailFile(
         location: Location,
         zoom: Int,
@@ -6187,6 +6315,14 @@ internal class TdlClientImpl internal constructor(
         return repository.send(function = function)
     }
 
+    override suspend fun getPersonalChatHistory(userId: Long, limit: Int): TdlResult<Messages> {
+        val function = GetPersonalChatHistory(
+            userId = userId,
+            limit = limit,
+        )
+        return repository.send(function = function)
+    }
+
     override suspend fun getPhoneNumberInfo(phoneNumberPrefix: String): TdlResult<PhoneNumberInfo> {
         val function = GetPhoneNumberInfo(
             phoneNumberPrefix = phoneNumberPrefix,
@@ -6211,6 +6347,19 @@ internal class TdlClientImpl internal constructor(
             chatId = chatId,
             messageId = messageId,
             pollOptionId = pollOptionId,
+        )
+        return repository.send(function = function)
+    }
+
+    override suspend fun getPollVoteStatistics(
+        chatId: Long,
+        messageId: Long,
+        isDark: Boolean,
+    ): TdlResult<PollVoteStatistics> {
+        val function = GetPollVoteStatistics(
+            chatId = chatId,
+            messageId = messageId,
+            isDark = isDark,
         )
         return repository.send(function = function)
     }
@@ -6470,7 +6619,7 @@ internal class TdlClientImpl internal constructor(
         return repository.send(function = function)
     }
 
-    override suspend fun getSavedNotificationSound(notificationSoundId: Long): TdlResult<NotificationSounds> {
+    override suspend fun getSavedNotificationSound(notificationSoundId: Long): TdlResult<NotificationSound> {
         val function = GetSavedNotificationSound(
             notificationSoundId = notificationSoundId,
         )
@@ -6833,6 +6982,14 @@ internal class TdlClientImpl internal constructor(
 
     override suspend fun getTemporaryPasswordState(): TdlResult<TemporaryPasswordState> {
         val function = GetTemporaryPasswordState()
+        return repository.send(function = function)
+    }
+
+    override suspend fun getTextCompositionStyleExample(name: String, exampleNumber: Int): TdlResult<TextCompositionStyleExample> {
+        val function = GetTextCompositionStyleExample(
+            name = name,
+            exampleNumber = exampleNumber,
+        )
         return repository.send(function = function)
     }
 
@@ -7970,6 +8127,13 @@ internal class TdlClientImpl internal constructor(
         return repository.send(function = function)
     }
 
+    override suspend fun removeTextCompositionStyle(name: String): TdlResult<Ok> {
+        val function = RemoveTextCompositionStyle(
+            name = name,
+        )
+        return repository.send(function = function)
+    }
+
     override suspend fun removeTopChat(category: TopChatCategory, chatId: Long): TdlResult<Ok> {
         val function = RemoveTopChat(
             category = category,
@@ -8777,6 +8941,13 @@ internal class TdlClientImpl internal constructor(
         return repository.send(function = function)
     }
 
+    override suspend fun searchTextCompositionStyle(name: String): TdlResult<TextCompositionStyle> {
+        val function = SearchTextCompositionStyle(
+            name = name,
+        )
+        return repository.send(function = function)
+    }
+
     override suspend fun searchUserByPhoneNumber(phoneNumber: String, onlyLocal: Boolean): TdlResult<User> {
         val function = SearchUserByPhoneNumber(
             phoneNumber = phoneNumber,
@@ -9141,7 +9312,7 @@ internal class TdlClientImpl internal constructor(
         chatId: Long,
         forumTopicId: Int,
         draftId: Long,
-        text: FormattedText,
+        text: FormattedText?,
     ): TdlResult<Ok> {
         val function = SendTextMessageDraft(
             chatId = chatId,
@@ -9233,12 +9404,14 @@ internal class TdlClientImpl internal constructor(
     override suspend fun setAuthenticationPremiumPurchaseTransaction(
         transaction: StoreTransaction,
         isRestore: Boolean,
+        premiumDayCount: Int,
         currency: String,
         amount: Long,
     ): TdlResult<Ok> {
         val function = SetAuthenticationPremiumPurchaseTransaction(
             transaction = transaction,
             isRestore = isRestore,
+            premiumDayCount = premiumDayCount,
             currency = currency,
             amount = amount,
         )
@@ -9959,6 +10132,14 @@ internal class TdlClientImpl internal constructor(
     override suspend fun setMainProfileTab(mainProfileTab: ProfileTab): TdlResult<Ok> {
         val function = SetMainProfileTab(
             mainProfileTab = mainProfileTab,
+        )
+        return repository.send(function = function)
+    }
+
+    override suspend fun setManagedBotAccessSettings(botUserId: Long, settings: BotAccessSettings): TdlResult<Ok> {
+        val function = SetManagedBotAccessSettings(
+            botUserId = botUserId,
+            settings = settings,
         )
         return repository.send(function = function)
     }
