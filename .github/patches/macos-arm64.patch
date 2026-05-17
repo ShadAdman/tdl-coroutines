@@ -40,16 +40,6 @@ diff --git a/td/example/ios/build-openssl.sh b/td/example/ios/build-openssl.sh
  
  for platform in $platforms;
  do
-@@ -26,7 +26,7 @@
-     echo $platform
-     cd Python-Apple-support
-     #NB: -j will fail
--    make OpenSSL-$platform || exit 1
-+    SOURCE_DATE_EPOCH=1 ZERO_AR_DATE=1 make OpenSSL-$platform || exit 1
-     cd ..
-     rm -rf third_party/openssl/$platform || exit 1
-     mkdir -p third_party/openssl/$platform/lib || exit 1
-     mkdir -p third_party/openssl/$platform/lib || exit 1
 diff --git a/td/example/ios/build.sh b/td/example/ios/build.sh
 --- a/td/example/ios/build.sh
 +++ b/td/example/ios/build.sh
@@ -71,12 +61,3 @@ diff --git a/td/example/ios/build.sh b/td/example/ios/build.sh
      else
        if [[ $platform = "watchOS" ]]; then
          ios_platform="WATCH"
-@@ -66,7 +66,7 @@
-     mkdir -p $install
-     cd $build
-     cmake $td_path $options $other_options -DCMAKE_INSTALL_PREFIX=../${install}
--    make -j3 install || exit
-+    ZERO_AR_DATE=1 make -j3 install || exit
-     cd ..
-     install_name_tool -id @rpath/libtdjson.dylib ${install}/lib/libtdjson.dylib
-     mkdir -p ../tdjson/${platform}/include
