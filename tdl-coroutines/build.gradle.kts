@@ -186,9 +186,9 @@ publishing {
                 }
 
                 scm {
-                    connection = "scm:git:git://github.com/g000sha256/tdl-coroutines.git"
-                    developerConnection = "scm:git:ssh://github.com:g000sha256/tdl-coroutines.git"
-                    url = "https://github.com/g000sha256/tdl-coroutines/tree/master"
+                    connection = "scm:git:https://github.com/g000sha256/tdl-coroutines.git"
+                    developerConnection = "scm:git:ssh://git@github.com/g000sha256/tdl-coroutines.git"
+                    url = "https://github.com/g000sha256/tdl-coroutines"
                 }
 
                 issueManagement {
