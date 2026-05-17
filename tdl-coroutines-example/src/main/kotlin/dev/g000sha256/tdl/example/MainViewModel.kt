@@ -54,6 +54,7 @@ internal class MainViewModel : ViewModel() {
     }
 
     public override fun onCleared() {
+        @Suppress("DEPRECATION")
         viewModelScope.launch(context = NonCancellable) { tdlClient.close() }
         super.onCleared()
     }
