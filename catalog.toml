@@ -2,7 +2,6 @@
 android = "8.13.2"
 androidX-activity = "1.11.0"
 androidX-lifecycle = "2.9.4"
-annotations = "26.1.0"
 atomic = "0.31.0"
 binaryCompatibilityValidator = "0.18.1"
 buildConfig = "6.0.7"
@@ -33,11 +32,9 @@ johnRengelman-shadow = { id = "com.github.johnrengelman.shadow", version.ref = "
 libraries-androidX-activity = { module = "androidx.activity:activity", version.ref = "androidX-activity" }
 libraries-androidX-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "androidX-lifecycle" }
 libraries-androidX-lifecycle-viewModel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidX-lifecycle" }
-libraries-jetBrains-annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
 libraries-jetBrains-atomic = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomic" }
 libraries-jetBrains-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 libraries-jetBrains-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
-libraries-jetBrains-kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 libraries-jetBrains-kotlinSerialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinSerialization" }
 libraries-jetBrains-kotlinSerialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 libraries-squareUp-kotlinPoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinPoet" }

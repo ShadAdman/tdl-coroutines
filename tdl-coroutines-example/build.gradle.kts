@@ -69,9 +69,6 @@ kotlin {
 }
 
 dependencies {
-    implementation(dependencyNotation = catalog.libraries.jetBrains.annotations)
-    implementation(dependencyNotation = catalog.libraries.jetBrains.kotlin)
-
     implementation(dependencyNotation = catalog.libraries.androidX.activity)
     implementation(dependencyNotation = catalog.libraries.androidX.lifecycle.common)
     implementation(dependencyNotation = catalog.libraries.androidX.lifecycle.viewModel)

@@ -26,9 +26,6 @@ kotlin {
 }
 
 dependencies {
-    implementation(dependencyNotation = catalog.libraries.jetBrains.annotations)
-    implementation(dependencyNotation = catalog.libraries.jetBrains.kotlin)
-
     implementation(dependencyNotation = catalog.libraries.jetBrains.coroutines.core)
 
     val libProject = project(":tdl-coroutines")
