@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(notation = catalog.plugins.android.application)
     alias(notation = catalog.plugins.jetBrains.kotlin.android)
@@ -61,9 +59,9 @@ android {
 
 kotlin {
     explicitApi()
+    jvmToolchain(jdkVersion = 11)
 
     compilerOptions {
-        jvmTarget = JvmTarget.JVM_11
         moduleName = android.namespace
     }
 }

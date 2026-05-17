@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(notation = catalog.plugins.gmazzo.buildConfig)
     alias(notation = catalog.plugins.gradle.application)
@@ -11,16 +9,11 @@ application {
     mainClass = "dev.g000sha256.tdl.example.MainKt"
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}
-
 kotlin {
     explicitApi()
+    jvmToolchain(jdkVersion = 11)
 
     compilerOptions {
-        jvmTarget = JvmTarget.JVM_11
         moduleName = "dev.g000sha256.tdl.example"
     }
 }

@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.dsl.AbstractKotlinNativeBinaryContainer
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinOnlyTarget
@@ -52,20 +51,19 @@ android {
 
 kotlin {
     explicitApi()
+    jvmToolchain(jdkVersion = 11)
     withSourcesJar(publish = true)
 
     androidTarget {
         publishLibraryVariants("release")
 
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_11
             moduleName = packageName
         }
     }
 
     jvm {
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_11
             moduleName = packageName
         }
     }
