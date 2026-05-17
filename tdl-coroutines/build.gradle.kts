@@ -11,8 +11,6 @@ version = "11.0.0"
 plugins {
     alias(notation = catalog.plugins.android.library)
     alias(notation = catalog.plugins.g000sha256.sonatypeMavenCentral)
-    alias(notation = catalog.plugins.gradle.mavenPublish)
-    alias(notation = catalog.plugins.gradle.signing)
     alias(notation = catalog.plugins.jetBrains.binaryCompatibilityValidator)
     alias(notation = catalog.plugins.jetBrains.dokka)
     alias(notation = catalog.plugins.jetBrains.kotlin.multiplatform)
@@ -196,31 +194,12 @@ publishing {
 }
 
 signing {
-    val key = getProperty("Signing.Key") ?: getEnvironment("SIGNING_KEY")
-    val password = getProperty("Signing.Password") ?: getEnvironment("SIGNING_PASSWORD")
-    useInMemoryPgpKeys(key, password)
-
     sign(publishing.publications)
 }
 
 tasks.withType<Sign> {
     val path = "signatures/$name"
     signatureType = CustomSignatureType(path = path, signatureType = signatureType)
-}
-
-sonatypeMavenCentralRepository {
-    credentials {
-        username = getProperty("SonatypeMavenCentral.Username") ?: getEnvironment("SONATYPE_USERNAME")
-        password = getProperty("SonatypeMavenCentral.Password") ?: getEnvironment("SONATYPE_PASSWORD")
-    }
-}
-
-private fun getProperty(key: String): String? {
-    return properties[key] as String?
-}
-
-private fun getEnvironment(key: String): String? {
-    return System.getenv(key)
 }
 
 @Suppress("DELEGATED_MEMBER_HIDES_SUPERTYPE_OVERRIDE")
