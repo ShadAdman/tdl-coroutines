@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,14 @@ package dev.g000sha256.tdl.function
 
 import dev.g000sha256.tdl.dto.StoreTransaction
 import kotlin.Boolean
+import kotlin.Int
 import kotlin.Long
 import kotlin.String
 
 internal class SetAuthenticationPremiumPurchaseTransaction internal constructor(
     internal val transaction: StoreTransaction,
     internal val isRestore: Boolean,
+    internal val premiumDayCount: Int,
     internal val currency: String,
     internal val amount: Long,
 )

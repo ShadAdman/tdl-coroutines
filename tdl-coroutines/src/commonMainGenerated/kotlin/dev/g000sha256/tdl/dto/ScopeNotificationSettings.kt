@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,11 @@ import kotlin.String
  * Contains information about notification settings for several chats.
  *
  * @property muteFor Time left before notifications will be unmuted, in seconds.
- * @property soundId Identifier of the notification sound to be played; 0 if sound is disabled.
+ * @property soundId Identifier of the notification sound to be played; 0 if sound is disabled; pass -1 to use the app-dependent default sound.
  * @property showPreview True, if message content must be displayed in notifications.
  * @property useDefaultMuteStories If true, story notifications are received only for the first 5 chats from topChatCategoryUsers regardless of the value of muteStories.
  * @property muteStories True, if story notifications are disabled.
- * @property storySoundId Identifier of the notification sound to be played for stories; 0 if sound is disabled.
+ * @property storySoundId Identifier of the notification sound to be played for stories; 0 if sound is disabled; pass -1 to use the app-dependent default sound.
  * @property showStoryPoster True, if the chat that posted a story must be displayed in notifications.
  * @property disablePinnedMessageNotifications True, if notifications for incoming pinned messages will be created as for an ordinary unread message.
  * @property disableMentionNotifications True, if notifications for messages with mentions will be created as for an ordinary unread message.

@@ -34,6 +34,7 @@ import kotlin.String
  * @property canSendPolls True, if the user can send polls and checklists.
  * @property canSendOtherMessages True, if the user can send animations, games, stickers, and dice and use inline bots.
  * @property canAddLinkPreviews True, if the user may add a link preview to their messages.
+ * @property canReactToMessages True, if the user can react to messages.
  * @property canEditTag True, if the user may change the tag of self.
  * @property canChangeInfo True, if the user can change the chat title, photo, and other settings.
  * @property canInviteUsers True, if the user can invite new users to the chat.
@@ -51,6 +52,7 @@ public class ChatPermissions public constructor(
     public val canSendPolls: Boolean,
     public val canSendOtherMessages: Boolean,
     public val canAddLinkPreviews: Boolean,
+    public val canReactToMessages: Boolean,
     public val canEditTag: Boolean,
     public val canChangeInfo: Boolean,
     public val canInviteUsers: Boolean,
@@ -98,6 +100,9 @@ public class ChatPermissions public constructor(
         if (other.canAddLinkPreviews != canAddLinkPreviews) {
             return false
         }
+        if (other.canReactToMessages != canReactToMessages) {
+            return false
+        }
         if (other.canEditTag != canEditTag) {
             return false
         }
@@ -125,6 +130,7 @@ public class ChatPermissions public constructor(
         hashCode = 31 * hashCode + canSendPolls.hashCode()
         hashCode = 31 * hashCode + canSendOtherMessages.hashCode()
         hashCode = 31 * hashCode + canAddLinkPreviews.hashCode()
+        hashCode = 31 * hashCode + canReactToMessages.hashCode()
         hashCode = 31 * hashCode + canEditTag.hashCode()
         hashCode = 31 * hashCode + canChangeInfo.hashCode()
         hashCode = 31 * hashCode + canInviteUsers.hashCode()
@@ -166,6 +172,9 @@ public class ChatPermissions public constructor(
             append(", ")
             append("canAddLinkPreviews=")
             append(canAddLinkPreviews)
+            append(", ")
+            append("canReactToMessages=")
+            append(canReactToMessages)
             append(", ")
             append("canEditTag=")
             append(canEditTag)

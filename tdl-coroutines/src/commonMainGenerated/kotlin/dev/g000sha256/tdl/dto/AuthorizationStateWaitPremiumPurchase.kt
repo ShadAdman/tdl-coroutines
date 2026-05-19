@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,13 @@ import kotlin.String
  * The user must buy Telegram Premium as an in-store purchase to log in. Call checkAuthenticationPremiumPurchase and then setAuthenticationPremiumPurchaseTransaction.
  *
  * @property storeProductId Identifier of the store product that must be bought.
+ * @property premiumDayCount Duration of the Telegram Premium subscription after the purchase; may be 0 if Telegram Premium subscription will not be granted.
  * @property supportEmailAddress Email address to use for support if the user has issues with Telegram Premium purchase.
  * @property supportEmailSubject Subject for the email sent to the support email address.
  */
 public class AuthorizationStateWaitPremiumPurchase public constructor(
     public val storeProductId: String,
+    public val premiumDayCount: Int,
     public val supportEmailAddress: String,
     public val supportEmailSubject: String,
 ) : AuthorizationState() {
@@ -47,6 +49,9 @@ public class AuthorizationStateWaitPremiumPurchase public constructor(
         if (other.storeProductId != storeProductId) {
             return false
         }
+        if (other.premiumDayCount != premiumDayCount) {
+            return false
+        }
         if (other.supportEmailAddress != supportEmailAddress) {
             return false
         }
@@ -56,6 +61,7 @@ public class AuthorizationStateWaitPremiumPurchase public constructor(
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + storeProductId.hashCode()
+        hashCode = 31 * hashCode + premiumDayCount.hashCode()
         hashCode = 31 * hashCode + supportEmailAddress.hashCode()
         hashCode = 31 * hashCode + supportEmailSubject.hashCode()
         return hashCode
@@ -67,6 +73,9 @@ public class AuthorizationStateWaitPremiumPurchase public constructor(
             append("(")
             append("storeProductId=")
             append(storeProductId)
+            append(", ")
+            append("premiumDayCount=")
+            append(premiumDayCount)
             append(", ")
             append("supportEmailAddress=")
             append(supportEmailAddress)

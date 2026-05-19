@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,12 +22,14 @@ import kotlin.Int
 import kotlin.String
 
 /**
- * Information about the message sent by answerWebAppQuery.
+ * Contains an example of text composition style usage.
  *
- * @property inlineMessageId Identifier of the sent inline message, if known.
+ * @property sourceText Source text.
+ * @property resultText The text after the style was applied to the source text.
  */
-public class SentWebAppMessage public constructor(
-    public val inlineMessageId: String,
+public class TextCompositionStyleExample public constructor(
+    public val sourceText: FormattedText,
+    public val resultText: FormattedText,
 ) {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -39,22 +41,29 @@ public class SentWebAppMessage public constructor(
         if (other::class != this::class) {
             return false
         }
-        other as SentWebAppMessage
-        return other.inlineMessageId == inlineMessageId
+        other as TextCompositionStyleExample
+        if (other.sourceText != sourceText) {
+            return false
+        }
+        return other.resultText == resultText
     }
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
-        hashCode = 31 * hashCode + inlineMessageId.hashCode()
+        hashCode = 31 * hashCode + sourceText.hashCode()
+        hashCode = 31 * hashCode + resultText.hashCode()
         return hashCode
     }
 
     override fun toString(): String {
         return buildString {
-            append("SentWebAppMessage")
+            append("TextCompositionStyleExample")
             append("(")
-            append("inlineMessageId=")
-            append(inlineMessageId)
+            append("sourceText=")
+            append(sourceText)
+            append(", ")
+            append("resultText=")
+            append(resultText)
             append(")")
         }
     }

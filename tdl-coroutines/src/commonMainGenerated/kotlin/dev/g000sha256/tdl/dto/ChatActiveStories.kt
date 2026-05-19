@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import kotlin.String
  *
  * @property chatId Identifier of the chat that posted the stories.
  * @property list Identifier of the story list in which the stories are shown; may be null if the stories aren't shown in a story list.
- * @property order A parameter used to determine order of the stories in the story list; 0 if the stories doesn't need to be shown in the story list. Stories must be sorted by the pair (order, storyPosterChatId) in descending order.
+ * @property order A parameter used to determine order of the stories in the story list; 0 if the stories don't need to be shown in the story list. Stories must be sorted by the pair (order, storyPosterChatId) in descending order.
  * @property canBeArchived True, if the stories are shown in the main story list and can be archived; otherwise, the stories can be hidden from the main story list only by calling removeTopChat with topChatCategoryUsers and the chatId. Stories of the current user can't be archived nor hidden using removeTopChat.
  * @property maxReadStoryId Identifier of the last read active story.
  * @property stories Basic information about the stories; use getStory to get full information about the stories. The stories are in chronological order (i.e., in order of increasing story identifiers).

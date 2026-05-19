@@ -18,8 +18,10 @@ package dev.g000sha256.tdl.function
 
 import dev.g000sha256.tdl.dto.Proxy
 import kotlin.Boolean
+import kotlin.String
 
 internal class AddProxy internal constructor(
     internal val proxy: Proxy,
     internal val enable: Boolean,
+    internal val comment: String,
 )

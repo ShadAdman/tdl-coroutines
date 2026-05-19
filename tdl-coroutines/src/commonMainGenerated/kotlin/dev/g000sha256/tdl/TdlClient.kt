@@ -45,6 +45,7 @@ import dev.g000sha256.tdl.dto.BasicGroup
 import dev.g000sha256.tdl.dto.BasicGroupFullInfo
 import dev.g000sha256.tdl.dto.Birthdate
 import dev.g000sha256.tdl.dto.BlockList
+import dev.g000sha256.tdl.dto.BotAccessSettings
 import dev.g000sha256.tdl.dto.BotCommand
 import dev.g000sha256.tdl.dto.BotCommandScope
 import dev.g000sha256.tdl.dto.BotCommands
@@ -197,6 +198,7 @@ import dev.g000sha256.tdl.dto.Hashtags
 import dev.g000sha256.tdl.dto.HttpUrl
 import dev.g000sha256.tdl.dto.ImportedContact
 import dev.g000sha256.tdl.dto.ImportedContacts
+import dev.g000sha256.tdl.dto.InlineMessageId
 import dev.g000sha256.tdl.dto.InlineQueryResults
 import dev.g000sha256.tdl.dto.InlineQueryResultsButton
 import dev.g000sha256.tdl.dto.InputBackground
@@ -290,6 +292,7 @@ import dev.g000sha256.tdl.dto.PhoneNumberAuthenticationSettings
 import dev.g000sha256.tdl.dto.PhoneNumberCodeType
 import dev.g000sha256.tdl.dto.PhoneNumberInfo
 import dev.g000sha256.tdl.dto.PollOptionProperties
+import dev.g000sha256.tdl.dto.PollVoteStatistics
 import dev.g000sha256.tdl.dto.PollVoters
 import dev.g000sha256.tdl.dto.PremiumFeature
 import dev.g000sha256.tdl.dto.PremiumFeatures
@@ -332,7 +335,6 @@ import dev.g000sha256.tdl.dto.SearchMessagesChatTypeFilter
 import dev.g000sha256.tdl.dto.SearchMessagesFilter
 import dev.g000sha256.tdl.dto.Seconds
 import dev.g000sha256.tdl.dto.SecretChat
-import dev.g000sha256.tdl.dto.SentWebAppMessage
 import dev.g000sha256.tdl.dto.Session
 import dev.g000sha256.tdl.dto.Sessions
 import dev.g000sha256.tdl.dto.ShippingOption
@@ -383,6 +385,8 @@ import dev.g000sha256.tdl.dto.TestVectorIntObject
 import dev.g000sha256.tdl.dto.TestVectorString
 import dev.g000sha256.tdl.dto.TestVectorStringObject
 import dev.g000sha256.tdl.dto.Text
+import dev.g000sha256.tdl.dto.TextCompositionStyle
+import dev.g000sha256.tdl.dto.TextCompositionStyleExample
 import dev.g000sha256.tdl.dto.TextEntities
 import dev.g000sha256.tdl.dto.TextParseMode
 import dev.g000sha256.tdl.dto.ThemeParameters
@@ -486,6 +490,7 @@ import dev.g000sha256.tdl.dto.UpdateInstalledStickerSets
 import dev.g000sha256.tdl.dto.UpdateLanguagePackStrings
 import dev.g000sha256.tdl.dto.UpdateLiveStoryTopDonors
 import dev.g000sha256.tdl.dto.UpdateManagedBot
+import dev.g000sha256.tdl.dto.UpdateMessageContainsUnreadPollVotes
 import dev.g000sha256.tdl.dto.UpdateMessageContent
 import dev.g000sha256.tdl.dto.UpdateMessageContentOpened
 import dev.g000sha256.tdl.dto.UpdateMessageEdited
@@ -512,6 +517,7 @@ import dev.g000sha256.tdl.dto.UpdateNewCustomEvent
 import dev.g000sha256.tdl.dto.UpdateNewCustomQuery
 import dev.g000sha256.tdl.dto.UpdateNewGroupCallMessage
 import dev.g000sha256.tdl.dto.UpdateNewGroupCallPaidReaction
+import dev.g000sha256.tdl.dto.UpdateNewGuestQuery
 import dev.g000sha256.tdl.dto.UpdateNewInlineCallbackQuery
 import dev.g000sha256.tdl.dto.UpdateNewInlineQuery
 import dev.g000sha256.tdl.dto.UpdateNewMessage
@@ -669,6 +675,12 @@ public abstract class TdlClient internal constructor() {
      * The list of unread reactions added to a message was changed.
      */
     public abstract val messageUnreadReactionsUpdates: Flow<UpdateMessageUnreadReactions>
+
+    /**
+     * Unread votes were added or removed from a poll message.
+     */
+    public abstract val messageContainsUnreadPollVotesUpdates:
+            Flow<UpdateMessageContainsUnreadPollVotes>
 
     /**
      * A fact-check added to a message was changed.
@@ -1425,6 +1437,11 @@ public abstract class TdlClient internal constructor() {
     public abstract val newChosenInlineResultUpdates: Flow<UpdateNewChosenInlineResult>
 
     /**
+     * A new incoming guest query; for bots only.
+     */
+    public abstract val newGuestQueryUpdates: Flow<UpdateNewGuestQuery>
+
+    /**
      * A new incoming callback query; for bots only.
      */
     public abstract val newCallbackQueryUpdates: Flow<UpdateNewCallbackQuery>
@@ -1766,17 +1783,30 @@ public abstract class TdlClient internal constructor() {
     /**
      * Adds an audio file to the beginning of the profile audio files of the current user.
      *
-     * @param fileId Identifier of the audio file to be added. The file must have been uploaded to the server.
+     * @param audio The audio file to be added.
+     * @param duration Duration of the audio, in seconds; may be replaced by the server; ignored for already uploaded files.
+     * @param title Title of the audio; 0-64 characters; may be replaced by the server; ignored for already uploaded files.
+     * @param performer Performer of the audio; 0-64 characters, may be replaced by the server; ignored for already uploaded files.
      */
-    public abstract suspend fun addProfileAudio(fileId: Int): TdlResult<Ok>
+    public abstract suspend fun addProfileAudio(
+        audio: InputFile,
+        duration: Int,
+        title: String,
+        performer: String,
+    ): TdlResult<Ok>
 
     /**
      * Adds a proxy server for network requests. Can be called before authorization.
      *
      * @param proxy The proxy to add.
      * @param enable Pass true to immediately enable the proxy.
+     * @param comment Comment to set for the proxy.
      */
-    public abstract suspend fun addProxy(proxy: Proxy, enable: Boolean): TdlResult<AddedProxy>
+    public abstract suspend fun addProxy(
+        proxy: Proxy,
+        enable: Boolean,
+        comment: String,
+    ): TdlResult<AddedProxy>
 
     /**
      * Adds a message to a quick reply shortcut via inline bot. If shortcut doesn't exist and there are less than getOption(&quot;quick_reply_shortcut_count_max&quot;) shortcuts, then a new shortcut is created. The shortcut must not contain more than getOption(&quot;quick_reply_shortcut_message_count_max&quot;) messages after adding the new message. Returns the added message.
@@ -1877,6 +1907,13 @@ public abstract class TdlClient internal constructor() {
     ): TdlResult<StoryAlbum>
 
     /**
+     * Adds a custom text composition style to the list of used by the user styles. May return an error with a message &quot;TONES_SAVED_TOO_MANY&quot; if the maximum number of added custom styles has been reached.
+     *
+     * @param name Name of the style.
+     */
+    public abstract suspend fun addTextCompositionStyle(name: String): TdlResult<Ok>
+
+    /**
      * Allows the specified bot to send messages to the user.
      *
      * @param botUserId Identifier of the target bot.
@@ -1915,6 +1952,14 @@ public abstract class TdlClient internal constructor() {
      * @param data JSON-serialized answer to the query.
      */
     public abstract suspend fun answerCustomQuery(customQueryId: Long, data: String): TdlResult<Ok>
+
+    /**
+     * Sets the result of a guest query; for bots only.
+     *
+     * @param guestQueryId Identifier of the guest query.
+     * @param result The result of the query.
+     */
+    public abstract suspend fun answerGuestQuery(guestQueryId: Long, result: InputInlineQueryResult): TdlResult<InlineMessageId>
 
     /**
      * Sets the result of an inline query; for bots only.
@@ -1962,7 +2007,7 @@ public abstract class TdlClient internal constructor() {
      * @param webAppQueryId Identifier of the Web App query.
      * @param result The result of the query.
      */
-    public abstract suspend fun answerWebAppQuery(webAppQueryId: String, result: InputInlineQueryResult): TdlResult<SentWebAppMessage>
+    public abstract suspend fun answerWebAppQuery(webAppQueryId: String, result: InputInlineQueryResult): TdlResult<InlineMessageId>
 
     /**
      * Applies a Telegram Premium gift code.
@@ -2192,10 +2237,15 @@ public abstract class TdlClient internal constructor() {
     /**
      * Checks whether an in-store purchase of Telegram Premium is possible before authorization. Works only when the current authorization state is authorizationStateWaitPremiumPurchase.
      *
+     * @param premiumDayCount The number of days for which the Telegram Premium subscription will be granted.
      * @param currency ISO 4217 currency code of the payment currency.
      * @param amount Paid amount, in the smallest units of the currency.
      */
-    public abstract suspend fun checkAuthenticationPremiumPurchase(currency: String, amount: Long): TdlResult<Ok>
+    public abstract suspend fun checkAuthenticationPremiumPurchase(
+        premiumDayCount: Int,
+        currency: String,
+        amount: Long,
+    ): TdlResult<Ok>
 
     /**
      * Checks whether a username can be set for a new bot. Use checkChatUsername to check username for other chat types.
@@ -2741,6 +2791,21 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun createTemporaryPassword(password: String, validFor: Int): TdlResult<TemporaryPasswordState>
 
     /**
+     * Creates a custom text composition style. May return an error with a message &quot;TONES_SAVED_TOO_MANY&quot; if the maximum number of added custom styles has been reached.
+     *
+     * @param title Title of the style; 1-getOption(&quot;text_composition_style_title_length_max&quot;) characters.
+     * @param customEmojiId Identifier of the custom emoji corresponding to the style.
+     * @param prompt Prompt that will be used for text composition; 1-getOption(&quot;text_composition_style_prompt_length_max&quot;) characters.
+     * @param showCreator Pass true if the current user must be shown as the creator of the style.
+     */
+    public abstract suspend fun createTextCompositionStyle(
+        title: String,
+        customEmojiId: Long,
+        prompt: String,
+        showCreator: Boolean,
+    ): TdlResult<TextCompositionStyle>
+
+    /**
      * Creates a video chat (a group call bound to a chat); for basic groups, supergroups and channels only; requires canManageVideoChats administrator right.
      *
      * @param chatId Identifier of a chat in which the video chat will be created.
@@ -2812,6 +2877,14 @@ public abstract class TdlClient internal constructor() {
      * @param revoke Pass true to delete the messages for all users.
      */
     public abstract suspend fun deleteAllCallMessages(revoke: Boolean): TdlResult<Ok>
+
+    /**
+     * Deletes all recent reactions added by the specified sender in a chat. Supported only for basic groups and supergroups; requires canDeleteMessages administrator right.
+     *
+     * @param chatId Chat identifier.
+     * @param senderId Identifier of the sender of reactions to delete.
+     */
+    public abstract suspend fun deleteAllRecentMessageReactionsFromSender(chatId: Long, senderId: MessageSender): TdlResult<Ok>
 
     /**
      * Deletes all revoked chat invite links created by a given chat administrator. Requires administrator privileges and canInviteUsers right in the chat for own links and owner privileges for other links.
@@ -3034,6 +3107,19 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun deleteLanguagePack(languagePackId: String): TdlResult<Ok>
 
     /**
+     * Deletes all reactions added by the specified sender on a message.
+     *
+     * @param chatId Chat identifier.
+     * @param messageId Identifier of the message containing the reactions. Use messageProperties.canDeleteReactions to check whether the method can be used for a message.
+     * @param senderId Identifier of the sender of reactions to delete.
+     */
+    public abstract suspend fun deleteMessageReactionsFromSender(
+        chatId: Long,
+        messageId: Long,
+        senderId: MessageSender,
+    ): TdlResult<Ok>
+
+    /**
      * Deletes messages.
      *
      * @param chatId Chat identifier.
@@ -3054,7 +3140,7 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun deletePassportElement(type: PassportElementType): TdlResult<Ok>
 
     /**
-     * Adds an option to a poll.
+     * Deletes an option from a poll.
      *
      * @param chatId Identifier of the chat to which the poll belongs.
      * @param messageId Identifier of the message containing the poll.
@@ -3148,6 +3234,13 @@ public abstract class TdlClient internal constructor() {
      * @param storyAlbumId Identifier of the story album.
      */
     public abstract suspend fun deleteStoryAlbum(chatId: Long, storyAlbumId: Int): TdlResult<Ok>
+
+    /**
+     * Deletes a custom text composition style that was created by the current user.
+     *
+     * @param name Name of the style.
+     */
+    public abstract suspend fun deleteTextCompositionStyle(name: String): TdlResult<Ok>
 
     /**
      * Closes the TDLib instance, destroying all local data without a proper logout. The current user session will remain in the list of all active sessions. All local data will be destroyed. After the destruction completes updateAuthorizationState with authorizationStateClosed will be sent. Can be called before authorization.
@@ -3642,11 +3735,13 @@ public abstract class TdlClient internal constructor() {
      * @param proxyId Proxy identifier.
      * @param proxy The new information about the proxy.
      * @param enable Pass true to immediately enable the proxy.
+     * @param comment New comment for the proxy.
      */
     public abstract suspend fun editProxy(
         proxyId: Int,
         proxy: Proxy,
         enable: Boolean,
+        comment: String,
     ): TdlResult<AddedProxy>
 
     /**
@@ -3699,6 +3794,23 @@ public abstract class TdlClient internal constructor() {
         storyId: Int,
         coverFrameTimestamp: Double,
     ): TdlResult<Ok>
+
+    /**
+     * Edits a custom text composition style that was created by the current user.
+     *
+     * @param name Name of the style.
+     * @param title Title of the style; 1-getOption(&quot;text_composition_style_title_length_max&quot;) characters.
+     * @param customEmojiId Identifier of the custom emoji corresponding to the style.
+     * @param prompt Prompt that will be used for text composition; 1-getOption(&quot;text_composition_style_prompt_length_max&quot;) characters.
+     * @param showCreator Pass true if the current user must be shown as the creator of the style.
+     */
+    public abstract suspend fun editTextCompositionStyle(
+        name: String,
+        title: String,
+        customEmojiId: Long,
+        prompt: String,
+        showCreator: Boolean,
+    ): TdlResult<TextCompositionStyle>
 
     /**
      * Cancels or re-enables Telegram Star subscription for a user; for bots only.
@@ -3998,14 +4110,6 @@ public abstract class TdlClient internal constructor() {
      * @param botUserId User identifier of the target bot.
      */
     public abstract suspend fun getBotSimilarBots(botUserId: Long): TdlResult<Users>
-
-    /**
-     * Returns token of a created bot; for bots only.
-     *
-     * @param botUserId Identifier of the created bot.
-     * @param revoke Pass true to revoke the current token and create a new one.
-     */
-    public abstract suspend fun getBotToken(botUserId: Long, revoke: Boolean): TdlResult<Text>
 
     /**
      * Returns the Telegram Star amount owned by a business account; for bots only.
@@ -5232,6 +5336,21 @@ public abstract class TdlClient internal constructor() {
     ): TdlResult<MainWebApp>
 
     /**
+     * Returns access settings of a managed bot; for bots only.
+     *
+     * @param botUserId Identifier of the managed bot.
+     */
+    public abstract suspend fun getManagedBotAccessSettings(botUserId: Long): TdlResult<BotAccessSettings>
+
+    /**
+     * Returns token of a managed bot; for bots only.
+     *
+     * @param botUserId Identifier of the managed bot.
+     * @param revoke Pass true to revoke the current token and create a new one.
+     */
+    public abstract suspend fun getManagedBotToken(botUserId: Long, revoke: Boolean): TdlResult<Text>
+
+    /**
      * Returns information about a file with a map thumbnail in PNG format. Only map thumbnail files with size less than 1MB can be downloaded.
      *
      * @param location Location of the map center.
@@ -5575,6 +5694,14 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun getPaymentReceipt(chatId: Long, messageId: Long): TdlResult<PaymentReceipt>
 
     /**
+     * Returns messages in the personal chat of a given user; for bots only.
+     *
+     * @param userId User identifier.
+     * @param limit The maximum number of messages to be returned; 1-20.
+     */
+    public abstract suspend fun getPersonalChatHistory(userId: Long, limit: Int): TdlResult<Messages>
+
+    /**
      * Returns information about a phone number by its prefix. Can be called before authorization.
      *
      * @param phoneNumberPrefix The phone number prefix.
@@ -5601,6 +5728,19 @@ public abstract class TdlClient internal constructor() {
         messageId: Long,
         pollOptionId: String,
     ): TdlResult<PollOptionProperties>
+
+    /**
+     * Returns statistics of poll votes in a poll.
+     *
+     * @param chatId Identifier of the chat to which the poll belongs.
+     * @param messageId Identifier of the message containing the poll. Use messageProperties.canGetPollVoteStatistics to check whether the method can be used for a message.
+     * @param isDark Pass true if a dark theme is used by the application.
+     */
+    public abstract suspend fun getPollVoteStatistics(
+        chatId: Long,
+        messageId: Long,
+        isDark: Boolean,
+    ): TdlResult<PollVoteStatistics>
 
     /**
      * Returns message senders voted for the specified option in a poll; use poll.canGetVoters to check whether the method can be used. For optimal performance, the number of returned users is chosen by TDLib.
@@ -5862,7 +6002,7 @@ public abstract class TdlClient internal constructor() {
      *
      * @param notificationSoundId Identifier of the notification sound.
      */
-    public abstract suspend fun getSavedNotificationSound(notificationSoundId: Long): TdlResult<NotificationSounds>
+    public abstract suspend fun getSavedNotificationSound(notificationSoundId: Long): TdlResult<NotificationSound>
 
     /**
      * Returns the list of saved notification sounds. If a sound isn't in the list, then default sound needs to be used.
@@ -6224,6 +6364,14 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun getTemporaryPasswordState(): TdlResult<TemporaryPasswordState>
 
     /**
+     * Returns an example of usage of a custom text composition style.
+     *
+     * @param name Name of the style.
+     * @param exampleNumber 0-based unique number of the requested example; must be non-negative and less than getOption(&quot;text_composition_style_example_count&quot;).
+     */
+    public abstract suspend fun getTextCompositionStyleExample(name: String, exampleNumber: Int): TdlResult<TextCompositionStyleExample>
+
+    /**
      * Returns all entities (mentions, hashtags, cashtags, bot commands, bank card numbers, URLs, and email addresses) found in the text. Can be called synchronously.
      *
      * @param text The text in which to look for entities.
@@ -6341,7 +6489,7 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun getUpgradedGiftWithdrawalUrl(receivedGiftId: String, password: String): TdlResult<HttpUrl>
 
     /**
-     * Returns promotional anumation for upgraded gifts.
+     * Returns promotional animation for upgraded gifts.
      */
     public abstract suspend fun getUpgradedGiftsPromotionalAnimation(): TdlResult<Animation>
 
@@ -7358,6 +7506,13 @@ public abstract class TdlClient internal constructor() {
     ): TdlResult<StoryAlbum>
 
     /**
+     * Removes a custom text composition style from the list of used by the user styles. If the style was created by the current user, then it can only be deleted.
+     *
+     * @param name Name of the style.
+     */
+    public abstract suspend fun removeTextCompositionStyle(name: String): TdlResult<Ok>
+
+    /**
      * Removes a chat from the list of frequently used chats. Supported only if the chat info database is enabled.
      *
      * @param category Category of frequently used chats.
@@ -8165,6 +8320,13 @@ public abstract class TdlClient internal constructor() {
     ): TdlResult<FoundPositions>
 
     /**
+     * Searches a custom text composition style by its name.
+     *
+     * @param name Name of the style.
+     */
+    public abstract suspend fun searchTextCompositionStyle(name: String): TdlResult<TextCompositionStyle>
+
+    /**
      * Searches a user by their phone number. Returns a 404 error if the user can't be found.
      *
      * @param phoneNumber Phone number to search for.
@@ -8530,13 +8692,13 @@ public abstract class TdlClient internal constructor() {
      * @param chatId Chat identifier.
      * @param forumTopicId The forum topic identifier in which the message will be sent; pass 0 if none.
      * @param draftId Unique identifier of the draft.
-     * @param text Draft text of the message.
+     * @param text Draft text of the message; pass null to show a &quot;Thinking...&quot; placeholder.
      */
     public abstract suspend fun sendTextMessageDraft(
         chatId: Long,
         forumTopicId: Int,
         draftId: Long,
-        text: FormattedText,
+        text: FormattedText? = null,
     ): TdlResult<Ok>
 
     /**
@@ -8622,12 +8784,14 @@ public abstract class TdlClient internal constructor() {
      *
      * @param transaction Information about the transaction.
      * @param isRestore Pass true if this is a restore of a Telegram Premium purchase; only for App Store.
+     * @param premiumDayCount The number of days for which the Telegram Premium subscription will be granted.
      * @param currency ISO 4217 currency code of the payment currency.
      * @param amount Paid amount, in the smallest units of the currency.
      */
     public abstract suspend fun setAuthenticationPremiumPurchaseTransaction(
         transaction: StoreTransaction,
         isRestore: Boolean,
+        premiumDayCount: Int,
         currency: String,
         amount: Long,
     ): TdlResult<Ok>
@@ -9349,6 +9513,14 @@ public abstract class TdlClient internal constructor() {
      * @param mainProfileTab The new value of the main profile tab.
      */
     public abstract suspend fun setMainProfileTab(mainProfileTab: ProfileTab): TdlResult<Ok>
+
+    /**
+     * Sets access settings of a managed bot; for bots only.
+     *
+     * @param botUserId Identifier of the managed bot.
+     * @param settings New access settings.
+     */
+    public abstract suspend fun setManagedBotAccessSettings(botUserId: Long, settings: BotAccessSettings): TdlResult<Ok>
 
     /**
      * Sets menu button for the given user or for all users; for bots only.
@@ -10711,12 +10883,12 @@ public abstract class TdlClient internal constructor() {
         /**
          * The Git commit hash of the TDLib.
          */
-        public const val TDL_GIT_COMMIT_HASH: String = "f06b0bac65278b03d26414c096080e7bfecfef52"
+        public const val TDL_GIT_COMMIT_HASH: String = "49b3bcbb6bfebf2ed44dd9f25102d2e1a94a58c4"
 
         /**
          * The version of the TDLib.
          */
-        public const val TDL_VERSION: String = "1.8.63"
+        public const val TDL_VERSION: String = "1.8.64"
 
         /**
          * Creates a new instance of the [TdlClient].

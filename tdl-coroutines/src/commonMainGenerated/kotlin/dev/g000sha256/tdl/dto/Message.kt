@@ -41,6 +41,7 @@ import kotlin.String
  * @property isPaidStarSuggestedPost True, if the message is a suggested channel post which was paid in Telegram Stars; a warning must be shown if the message is deleted in less than getOption(&quot;suggested_post_lifetime_min&quot;) seconds after sending.
  * @property isPaidTonSuggestedPost True, if the message is a suggested channel post which was paid in Toncoins; a warning must be shown if the message is deleted in less than getOption(&quot;suggested_post_lifetime_min&quot;) seconds after sending.
  * @property containsUnreadMention True, if the message contains an unread mention for the current user.
+ * @property containsUnreadPollVotes True, if the message is a poll message with unread votes.
  * @property date Point in time (Unix timestamp) when the message was sent; 0 for scheduled messages.
  * @property editDate Point in time (Unix timestamp) when the message was last edited; 0 for scheduled messages.
  * @property forwardInfo Information about the initial message sender; may be null if none or unknown.
@@ -55,6 +56,7 @@ import kotlin.String
  * @property selfDestructIn Time left before the message self-destruct timer expires, in seconds; 0 if self-destruction isn't scheduled yet.
  * @property autoDeleteIn Time left before the message will be automatically deleted by messageAutoDeleteTime setting of the chat, in seconds; 0 if never.
  * @property viaBotUserId If non-zero, the user identifier of the inline bot through which this message was sent.
+ * @property guestBotCallerId The identifier of the user or chat which used a guest bot to send the message; may be null if none.
  * @property senderBusinessBotUserId If non-zero, the user identifier of the business bot that sent this message.
  * @property senderBoostCount Number of times the sender of the message boosted the supergroup at the time the message was sent; 0 if none or unknown. For messages sent by the current user, supergroupFullInfo.myBoostCount must be used instead.
  * @property senderTag Tag of the sender of the message in the supergroup at the time the message was sent; may be empty if none or unknown. For messages sent in basic groups or supergroup administrators, the current custom title or tag must be used instead.
@@ -82,6 +84,7 @@ public class Message public constructor(
     public val isPaidStarSuggestedPost: Boolean,
     public val isPaidTonSuggestedPost: Boolean,
     public val containsUnreadMention: Boolean,
+    public val containsUnreadPollVotes: Boolean,
     public val date: Int,
     public val editDate: Int,
     public val forwardInfo: MessageForwardInfo?,
@@ -96,6 +99,7 @@ public class Message public constructor(
     public val selfDestructIn: Double,
     public val autoDeleteIn: Double,
     public val viaBotUserId: Long,
+    public val guestBotCallerId: MessageSender?,
     public val senderBusinessBotUserId: Long,
     public val senderBoostCount: Int,
     public val senderTag: String,
@@ -161,6 +165,9 @@ public class Message public constructor(
         if (other.containsUnreadMention != containsUnreadMention) {
             return false
         }
+        if (other.containsUnreadPollVotes != containsUnreadPollVotes) {
+            return false
+        }
         if (other.date != date) {
             return false
         }
@@ -202,6 +209,9 @@ public class Message public constructor(
             return false
         }
         if (other.viaBotUserId != viaBotUserId) {
+            return false
+        }
+        if (other.guestBotCallerId != guestBotCallerId) {
             return false
         }
         if (other.senderBusinessBotUserId != senderBusinessBotUserId) {
@@ -253,6 +263,7 @@ public class Message public constructor(
         hashCode = 31 * hashCode + isPaidStarSuggestedPost.hashCode()
         hashCode = 31 * hashCode + isPaidTonSuggestedPost.hashCode()
         hashCode = 31 * hashCode + containsUnreadMention.hashCode()
+        hashCode = 31 * hashCode + containsUnreadPollVotes.hashCode()
         hashCode = 31 * hashCode + date.hashCode()
         hashCode = 31 * hashCode + editDate.hashCode()
         hashCode = 31 * hashCode + forwardInfo.hashCode()
@@ -267,6 +278,7 @@ public class Message public constructor(
         hashCode = 31 * hashCode + selfDestructIn.hashCode()
         hashCode = 31 * hashCode + autoDeleteIn.hashCode()
         hashCode = 31 * hashCode + viaBotUserId.hashCode()
+        hashCode = 31 * hashCode + guestBotCallerId.hashCode()
         hashCode = 31 * hashCode + senderBusinessBotUserId.hashCode()
         hashCode = 31 * hashCode + senderBoostCount.hashCode()
         hashCode = 31 * hashCode + senderTag.hashCode()
@@ -327,6 +339,9 @@ public class Message public constructor(
             append("containsUnreadMention=")
             append(containsUnreadMention)
             append(", ")
+            append("containsUnreadPollVotes=")
+            append(containsUnreadPollVotes)
+            append(", ")
             append("date=")
             append(date)
             append(", ")
@@ -370,6 +385,9 @@ public class Message public constructor(
             append(", ")
             append("viaBotUserId=")
             append(viaBotUserId)
+            append(", ")
+            append("guestBotCallerId=")
+            append(guestBotCallerId)
             append(", ")
             append("senderBusinessBotUserId=")
             append(senderBusinessBotUserId)

@@ -40,6 +40,7 @@ import kotlin.String
  * @property canBeRepliedInAnotherChat True, if the message can be replied in another chat or forum topic using inputMessageReplyToExternalMessage.
  * @property canBeSaved True, if content of the message can be saved locally.
  * @property canBeSharedInStory True, if the message can be shared in a story using inputStoryAreaTypeMessage.
+ * @property canDeleteReactions True, if the user can delete reactions of other users in the message using the method deleteMessageReactionsFromSender.
  * @property canEditMedia True, if the message can be edited using the method editMessageMedia.
  * @property canEditSchedulingState True, if scheduling state of the message can be edited.
  * @property canEditSuggestedPostInfo True, if another price or post send time can be suggested using addOffer.
@@ -48,9 +49,10 @@ import kotlin.String
  * @property canGetLink True, if a link can be generated for the message using getMessageLink.
  * @property canGetMediaTimestampLinks True, if media timestamp links can be generated for media timestamp entities in the message text, caption or link preview description using getMessageLink.
  * @property canGetMessageThread True, if information about the message thread is available through getMessageThread and getMessageThreadHistory.
+ * @property canGetPollVoteStatistics True, if the message is a poll and vote statistics are available through getPollVoteStatistics.
  * @property canGetReadDate True, if read date of the message can be received through getMessageReadDate.
  * @property canGetStatistics True, if message statistics are available through getMessageStatistics and message forwards can be received using getMessagePublicForwards.
- * @property canGetVideoAdvertisements True, if advertisements for video of the message can be received though getVideoMessageAdvertisements.
+ * @property canGetVideoAdvertisements True, if advertisements for video of the message can be received through getVideoMessageAdvertisements.
  * @property canGetViewers True, if chat members already viewed the message can be received through getMessageViewers.
  * @property canMarkTasksAsDone True, if tasks can be marked as done or not done in the message's checklist using markChecklistTasksAsDone if the current user has Telegram Premium subscription.
  * @property canRecognizeSpeech True, if speech can be recognized for the message through recognizeSpeech.
@@ -79,6 +81,7 @@ public class MessageProperties public constructor(
     public val canBeRepliedInAnotherChat: Boolean,
     public val canBeSaved: Boolean,
     public val canBeSharedInStory: Boolean,
+    public val canDeleteReactions: Boolean,
     public val canEditMedia: Boolean,
     public val canEditSchedulingState: Boolean,
     public val canEditSuggestedPostInfo: Boolean,
@@ -87,6 +90,7 @@ public class MessageProperties public constructor(
     public val canGetLink: Boolean,
     public val canGetMediaTimestampLinks: Boolean,
     public val canGetMessageThread: Boolean,
+    public val canGetPollVoteStatistics: Boolean,
     public val canGetReadDate: Boolean,
     public val canGetStatistics: Boolean,
     public val canGetVideoAdvertisements: Boolean,
@@ -160,6 +164,9 @@ public class MessageProperties public constructor(
         if (other.canBeSharedInStory != canBeSharedInStory) {
             return false
         }
+        if (other.canDeleteReactions != canDeleteReactions) {
+            return false
+        }
         if (other.canEditMedia != canEditMedia) {
             return false
         }
@@ -182,6 +189,9 @@ public class MessageProperties public constructor(
             return false
         }
         if (other.canGetMessageThread != canGetMessageThread) {
+            return false
+        }
+        if (other.canGetPollVoteStatistics != canGetPollVoteStatistics) {
             return false
         }
         if (other.canGetReadDate != canGetReadDate) {
@@ -241,6 +251,7 @@ public class MessageProperties public constructor(
         hashCode = 31 * hashCode + canBeRepliedInAnotherChat.hashCode()
         hashCode = 31 * hashCode + canBeSaved.hashCode()
         hashCode = 31 * hashCode + canBeSharedInStory.hashCode()
+        hashCode = 31 * hashCode + canDeleteReactions.hashCode()
         hashCode = 31 * hashCode + canEditMedia.hashCode()
         hashCode = 31 * hashCode + canEditSchedulingState.hashCode()
         hashCode = 31 * hashCode + canEditSuggestedPostInfo.hashCode()
@@ -249,6 +260,7 @@ public class MessageProperties public constructor(
         hashCode = 31 * hashCode + canGetLink.hashCode()
         hashCode = 31 * hashCode + canGetMediaTimestampLinks.hashCode()
         hashCode = 31 * hashCode + canGetMessageThread.hashCode()
+        hashCode = 31 * hashCode + canGetPollVoteStatistics.hashCode()
         hashCode = 31 * hashCode + canGetReadDate.hashCode()
         hashCode = 31 * hashCode + canGetStatistics.hashCode()
         hashCode = 31 * hashCode + canGetVideoAdvertisements.hashCode()
@@ -317,6 +329,9 @@ public class MessageProperties public constructor(
             append("canBeSharedInStory=")
             append(canBeSharedInStory)
             append(", ")
+            append("canDeleteReactions=")
+            append(canDeleteReactions)
+            append(", ")
             append("canEditMedia=")
             append(canEditMedia)
             append(", ")
@@ -340,6 +355,9 @@ public class MessageProperties public constructor(
             append(", ")
             append("canGetMessageThread=")
             append(canGetMessageThread)
+            append(", ")
+            append("canGetPollVoteStatistics=")
+            append(canGetPollVoteStatistics)
             append(", ")
             append("canGetReadDate=")
             append(canGetReadDate)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import kotlin.String
  * @property chatId Chat identifier.
  * @property messageId Message identifier.
  * @property unreadReactions The new list of unread reactions.
- * @property unreadReactionCount The new number of messages with unread reactions left in the chat.
+ * @property unreadReactionCount The new number of messages with unread reactions in the chat.
  */
 public class UpdateMessageUnreadReactions public constructor(
     public val chatId: Long,
