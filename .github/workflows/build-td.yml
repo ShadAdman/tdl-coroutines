@@ -466,6 +466,97 @@ jobs:
           message: TDLib for JVM Windows x64 [skip ci]
           add: tdl-coroutines
 
+  build-native-windows-x64:
+    if: github.event_name == 'push'
+    needs: run-generator
+    runs-on: windows-2025
+    permissions:
+      contents: write
+
+    env:
+      SOURCE_DATE_EPOCH: "1"
+      VCPKG_KEEP_ENV_VARS: "SOURCE_DATE_EPOCH"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+          submodules: true
+
+      - name: Set up dependencies
+        run: |
+          git clone https://github.com/Microsoft/vcpkg.git
+
+          cd vcpkg
+
+          ./bootstrap-vcpkg.bat
+
+          $triplet = "triplets/x64-windows.cmake"
+          Add-Content $triplet "`nset(VCPKG_LINKER_FLAGS `"/Brepro`")"
+
+          ./vcpkg.exe install `
+            gperf:x64-windows `
+            openssl:x64-windows `
+            zlib:x64-windows
+
+      - name: Build TDLib Native
+        run: |
+          cd td
+
+          mkdir build
+          cd build
+
+          cmake `
+            -A x64 `
+            -DCMAKE_INSTALL_PREFIX:PATH=../tdlib `
+            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=../../vcpkg/scripts/buildsystems/vcpkg.cmake `
+            -DCMAKE_SHARED_LINKER_FLAGS="/Brepro" `
+            ..
+
+          cmake --build . --target install --config Release
+
+      - name: SHA256 checksums
+        run: |
+          Get-FileHash td/tdlib/bin/*.dll -Algorithm SHA256
+
+      - name: Copy files
+        run: |
+          $destination = "tdl-coroutines/generated/windows/x64"
+
+          Remove-Item `
+            -ErrorAction SilentlyContinue `
+            -Recurse `
+            $destination
+
+          New-Item `
+            -Force `
+            -ItemType Directory `
+            "$destination/include"
+
+          New-Item `
+            -Force `
+            -ItemType Directory `
+            "$destination/libs"
+
+          Copy-Item `
+            td/tdlib/include/td/telegram/td_json_client.h `
+            "$destination/include"
+
+          Copy-Item `
+            td/tdlib/bin/*.dll `
+            "$destination/libs"
+
+          Copy-Item `
+            td/tdlib/lib/*.lib `
+            "$destination/libs"
+
+      - name: Commit and push
+        uses: ./.github/actions/commit-and-push
+        with:
+          message: TDLib Native Windows x64 [skip ci]
+          add: tdl-coroutines
+
   build-ios-arm64:
     if: github.event_name == 'push' || inputs.build-ios
     needs: run-generator
