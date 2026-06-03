@@ -31,6 +31,12 @@ on:
         type: boolean
         default: false
 
+      build-windows:
+        description: 'Build Windows'
+        required: false
+        type: boolean
+        default: false
+
 jobs:
   run-generator:
     runs-on: self-hosted
@@ -467,7 +473,7 @@ jobs:
           add: tdl-coroutines
 
   build-native-windows-x64:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || inputs.build-windows
     needs: run-generator
     runs-on: windows-2025
     permissions:
@@ -532,7 +538,7 @@ jobs:
           New-Item `
             -Force `
             -ItemType Directory `
-            "$destination/include"
+            "$destination/include/td/telegram"
 
           New-Item `
             -Force `
@@ -541,7 +547,11 @@ jobs:
 
           Copy-Item `
             td/tdlib/include/td/telegram/td_json_client.h `
-            "$destination/include"
+            "$destination/include/td/telegram"
+
+          Copy-Item `
+            td/tdlib/include/td/telegram/tdjson_export.h `
+            "$destination/include/td/telegram"
 
           Copy-Item `
             td/tdlib/bin/*.dll `
