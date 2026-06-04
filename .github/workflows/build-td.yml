@@ -39,7 +39,7 @@ on:
 
 jobs:
   run-generator:
-    runs-on: windows-latest
+    runs-on: self-hosted
     permissions:
       contents: write
 
