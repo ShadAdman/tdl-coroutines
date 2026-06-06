@@ -92,6 +92,10 @@ kotlin {
         configureCompilations(platform = "windows/x64")
     }
 
+    linuxX64 {
+        configureCompilations(platform = "linux/x64")
+    }
+
     sourceSets {
         commonMain {
             kotlin.srcDirs("src/commonMainGenerated/kotlin")
@@ -131,6 +135,10 @@ kotlin {
         }
 
         mingwX64Main {
+            configureNativeKotlin()
+        }
+
+        linuxX64Main {
             configureNativeKotlin()
         }
     }
