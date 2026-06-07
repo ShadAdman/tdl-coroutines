@@ -88,10 +88,6 @@ kotlin {
         configureCompilations(platform = "macos/x64")
     }
 
-    linuxArm64()
-    linuxX64()
-    mingwX64()
-
     sourceSets {
         commonMain {
             kotlin.srcDirs("src/commonMainGenerated/kotlin")
