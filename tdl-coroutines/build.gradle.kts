@@ -248,5 +248,5 @@ private fun KotlinTargetWithBinaries<*, AbstractKotlinNativeBinaryContainer>.con
 }
 
 private fun KotlinSourceSet.configureNativeKotlin() {
-    kotlin.srcDirs("src/nativeMain/kotlin")
+    kotlin.srcDirs("src/native/kotlin")
 }
