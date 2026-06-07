@@ -109,25 +109,25 @@ kotlin {
         }
 
         iosArm64Main {
-            configureAppleKotlin()
+            configureNativeKotlin()
         }
 
         @Suppress("unused")
         val iosArm64SimulatorMain by getting {
-            configureAppleKotlin()
+            configureNativeKotlin()
         }
 
         @Suppress("unused")
         val iosX64SimulatorMain by getting {
-            configureAppleKotlin()
+            configureNativeKotlin()
         }
 
         macosArm64Main {
-            configureAppleKotlin()
+            configureNativeKotlin()
         }
 
         macosX64Main {
-            configureAppleKotlin()
+            configureNativeKotlin()
         }
     }
 }
@@ -251,6 +251,6 @@ private fun KotlinTargetWithBinaries<*, AbstractKotlinNativeBinaryContainer>.con
     }
 }
 
-private fun KotlinSourceSet.configureAppleKotlin() {
-    kotlin.srcDirs("src/apple/kotlin")
+private fun KotlinSourceSet.configureNativeKotlin() {
+    kotlin.srcDirs("src/nativeMain/kotlin")
 }
