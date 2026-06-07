@@ -31,6 +31,12 @@ on:
         type: boolean
         default: false
 
+      build-windows:
+        description: 'Build Windows'
+        required: false
+        type: boolean
+        default: false
+
 jobs:
   run-generator:
     runs-on: self-hosted
