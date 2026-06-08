@@ -510,7 +510,7 @@ jobs:
           message: TDLib for JVM Windows x64 [skip ci]
           add: tdl-coroutines
 
-  build-native-windows-x64:
+  build-windows-x64:
     if: github.event_name == 'push' || inputs.build-windows
     needs: run-generator
     runs-on: windows-2025
@@ -569,7 +569,7 @@ jobs:
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
         with:
-          message: TDLib Native Windows x64 [skip ci]
+          message: TDLib for Windows x64 [skip ci]
           add: tdl-coroutines
 
   build-ios-arm64:
