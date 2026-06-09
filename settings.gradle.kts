@@ -1,8 +1,12 @@
+include(":example:demo:android")
+include(":example:demo:jvm")
+include(":example:verification:app:android")
 include(":example:verification:app:jvm")
+include(":example:verification:app:linux")
+include(":example:verification:app:macos")
+include(":example:verification:app:windows")
 include(":example:verification:shared")
 include(":tdl-coroutines")
-include(":tdl-coroutines-example")
-include(":tdl-coroutines-example-jvm")
 include(":tdl-coroutines-generator")
 
 pluginManagement {

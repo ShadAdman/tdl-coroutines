@@ -6,5 +6,7 @@ runs:
   steps:
     - uses: actions/setup-java@v4
       with:
-        java-version: 24
-        distribution: temurin
+        distribution: liberica
+        java-version: |
+          11
+          21

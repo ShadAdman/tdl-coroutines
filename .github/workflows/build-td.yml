@@ -65,7 +65,7 @@ jobs:
         run: ./gradlew tdl-coroutines-generator:run
 
       - name: Dump API
-        run: ./gradlew updateKotlinAbi
+        run: ./gradlew :tdl-coroutines:updateKotlinAbi
 
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
@@ -78,7 +78,7 @@ jobs:
   build-android:
     if: github.event_name == 'push' || inputs.build-android
     needs: run-generator
-    runs-on: ubuntu-24.04
+    runs-on: self-hosted
     permissions:
       contents: write
 
@@ -89,16 +89,16 @@ jobs:
           lfs: true
           submodules: true
 
+      - name: Clean submodule
+        run: |
+          cd td
+          git clean -ffdx
+
       - name: Set up Java
         uses: ./.github/actions/set-up-java
 
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          tools: none
-
       - name: Set up dependencies
-        run: sudo apt-get install make git zlib1g-dev libssl-dev gperf cmake g++
+        run: brew install cmake coreutils gperf openssl php
 
       - name: Check environment
         run: |
@@ -128,6 +128,44 @@ jobs:
           rm -rf tdl-coroutines/generated/android
           mkdir -p tdl-coroutines/generated/android
           cp -r td/example/android/tdlib/libs/* tdl-coroutines/generated/android
+
+      - name: Verify
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          arch: arm64-v8a
+          script: |
+            ./gradlew :example:verification:app:android:installDebug
+            adb logcat -c
+            adb shell am start -n dev.g000sha256.tdl.example.verification.app.android/.MainActivity
+
+            TIMEOUT=60
+            ELAPSED=0
+            RESULT=""
+            while [ $ELAPSED -lt $TIMEOUT ]; do
+              if adb logcat -d 2>/dev/null | grep -q "\[TDL\] Success"; then
+                RESULT="SUCCESS"
+                break
+              fi
+              if adb logcat -d 2>/dev/null | grep -q "\[TDL\] Failure"; then
+                RESULT="FAILURE"
+                break
+              fi
+              sleep 2
+              ELAPSED=$((ELAPSED + 2))
+            done
+
+            echo "--- TDL log output ---"
+            adb logcat -d | grep "\[TDL\]" || echo "(no [TDL] entries)"
+
+            if [ "$RESULT" = "SUCCESS" ]; then
+              exit 0
+            elif [ "$RESULT" = "FAILURE" ]; then
+              exit 1
+            else
+              echo "Timed out after ${TIMEOUT}s"
+              exit 1
+            fi
 
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
@@ -472,16 +510,12 @@ jobs:
           message: TDLib for JVM Windows x64 [skip ci]
           add: tdl-coroutines
 
-  build-native-windows-x64:
+  build-windows-x64:
     if: github.event_name == 'push' || inputs.build-windows
     needs: run-generator
     runs-on: windows-2025
     permissions:
       contents: write
-
-    env:
-      SOURCE_DATE_EPOCH: "1"
-      VCPKG_KEEP_ENV_VARS: "SOURCE_DATE_EPOCH"
 
     steps:
       - name: Checkout
@@ -490,81 +524,52 @@ jobs:
           lfs: true
           submodules: true
 
-      - name: Set up dependencies
-        run: |
-          git clone https://github.com/Microsoft/vcpkg.git
-
-          cd vcpkg
-
-          ./bootstrap-vcpkg.bat
-
-          $triplet = "triplets/x64-windows.cmake"
-          Add-Content $triplet "`nset(VCPKG_LINKER_FLAGS `"/Brepro`")"
-
-          ./vcpkg.exe install `
-            gperf:x64-windows `
-            openssl:x64-windows `
-            zlib:x64-windows
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-gperf
+            mingw-w64-x86_64-openssl
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-zlib
 
       - name: Build TDLib Native
+        shell: msys2 {0}
         run: |
           cd td
-
           mkdir build
           cd build
-
-          cmake `
-            -A x64 `
-            -DCMAKE_INSTALL_PREFIX:PATH=../tdlib `
-            -DCMAKE_TOOLCHAIN_FILE:FILEPATH=../../vcpkg/scripts/buildsystems/vcpkg.cmake `
-            -DCMAKE_SHARED_LINKER_FLAGS="/Brepro" `
-            ..
-
-          cmake --build . --target install --config Release
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib -DOPENSSL_USE_STATIC_LIBS=TRUE ..
+          cmake --build . --target install
 
       - name: SHA256 checksums
+        shell: msys2 {0}
         run: |
-          Get-FileHash td/tdlib/bin/*.dll -Algorithm SHA256
+          sha256sum td/tdlib/lib/*.a
 
       - name: Copy files
+        shell: msys2 {0}
         run: |
-          $destination = "tdl-coroutines/generated/windows/x64"
-
-          Remove-Item `
-            -ErrorAction SilentlyContinue `
-            -Recurse `
-            $destination
-
-          New-Item `
-            -Force `
-            -ItemType Directory `
-            "$destination/include/td/telegram"
-
-          New-Item `
-            -Force `
-            -ItemType Directory `
-            "$destination/libs"
-
-          Copy-Item `
-            td/tdlib/include/td/telegram/td_json_client.h `
-            "$destination/include/td/telegram"
-
-          Copy-Item `
-            td/tdlib/include/td/telegram/tdjson_export.h `
-            "$destination/include/td/telegram"
-
-          Copy-Item `
-            td/tdlib/bin/*.dll `
-            "$destination/libs"
-
-          Copy-Item `
-            td/tdlib/lib/*.lib `
-            "$destination/libs"
+          DEST="tdl-coroutines/generated/windows/x64"
+          rm -rf "$DEST"
+          mkdir -p "$DEST/include/td/telegram"
+          mkdir -p "$DEST/libs"
+          
+          cp td/tdlib/include/td/telegram/td_json_client.h "$DEST/include/td/telegram/"
+          cp td/tdlib/include/td/telegram/tdjson_export.h "$DEST/include/td/telegram/"
+          cp td/tdlib/lib/*.a "$DEST/libs/"
+          cp /mingw64/lib/libssl.a "$DEST/libs/"
+          cp /mingw64/lib/libcrypto.a "$DEST/libs/"
+          cp /mingw64/lib/libz.a "$DEST/libs/"
 
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
         with:
-          message: TDLib Native Windows x64 [skip ci]
+          message: TDLib for Windows x64 [skip ci]
           add: tdl-coroutines
 
   build-ios-arm64:
@@ -805,6 +810,12 @@ jobs:
           cp td/example/ios/build/install-macOS/lib/*.a tdl-coroutines/generated/macos/arm64/libs
           cp td/example/ios/third_party/openssl/macOS/lib/*.a tdl-coroutines/generated/macos/arm64/libs
 
+      - name: Set up Java
+        uses: ./.github/actions/set-up-java
+
+      - name: Verify
+        run: ./gradlew :example:verification:app:macos:runReleaseExecutableMacosArm64
+
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
         with:
@@ -860,6 +871,12 @@ jobs:
           cp td/example/ios/build/install-macOS/include/td/telegram/tdjson_export.h tdl-coroutines/generated/macos/x64/include/td/telegram
           cp td/example/ios/build/install-macOS/lib/*.a tdl-coroutines/generated/macos/x64/libs
           cp td/example/ios/third_party/openssl/macOS/lib/*.a tdl-coroutines/generated/macos/x64/libs
+
+      - name: Set up Java
+        uses: ./.github/actions/set-up-java
+
+      - name: Verify
+        run: ./gradlew :example:verification:app:macos:runReleaseExecutableMacosX64
 
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
