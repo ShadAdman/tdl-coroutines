@@ -39,7 +39,7 @@ on:
 
 jobs:
   run-generator:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions:
       contents: write
 
@@ -78,7 +78,7 @@ jobs:
   build-android:
     if: github.event_name == 'push' || inputs.build-android
     needs: run-generator
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions:
       contents: write
 
@@ -98,7 +98,9 @@ jobs:
         uses: ./.github/actions/set-up-java
 
       - name: Set up dependencies
-        run: brew install cmake coreutils gperf openssl php
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake gperf php-cli g++-multilib
 
       - name: Check environment
         run: |
@@ -288,7 +290,7 @@ jobs:
   build-jvm-macos-arm64:
     if: github.event_name == 'push' || inputs.build-jvm
     needs: run-generator
-    runs-on: self-hosted
+    runs-on: macos-latest
     permissions:
       contents: write
 
@@ -305,19 +307,22 @@ jobs:
           git clean -ffdx
 
       - name: Set up dependencies
-        run: brew install gperf cmake openssl coreutils openjdk
+        run: brew install gperf cmake openssl coreutils
+
+      - name: Set up Java
+        uses: ./.github/actions/set-up-java
 
       - name: Build TDLib
         run: |
           cd td
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DJAVA_HOME=/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home/ -DOPENSSL_ROOT_DIR=/opt/homebrew/opt/openssl/ -DCMAKE_INSTALL_PREFIX:PATH=../example/java/td -DTD_ENABLE_JNI=ON ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DJAVA_HOME=$JAVA_HOME -DOPENSSL_ROOT_DIR=$(brew --prefix openssl) -DCMAKE_INSTALL_PREFIX:PATH=../example/java/td -DTD_ENABLE_JNI=ON ..
           cmake --build . --target install
           cd ../example/java
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DJAVA_HOME=/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home/ -DCMAKE_INSTALL_PREFIX:PATH=../../../tdlib -DTd_DIR:PATH=$(greadlink -e ../td/lib/cmake/Td) -DTD_JSON_JAVA=ON ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DJAVA_HOME=$JAVA_HOME -DCMAKE_INSTALL_PREFIX:PATH=../../../tdlib -DTd_DIR:PATH=$(greadlink -e ../td/lib/cmake/Td) -DTD_JSON_JAVA=ON ..
           cmake --build . --target install
 
       - name: SHA256 checksums
@@ -341,7 +346,7 @@ jobs:
   build-jvm-macos-x64:
     if: github.event_name == 'push' || inputs.build-jvm
     needs: run-generator
-    runs-on: macos-15-intel
+    runs-on: macos-13
     permissions:
       contents: write
 
@@ -353,19 +358,22 @@ jobs:
           submodules: true
 
       - name: Set up dependencies
-        run: brew install gperf cmake openssl coreutils openjdk
+        run: brew install gperf cmake openssl coreutils
+
+      - name: Set up Java
+        uses: ./.github/actions/set-up-java
 
       - name: Build TDLib
         run: |
           cd td
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DJAVA_HOME=/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home/ -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl/ -DCMAKE_INSTALL_PREFIX:PATH=../example/java/td -DTD_ENABLE_JNI=ON ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DJAVA_HOME=$JAVA_HOME -DOPENSSL_ROOT_DIR=$(brew --prefix openssl) -DCMAKE_INSTALL_PREFIX:PATH=../example/java/td -DTD_ENABLE_JNI=ON ..
           cmake --build . --target install
           cd ../example/java
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DJAVA_HOME=/usr/local/opt/openjdk/libexec/openjdk.jdk/Contents/Home/ -DCMAKE_INSTALL_PREFIX:PATH=../../../tdlib -DTd_DIR:PATH=$(greadlink -e ../td/lib/cmake/Td) -DTD_JSON_JAVA=ON ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DJAVA_HOME=$JAVA_HOME -DCMAKE_INSTALL_PREFIX:PATH=../../../tdlib -DTd_DIR:PATH=$(greadlink -e ../td/lib/cmake/Td) -DTD_JSON_JAVA=ON ..
           cmake --build . --target install
 
       - name: SHA256 checksums
@@ -389,7 +397,7 @@ jobs:
   build-jvm-windows-arm64:
     if: github.event_name == 'push' || inputs.build-jvm
     needs: run-generator
-    runs-on: windows-11-arm
+    runs-on: windows-latest
     permissions:
       contents: write
 
@@ -513,7 +521,7 @@ jobs:
   build-windows-x64:
     if: github.event_name == 'push' || inputs.build-windows
     needs: run-generator
-    runs-on: windows-2025
+    runs-on: windows-latest
     permissions:
       contents: write
 
@@ -575,7 +583,7 @@ jobs:
   build-ios-arm64:
     if: github.event_name == 'push' || inputs.build-ios
     needs: run-generator
-    runs-on: self-hosted
+    runs-on: macos-latest
     permissions:
       contents: write
 
@@ -636,7 +644,7 @@ jobs:
   build-ios-arm64-simulator:
     if: github.event_name == 'push' || inputs.build-ios
     needs: run-generator
-    runs-on: self-hosted
+    runs-on: macos-latest
     permissions:
       contents: write
 
@@ -697,7 +705,7 @@ jobs:
   build-ios-x64-simulator:
     if: github.event_name == 'push' || inputs.build-ios
     needs: run-generator
-    runs-on: self-hosted
+    runs-on: macos-latest
     permissions:
       contents: write
 
@@ -758,7 +766,7 @@ jobs:
   build-macos-arm64:
     if: github.event_name == 'push' || inputs.build-macos
     needs: run-generator
-    runs-on: self-hosted
+    runs-on: macos-latest
     permissions:
       contents: write
 
@@ -825,7 +833,7 @@ jobs:
   build-macos-x64:
     if: github.event_name == 'push' || inputs.build-macos
     needs: run-generator
-    runs-on: macos-15-intel
+    runs-on: macos-13
     permissions:
       contents: write
 
