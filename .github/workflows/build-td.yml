@@ -543,7 +543,7 @@ jobs:
           cd td
           mkdir build
           cd build
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib -DOPENSSL_USE_STATIC_LIBS=TRUE ..
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib -DOPENSSL_USE_STATIC_LIBS=TRUE -DCMAKE_C_FLAGS=-std=gnu17 ..
           cmake --build . --target install
 
       - name: SHA256 checksums
