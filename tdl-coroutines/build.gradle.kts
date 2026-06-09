@@ -88,10 +88,6 @@ kotlin {
         configureCompilations(platform = "macos/x64")
     }
 
-    mingwX64 {
-        configureCompilations(platform = "windows/x64")
-    }
-
     sourceSets {
         commonMain {
             kotlin.srcDirs("src/commonMainGenerated/kotlin")
@@ -127,10 +123,6 @@ kotlin {
         }
 
         macosX64Main {
-            configureNativeKotlin()
-        }
-
-        mingwX64Main {
             configureNativeKotlin()
         }
     }
