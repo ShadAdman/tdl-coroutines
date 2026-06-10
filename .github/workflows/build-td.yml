@@ -561,7 +561,7 @@ jobs:
           
           cp td/tdlib/include/td/telegram/td_json_client.h "$DEST/include/td/telegram/"
           cp td/tdlib/include/td/telegram/tdjson_export.h "$DEST/include/td/telegram/"
-          cp td/tdlib/lib/*.a "$DEST/libs/"
+          find td/tdlib/lib/ -name "*.a" ! -name "libtdjson.dll.a" -exec cp {} "$DEST/libs/" \;
           cp /mingw64/lib/libssl.a "$DEST/libs/"
           cp /mingw64/lib/libcrypto.a "$DEST/libs/"
           cp /mingw64/lib/libz.a "$DEST/libs/"
