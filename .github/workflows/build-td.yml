@@ -39,7 +39,7 @@ on:
 
 jobs:
   run-generator:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     permissions:
       contents: write
 
