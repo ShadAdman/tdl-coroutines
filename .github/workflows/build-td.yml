@@ -31,6 +31,12 @@ on:
         type: boolean
         default: false
 
+      build-windows:
+        description: 'Build Windows'
+        required: false
+        type: boolean
+        default: false
+
 jobs:
   run-generator:
     runs-on: self-hosted
@@ -502,6 +508,68 @@ jobs:
         uses: ./.github/actions/commit-and-push
         with:
           message: TDLib for JVM Windows x64 [skip ci]
+          add: tdl-coroutines
+
+  build-windows-x64:
+    if: github.event_name == 'push' || inputs.build-windows
+    needs: run-generator
+    runs-on: windows-2025
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+          submodules: true
+
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-gperf
+            mingw-w64-x86_64-openssl
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-zlib
+
+      - name: Build TDLib Native
+        shell: msys2 {0}
+        run: |
+          cd td
+          mkdir build
+          cd build
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib -DOPENSSL_USE_STATIC_LIBS=TRUE -DCMAKE_C_FLAGS=-std=gnu17 ..
+          cmake --build . --target install
+
+      - name: SHA256 checksums
+        shell: msys2 {0}
+        run: |
+          sha256sum td/tdlib/lib/*.a
+
+      - name: Copy files
+        shell: msys2 {0}
+        run: |
+          DEST="tdl-coroutines/generated/windows/x64"
+          rm -rf "$DEST"
+          mkdir -p "$DEST/include/td/telegram"
+          mkdir -p "$DEST/libs"
+          
+          cp td/tdlib/include/td/telegram/td_json_client.h "$DEST/include/td/telegram/"
+          cp td/tdlib/include/td/telegram/tdjson_export.h "$DEST/include/td/telegram/"
+          find td/tdlib/lib/ -name "*.a" ! -name "libtdjson.dll.a" -exec cp {} "$DEST/libs/" \;
+          cp /mingw64/lib/libssl.a "$DEST/libs/"
+          cp /mingw64/lib/libcrypto.a "$DEST/libs/"
+          cp /mingw64/lib/libz.a "$DEST/libs/"
+
+      - name: Commit and push
+        uses: ./.github/actions/commit-and-push
+        with:
+          message: TDLib for Windows x64 [skip ci]
           add: tdl-coroutines
 
   build-ios-arm64:
