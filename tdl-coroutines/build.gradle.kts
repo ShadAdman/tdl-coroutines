@@ -88,7 +88,7 @@ kotlin {
         configureCompilations(platform = "macos/x64")
     }
 
-    mingwX64{
+    mingwX64 {
         configureCompilations(platform = "windows/x64")
     }
 
@@ -142,7 +142,8 @@ androidComponents {
     }
 }
 
-val dokkaGeneratePublicationHtmlTaskProvider = tasks.named<Task>(name = "dokkaGeneratePublicationHtml")
+val dokkaGeneratePublicationHtmlTaskProvider =
+    tasks.named<Task>(name = "dokkaGeneratePublicationHtml")
 
 val dokkaJavaDocJarTaskProvider = tasks.register<Jar>(name = "dokkaJavaDocJar") {
     group = "documentation"
@@ -165,7 +166,8 @@ publishing {
 
             pom {
                 name = "TDLib Kotlin Coroutines client"
-                description = "This library provides a Kotlin Coroutines client for the Telegram Database Library (TDLib)"
+                description =
+                    "This library provides a Kotlin Coroutines client for the Telegram Database Library (TDLib)"
                 url = "https://github.com/g000sha256/tdl-coroutines"
                 inceptionYear = "2025"
 
@@ -187,7 +189,8 @@ publishing {
 
                 scm {
                     connection = "scm:git:https://github.com/g000sha256/tdl-coroutines.git"
-                    developerConnection = "scm:git:ssh://git@github.com/g000sha256/tdl-coroutines.git"
+                    developerConnection =
+                        "scm:git:ssh://git@github.com/g000sha256/tdl-coroutines.git"
                     url = "https://github.com/g000sha256/tdl-coroutines"
                 }
 
@@ -245,11 +248,11 @@ private fun KotlinOnlyTarget<KotlinNativeCompilation>.configureCompilations(plat
     }
 }
 
-private fun String.extractConfigName(): String{
+private fun String.extractConfigName(): String {
     return when {
-        this.startsWith("windows")-> "config-windows.def"
-        this.startsWith("mac")||this.startsWith("ios")-> "config-apple.def"
-        else-> ""
+        this.startsWith("windows") -> "config-windows.def"
+        this.startsWith("mac") || this.startsWith("ios") -> "config-apple.def"
+        else -> ""
     }
 }
 
