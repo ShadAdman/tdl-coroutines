@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,15 +25,17 @@ import kotlin.String
  * A video.
  *
  * @property video Video file; may be null.
- * @property caption Video caption.
+ * @property caption Video caption; may be null if none.
  * @property needAutoplay True, if the video must be played automatically.
  * @property isLooped True, if the video must be looped.
+ * @property hasSpoiler True, if the video preview must be covered by a spoiler animation.
  */
 public class PageBlockVideo public constructor(
     public val video: Video?,
-    public val caption: PageBlockCaption,
+    public val caption: PageBlockCaption?,
     public val needAutoplay: Boolean,
     public val isLooped: Boolean,
+    public val hasSpoiler: Boolean,
 ) : PageBlock() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -55,7 +57,10 @@ public class PageBlockVideo public constructor(
         if (other.needAutoplay != needAutoplay) {
             return false
         }
-        return other.isLooped == isLooped
+        if (other.isLooped != isLooped) {
+            return false
+        }
+        return other.hasSpoiler == hasSpoiler
     }
 
     override fun hashCode(): Int {
@@ -64,6 +69,7 @@ public class PageBlockVideo public constructor(
         hashCode = 31 * hashCode + caption.hashCode()
         hashCode = 31 * hashCode + needAutoplay.hashCode()
         hashCode = 31 * hashCode + isLooped.hashCode()
+        hashCode = 31 * hashCode + hasSpoiler.hashCode()
         return hashCode
     }
 
@@ -82,6 +88,9 @@ public class PageBlockVideo public constructor(
             append(", ")
             append("isLooped=")
             append(isLooped)
+            append(", ")
+            append("hasSpoiler=")
+            append(hasSpoiler)
             append(")")
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,14 +22,14 @@ import kotlin.Int
 import kotlin.String
 
 /**
- * An embedded web page.
+ * An embedded web page; instant view only.
  *
  * @property url URL of the embedded page, if available.
  * @property html HTML-markup of the embedded page.
  * @property posterPhoto Poster photo, if available; may be null.
  * @property width Block width; 0 if unknown.
  * @property height Block height; 0 if unknown.
- * @property caption Block caption.
+ * @property caption Block caption; may be null if none.
  * @property isFullWidth True, if the block must be full width.
  * @property allowScrolling True, if scrolling needs to be allowed.
  */
@@ -39,7 +39,7 @@ public class PageBlockEmbedded public constructor(
     public val posterPhoto: Photo?,
     public val width: Int,
     public val height: Int,
-    public val caption: PageBlockCaption,
+    public val caption: PageBlockCaption?,
     public val isFullWidth: Boolean,
     public val allowScrolling: Boolean,
 ) : PageBlock() {

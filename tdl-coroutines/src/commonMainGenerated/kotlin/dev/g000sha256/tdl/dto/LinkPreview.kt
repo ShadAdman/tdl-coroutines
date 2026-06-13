@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import kotlin.String
  *
  * @property url Original URL of the link.
  * @property displayUrl URL to display.
- * @property siteName Short name of the site (e.g., Google Docs, App Store).
+ * @property siteName Short name of the website (e.g., Google Docs, App Store).
  * @property title Title of the content.
  * @property description Description of the content.
  * @property author Author of the content.

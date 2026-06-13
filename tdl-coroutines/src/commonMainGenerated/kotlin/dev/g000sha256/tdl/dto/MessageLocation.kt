@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,18 +24,10 @@ import kotlin.String
 /**
  * A message with a location.
  *
- * @property location The location description.
- * @property livePeriod Time relative to the message send date, for which the location can be updated, in seconds; if 0x7FFFFFFF, then location can be updated forever.
- * @property expiresIn Left time for which the location can be updated, in seconds. If 0, then the location can't be updated anymore. The update updateMessageContent is not sent when this field changes.
- * @property heading For live locations, a direction in which the location moves, in degrees; 1-360. If 0 the direction is unknown.
- * @property proximityAlertRadius For live locations, a maximum distance to another chat member for proximity alerts, in meters (0-100000). 0 if the notification is disabled. Available only to the message sender.
+ * @property location The location.
  */
 public class MessageLocation public constructor(
     public val location: Location,
-    public val livePeriod: Int,
-    public val expiresIn: Int,
-    public val heading: Int,
-    public val proximityAlertRadius: Int,
 ) : MessageContent() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -48,28 +40,12 @@ public class MessageLocation public constructor(
             return false
         }
         other as MessageLocation
-        if (other.location != location) {
-            return false
-        }
-        if (other.livePeriod != livePeriod) {
-            return false
-        }
-        if (other.expiresIn != expiresIn) {
-            return false
-        }
-        if (other.heading != heading) {
-            return false
-        }
-        return other.proximityAlertRadius == proximityAlertRadius
+        return other.location == location
     }
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + location.hashCode()
-        hashCode = 31 * hashCode + livePeriod.hashCode()
-        hashCode = 31 * hashCode + expiresIn.hashCode()
-        hashCode = 31 * hashCode + heading.hashCode()
-        hashCode = 31 * hashCode + proximityAlertRadius.hashCode()
         return hashCode
     }
 
@@ -79,18 +55,6 @@ public class MessageLocation public constructor(
             append("(")
             append("location=")
             append(location)
-            append(", ")
-            append("livePeriod=")
-            append(livePeriod)
-            append(", ")
-            append("expiresIn=")
-            append(expiresIn)
-            append(", ")
-            append("heading=")
-            append(heading)
-            append(", ")
-            append("proximityAlertRadius=")
-            append(proximityAlertRadius)
             append(")")
         }
     }

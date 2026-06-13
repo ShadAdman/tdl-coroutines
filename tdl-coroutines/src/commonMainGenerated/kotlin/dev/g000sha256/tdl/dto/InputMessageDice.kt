@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import kotlin.String
  * A dice message.
  *
  * @property emoji Emoji on which the dice throw animation is based.
- * @property clearDraft True, if the chat message draft must be deleted.
+ * @property clearDraft Pass true to delete message draft in the chat.
  */
 public class InputMessageDice public constructor(
     public val emoji: String,

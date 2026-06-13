@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,16 +22,14 @@ import kotlin.Int
 import kotlin.String
 
 /**
- * A reference to a richTexts object on the same page.
+ * A reference.
  *
- * @property text The text.
- * @property anchorName The name of a richTextAnchor object, which is the first element of the target richTexts object.
- * @property url An HTTP URL, opening the reference.
+ * @property name Reference name.
+ * @property text Text of the reference.
  */
 public class RichTextReference public constructor(
+    public val name: String,
     public val text: RichText,
-    public val anchorName: String,
-    public val url: String,
 ) : RichText() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -44,20 +42,16 @@ public class RichTextReference public constructor(
             return false
         }
         other as RichTextReference
-        if (other.text != text) {
+        if (other.name != name) {
             return false
         }
-        if (other.anchorName != anchorName) {
-            return false
-        }
-        return other.url == url
+        return other.text == text
     }
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
+        hashCode = 31 * hashCode + name.hashCode()
         hashCode = 31 * hashCode + text.hashCode()
-        hashCode = 31 * hashCode + anchorName.hashCode()
-        hashCode = 31 * hashCode + url.hashCode()
         return hashCode
     }
 
@@ -65,14 +59,11 @@ public class RichTextReference public constructor(
         return buildString {
             append("RichTextReference")
             append("(")
+            append("name=")
+            append(name)
+            append(", ")
             append("text=")
             append(text)
-            append(", ")
-            append("anchorName=")
-            append(anchorName)
-            append(", ")
-            append("url=")
-            append(url)
             append(")")
         }
     }

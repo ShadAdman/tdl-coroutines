@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import kotlin.String
  *
  * @property text The link text.
  * @property anchorName The anchor name. If the name is empty, the link must bring back to top.
- * @property url An HTTP URL, opening the anchor.
+ * @property url An HTTP URL that opens the anchor.
  */
 public class RichTextAnchorLink public constructor(
     public val text: RichText,

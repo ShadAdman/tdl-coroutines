@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import kotlin.Int
 import kotlin.String
 
 /**
- * A small image inside the text.
+ * A small image inside the text; instant view only.
  *
  * @property document The image represented as a document. The image can be in GIF, JPEG or PNG format.
  * @property width Width of a bounding box in which the image must be shown; 0 if unknown.

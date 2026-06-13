@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,6 +62,7 @@ import kotlin.String
  * @property customEmojiStickerSetId Identifier of the custom emoji sticker set that can be used in the supergroup without Telegram Premium subscription; 0 if none.
  * @property location Location to which the supergroup is connected; may be null if none.
  * @property inviteLink Primary invite link for the chat; may be null. For chat administrators with canInviteUsers right only.
+ * @property guardBotUserId User identifier of the guard bot in the group; for chat administrators only.
  * @property botCommands List of commands of bots in the group.
  * @property botVerification Information about verification status of the supergroup or the channel provided by a bot; may be null if none or unknown.
  * @property mainProfileTab The main tab chosen by the administrators of the channel; may be null if not chosen manually.
@@ -104,6 +105,7 @@ public class SupergroupFullInfo public constructor(
     public val customEmojiStickerSetId: Long,
     public val location: ChatLocation?,
     public val inviteLink: ChatInviteLink?,
+    public val guardBotUserId: Long,
     public val botCommands: Array<BotCommands>,
     public val botVerification: BotVerification?,
     public val mainProfileTab: ProfileTab?,
@@ -226,6 +228,9 @@ public class SupergroupFullInfo public constructor(
         if (other.inviteLink != inviteLink) {
             return false
         }
+        if (other.guardBotUserId != guardBotUserId) {
+            return false
+        }
         val botCommandsEquals = other.botCommands.contentDeepEquals(botCommands)
         if (!botCommandsEquals) {
             return false
@@ -279,6 +284,7 @@ public class SupergroupFullInfo public constructor(
         hashCode = 31 * hashCode + customEmojiStickerSetId.hashCode()
         hashCode = 31 * hashCode + location.hashCode()
         hashCode = 31 * hashCode + inviteLink.hashCode()
+        hashCode = 31 * hashCode + guardBotUserId.hashCode()
         hashCode = 31 * hashCode + botCommands.contentDeepHashCode()
         hashCode = 31 * hashCode + botVerification.hashCode()
         hashCode = 31 * hashCode + mainProfileTab.hashCode()
@@ -395,6 +401,9 @@ public class SupergroupFullInfo public constructor(
             append(", ")
             append("inviteLink=")
             append(inviteLink)
+            append(", ")
+            append("guardBotUserId=")
+            append(guardBotUserId)
             append(", ")
             append("botCommands=")
             botCommands

@@ -26,13 +26,13 @@ import kotlin.String
  *
  * @property poll Information about the poll.
  * @property description Description of the poll.
- * @property media Media attached to the poll; may be null if none. If present, currently, can be only of the types messageAnimation, messageAudio, messageDocument, messageLocation, messagePhoto, messageVenue, or messageVideo without caption.
+ * @property media Media attached to the poll; may be null if none. If present, currently, can be only of the types pollMediaAnimation, pollMediaAudio, pollMediaDocument, pollMediaLocation, pollMediaPhoto, pollMediaVenue, or pollMediaVideo.
  * @property canAddOption True, if an option can be added to the poll using addPollOption.
  */
 public class MessagePoll public constructor(
     public val poll: Poll,
     public val description: FormattedText,
-    public val media: MessageContent?,
+    public val media: PollMedia?,
     public val canAddOption: Boolean,
 ) : MessageContent() {
     override fun equals(other: Any?): Boolean {

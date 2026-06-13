@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,19 +24,11 @@ import kotlin.String
 /**
  * An audio message.
  *
- * @property audio Audio file to be sent.
- * @property albumCoverThumbnail Thumbnail of the cover for the album; pass null to skip thumbnail uploading.
- * @property duration Duration of the audio, in seconds; may be replaced by the server.
- * @property title Title of the audio; 0-64 characters; may be replaced by the server.
- * @property performer Performer of the audio; 0-64 characters, may be replaced by the server.
+ * @property audio Audio to be sent.
  * @property caption Audio caption; pass null to use an empty caption; 0-getOption(&quot;message_caption_length_max&quot;) characters.
  */
 public class InputMessageAudio public constructor(
-    public val audio: InputFile,
-    public val albumCoverThumbnail: InputThumbnail?,
-    public val duration: Int,
-    public val title: String,
-    public val performer: String,
+    public val audio: InputAudio,
     public val caption: FormattedText?,
 ) : InputMessageContent() {
     override fun equals(other: Any?): Boolean {
@@ -53,28 +45,12 @@ public class InputMessageAudio public constructor(
         if (other.audio != audio) {
             return false
         }
-        if (other.albumCoverThumbnail != albumCoverThumbnail) {
-            return false
-        }
-        if (other.duration != duration) {
-            return false
-        }
-        if (other.title != title) {
-            return false
-        }
-        if (other.performer != performer) {
-            return false
-        }
         return other.caption == caption
     }
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + audio.hashCode()
-        hashCode = 31 * hashCode + albumCoverThumbnail.hashCode()
-        hashCode = 31 * hashCode + duration.hashCode()
-        hashCode = 31 * hashCode + title.hashCode()
-        hashCode = 31 * hashCode + performer.hashCode()
         hashCode = 31 * hashCode + caption.hashCode()
         return hashCode
     }
@@ -85,18 +61,6 @@ public class InputMessageAudio public constructor(
             append("(")
             append("audio=")
             append(audio)
-            append(", ")
-            append("albumCoverThumbnail=")
-            append(albumCoverThumbnail)
-            append(", ")
-            append("duration=")
-            append(duration)
-            append(", ")
-            append("title=")
-            append(title)
-            append(", ")
-            append("performer=")
-            append(performer)
             append(", ")
             append("caption=")
             append(caption)

@@ -33,6 +33,7 @@ import kotlin.String
  * @property totalVoterCount Total number of voters, participating in the poll.
  * @property recentVoterIds Identifiers of recent voters, if the poll is non-anonymous and poll results are available.
  * @property canGetVoters True, if the current user can get voters in the poll using getPollVoters.
+ * @property canSeeResults True, if the current user can see results of the poll.
  * @property isAnonymous True, if the poll is anonymous.
  * @property allowsMultipleAnswers True, if multiple answer options can be chosen simultaneously.
  * @property allowsRevoting True, if the poll can be answered multiple times.
@@ -52,6 +53,7 @@ public class Poll public constructor(
     public val totalVoterCount: Int,
     public val recentVoterIds: Array<MessageSender>,
     public val canGetVoters: Boolean,
+    public val canSeeResults: Boolean,
     public val isAnonymous: Boolean,
     public val allowsMultipleAnswers: Boolean,
     public val allowsRevoting: Boolean,
@@ -93,6 +95,9 @@ public class Poll public constructor(
             return false
         }
         if (other.canGetVoters != canGetVoters) {
+            return false
+        }
+        if (other.canSeeResults != canSeeResults) {
             return false
         }
         if (other.isAnonymous != isAnonymous) {
@@ -138,6 +143,7 @@ public class Poll public constructor(
         hashCode = 31 * hashCode + totalVoterCount.hashCode()
         hashCode = 31 * hashCode + recentVoterIds.contentDeepHashCode()
         hashCode = 31 * hashCode + canGetVoters.hashCode()
+        hashCode = 31 * hashCode + canSeeResults.hashCode()
         hashCode = 31 * hashCode + isAnonymous.hashCode()
         hashCode = 31 * hashCode + allowsMultipleAnswers.hashCode()
         hashCode = 31 * hashCode + allowsRevoting.hashCode()
@@ -177,6 +183,9 @@ public class Poll public constructor(
             append(", ")
             append("canGetVoters=")
             append(canGetVoters)
+            append(", ")
+            append("canSeeResults=")
+            append(canSeeResults)
             append(", ")
             append("isAnonymous=")
             append(isAnonymous)

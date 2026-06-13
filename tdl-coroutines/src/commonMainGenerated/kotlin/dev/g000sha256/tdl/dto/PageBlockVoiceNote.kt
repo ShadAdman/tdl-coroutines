@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@ import kotlin.String
  * A voice note.
  *
  * @property voiceNote Voice note; may be null.
- * @property caption Voice note caption.
+ * @property caption Voice note caption; may be null if none.
  */
 public class PageBlockVoiceNote public constructor(
     public val voiceNote: VoiceNote?,
-    public val caption: PageBlockCaption,
+    public val caption: PageBlockCaption?,
 ) : PageBlock() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {

@@ -27,7 +27,7 @@ import kotlin.String
  *
  * @property id Unique identifier of the option in the poll; may be empty if yet unassigned.
  * @property text Option text; 1-100 characters; may contain only custom emoji entities.
- * @property media Option media; may be null if none. If present, currently, can be only of the types messageAnimation, messageLocation, messagePhoto, messageSticker, messageVenue, or messageVideo without caption.
+ * @property media Option media; may be null if none. If present, currently, can be only of the types pollMediaAnimation, pollMediaLink, pollMediaLocation, pollMediaPhoto, pollMediaSticker, pollMediaVenue, or pollMediaVideo.
  * @property voterCount Number of voters for this option, available only for closed or voted polls, or if the current user is the creator of the poll.
  * @property votePercentage The percentage of votes for this option; 0-100.
  * @property recentVoterIds Identifiers of recent voters for the option, if the poll is non-anonymous and poll results are available.
@@ -39,7 +39,7 @@ import kotlin.String
 public class PollOption public constructor(
     public val id: String,
     public val text: FormattedText,
-    public val media: MessageContent?,
+    public val media: PollMedia?,
     public val voterCount: Int,
     public val votePercentage: Int,
     public val recentVoterIds: Array<MessageSender>,

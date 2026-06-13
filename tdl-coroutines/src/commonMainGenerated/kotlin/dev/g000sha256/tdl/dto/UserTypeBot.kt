@@ -34,6 +34,7 @@ import kotlin.String
  * @property isInline True, if the bot supports inline queries.
  * @property inlineQueryPlaceholder Placeholder for inline queries (displayed on the application input field).
  * @property supportsGuestQueries True, if the bot can be queried by username from any non-secret chat.
+ * @property isGuard True, if the bot can be set as a guard bot in supergroup chats.
  * @property needLocation True, if the location of the user is expected to be sent with every inline query to this bot.
  * @property canConnectToBusiness True, if the bot supports connection to user accounts for chat automation.
  * @property canBeAddedToAttachmentMenu True, if the bot can be added to attachment or side menu.
@@ -50,6 +51,7 @@ public class UserTypeBot public constructor(
     public val isInline: Boolean,
     public val inlineQueryPlaceholder: String,
     public val supportsGuestQueries: Boolean,
+    public val isGuard: Boolean,
     public val needLocation: Boolean,
     public val canConnectToBusiness: Boolean,
     public val canBeAddedToAttachmentMenu: Boolean,
@@ -96,6 +98,9 @@ public class UserTypeBot public constructor(
         if (other.supportsGuestQueries != supportsGuestQueries) {
             return false
         }
+        if (other.isGuard != isGuard) {
+            return false
+        }
         if (other.needLocation != needLocation) {
             return false
         }
@@ -120,6 +125,7 @@ public class UserTypeBot public constructor(
         hashCode = 31 * hashCode + isInline.hashCode()
         hashCode = 31 * hashCode + inlineQueryPlaceholder.hashCode()
         hashCode = 31 * hashCode + supportsGuestQueries.hashCode()
+        hashCode = 31 * hashCode + isGuard.hashCode()
         hashCode = 31 * hashCode + needLocation.hashCode()
         hashCode = 31 * hashCode + canConnectToBusiness.hashCode()
         hashCode = 31 * hashCode + canBeAddedToAttachmentMenu.hashCode()
@@ -160,6 +166,9 @@ public class UserTypeBot public constructor(
             append(", ")
             append("supportsGuestQueries=")
             append(supportsGuestQueries)
+            append(", ")
+            append("isGuard=")
+            append(isGuard)
             append(", ")
             append("needLocation=")
             append(needLocation)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,20 +19,19 @@ package dev.g000sha256.tdl.dto
 import kotlin.Any
 import kotlin.Boolean
 import kotlin.Int
-import kotlin.Long
 import kotlin.String
 
 /**
  * Contains information about an unconfirmed session.
  *
- * @property id Session identifier.
- * @property logInDate Point in time (Unix timestamp) when the user has logged in.
+ * @property type Session type.
+ * @property date Point in time (Unix timestamp) when the user has logged in or the business bot was connected.
  * @property deviceModel Model of the device that was used for the session creation, as provided by the application.
  * @property location A human-readable description of the location from which the session was created, based on the IP address.
  */
 public class UnconfirmedSession public constructor(
-    public val id: Long,
-    public val logInDate: Int,
+    public val type: SessionType,
+    public val date: Int,
     public val deviceModel: String,
     public val location: String,
 ) {
@@ -47,10 +46,10 @@ public class UnconfirmedSession public constructor(
             return false
         }
         other as UnconfirmedSession
-        if (other.id != id) {
+        if (other.type != type) {
             return false
         }
-        if (other.logInDate != logInDate) {
+        if (other.date != date) {
             return false
         }
         if (other.deviceModel != deviceModel) {
@@ -61,8 +60,8 @@ public class UnconfirmedSession public constructor(
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
-        hashCode = 31 * hashCode + id.hashCode()
-        hashCode = 31 * hashCode + logInDate.hashCode()
+        hashCode = 31 * hashCode + type.hashCode()
+        hashCode = 31 * hashCode + date.hashCode()
         hashCode = 31 * hashCode + deviceModel.hashCode()
         hashCode = 31 * hashCode + location.hashCode()
         return hashCode
@@ -72,11 +71,11 @@ public class UnconfirmedSession public constructor(
         return buildString {
             append("UnconfirmedSession")
             append("(")
-            append("id=")
-            append(id)
+            append("type=")
+            append(type)
             append(", ")
-            append("logInDate=")
-            append(logInDate)
+            append("date=")
+            append(date)
             append(", ")
             append("deviceModel=")
             append(deviceModel)

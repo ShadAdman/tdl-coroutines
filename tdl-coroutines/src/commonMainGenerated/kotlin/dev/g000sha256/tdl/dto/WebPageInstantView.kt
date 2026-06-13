@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import kotlin.String
 /**
  * Describes an instant view page for a web page.
  *
- * @property pageBlocks Content of the instant view page.
+ * @property blocks Content of the instant view page.
  * @property viewCount Number of the instant view views; 0 if unknown.
  * @property version Version of the instant view; currently, can be 1 or 2.
  * @property isRtl True, if the instant view must be shown from right to left.
@@ -33,7 +33,7 @@ import kotlin.String
  * @property feedbackLink An internal link to be opened to leave feedback about the instant view.
  */
 public class WebPageInstantView public constructor(
-    public val pageBlocks: Array<PageBlock>,
+    public val blocks: Array<PageBlock>,
     public val viewCount: Int,
     public val version: Int,
     public val isRtl: Boolean,
@@ -51,8 +51,8 @@ public class WebPageInstantView public constructor(
             return false
         }
         other as WebPageInstantView
-        val pageBlocksEquals = other.pageBlocks.contentDeepEquals(pageBlocks)
-        if (!pageBlocksEquals) {
+        val blocksEquals = other.blocks.contentDeepEquals(blocks)
+        if (!blocksEquals) {
             return false
         }
         if (other.viewCount != viewCount) {
@@ -72,7 +72,7 @@ public class WebPageInstantView public constructor(
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
-        hashCode = 31 * hashCode + pageBlocks.contentDeepHashCode()
+        hashCode = 31 * hashCode + blocks.contentDeepHashCode()
         hashCode = 31 * hashCode + viewCount.hashCode()
         hashCode = 31 * hashCode + version.hashCode()
         hashCode = 31 * hashCode + isRtl.hashCode()
@@ -85,8 +85,8 @@ public class WebPageInstantView public constructor(
         return buildString {
             append("WebPageInstantView")
             append("(")
-            append("pageBlocks=")
-            pageBlocks
+            append("blocks=")
+            blocks
                 .contentDeepToString()
                 .also { append(it) }
             append(", ")

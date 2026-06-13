@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,12 +29,14 @@ import kotlin.String
  * @property request Join request.
  * @property userChatId Chat identifier of the private chat with the user.
  * @property inviteLink The invite link, which was used to send join request; may be null.
+ * @property queryId Identifier of the join request query, which can be used in answerChatJoinRequestQuery; 0 if none.
  */
 public class UpdateNewChatJoinRequest public constructor(
     public val chatId: Long,
     public val request: ChatJoinRequest,
     public val userChatId: Long,
     public val inviteLink: ChatInviteLink?,
+    public val queryId: Long,
 ) : Update() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -56,7 +58,10 @@ public class UpdateNewChatJoinRequest public constructor(
         if (other.userChatId != userChatId) {
             return false
         }
-        return other.inviteLink == inviteLink
+        if (other.inviteLink != inviteLink) {
+            return false
+        }
+        return other.queryId == queryId
     }
 
     override fun hashCode(): Int {
@@ -65,6 +70,7 @@ public class UpdateNewChatJoinRequest public constructor(
         hashCode = 31 * hashCode + request.hashCode()
         hashCode = 31 * hashCode + userChatId.hashCode()
         hashCode = 31 * hashCode + inviteLink.hashCode()
+        hashCode = 31 * hashCode + queryId.hashCode()
         return hashCode
     }
 
@@ -83,6 +89,9 @@ public class UpdateNewChatJoinRequest public constructor(
             append(", ")
             append("inviteLink=")
             append(inviteLink)
+            append(", ")
+            append("queryId=")
+            append(queryId)
             append(")")
         }
     }

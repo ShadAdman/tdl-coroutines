@@ -156,6 +156,7 @@ import dev.g000sha256.tdl.dto.BusinessChatLink
 import dev.g000sha256.tdl.dto.BusinessChatLinkInfo
 import dev.g000sha256.tdl.dto.BusinessChatLinks
 import dev.g000sha256.tdl.dto.BusinessConnectedBot
+import dev.g000sha256.tdl.dto.BusinessConnectedBotInfo
 import dev.g000sha256.tdl.dto.BusinessConnection
 import dev.g000sha256.tdl.dto.BusinessFeature
 import dev.g000sha256.tdl.dto.BusinessFeatureAccountLinks
@@ -359,8 +360,17 @@ import dev.g000sha256.tdl.dto.ChatInviteLinkMembers
 import dev.g000sha256.tdl.dto.ChatInviteLinkSubscriptionInfo
 import dev.g000sha256.tdl.dto.ChatInviteLinks
 import dev.g000sha256.tdl.dto.ChatJoinRequest
+import dev.g000sha256.tdl.dto.ChatJoinRequestResult
+import dev.g000sha256.tdl.dto.ChatJoinRequestResultApproved
+import dev.g000sha256.tdl.dto.ChatJoinRequestResultDeclined
+import dev.g000sha256.tdl.dto.ChatJoinRequestResultQueued
 import dev.g000sha256.tdl.dto.ChatJoinRequests
 import dev.g000sha256.tdl.dto.ChatJoinRequestsInfo
+import dev.g000sha256.tdl.dto.ChatJoinResult
+import dev.g000sha256.tdl.dto.ChatJoinResultDeclined
+import dev.g000sha256.tdl.dto.ChatJoinResultGuardBotApprovalRequired
+import dev.g000sha256.tdl.dto.ChatJoinResultRequestSent
+import dev.g000sha256.tdl.dto.ChatJoinResultSuccess
 import dev.g000sha256.tdl.dto.ChatList
 import dev.g000sha256.tdl.dto.ChatListArchive
 import dev.g000sha256.tdl.dto.ChatListFolder
@@ -508,6 +518,11 @@ import dev.g000sha256.tdl.dto.DirectMessagesChatTopic
 import dev.g000sha256.tdl.dto.Document
 import dev.g000sha256.tdl.dto.DownloadedFileCounts
 import dev.g000sha256.tdl.dto.DraftMessage
+import dev.g000sha256.tdl.dto.DraftMessageContent
+import dev.g000sha256.tdl.dto.DraftMessageContentRichMessage
+import dev.g000sha256.tdl.dto.DraftMessageContentText
+import dev.g000sha256.tdl.dto.DraftMessageContentVideoNote
+import dev.g000sha256.tdl.dto.DraftMessageContentVoiceNote
 import dev.g000sha256.tdl.dto.EmailAddressAuthentication
 import dev.g000sha256.tdl.dto.EmailAddressAuthenticationAppleId
 import dev.g000sha256.tdl.dto.EmailAddressAuthenticationCode
@@ -702,6 +717,8 @@ import dev.g000sha256.tdl.dto.InlineQueryResultsButton
 import dev.g000sha256.tdl.dto.InlineQueryResultsButtonType
 import dev.g000sha256.tdl.dto.InlineQueryResultsButtonTypeStartBot
 import dev.g000sha256.tdl.dto.InlineQueryResultsButtonTypeWebApp
+import dev.g000sha256.tdl.dto.InputAnimation
+import dev.g000sha256.tdl.dto.InputAudio
 import dev.g000sha256.tdl.dto.InputBackground
 import dev.g000sha256.tdl.dto.InputBackgroundLocal
 import dev.g000sha256.tdl.dto.InputBackgroundPrevious
@@ -726,6 +743,7 @@ import dev.g000sha256.tdl.dto.InputCredentialsApplePay
 import dev.g000sha256.tdl.dto.InputCredentialsGooglePay
 import dev.g000sha256.tdl.dto.InputCredentialsNew
 import dev.g000sha256.tdl.dto.InputCredentialsSaved
+import dev.g000sha256.tdl.dto.InputDocument
 import dev.g000sha256.tdl.dto.InputFile
 import dev.g000sha256.tdl.dto.InputFileGenerated
 import dev.g000sha256.tdl.dto.InputFileId
@@ -762,6 +780,7 @@ import dev.g000sha256.tdl.dto.InputMessageDocument
 import dev.g000sha256.tdl.dto.InputMessageForwarded
 import dev.g000sha256.tdl.dto.InputMessageGame
 import dev.g000sha256.tdl.dto.InputMessageInvoice
+import dev.g000sha256.tdl.dto.InputMessageLiveLocation
 import dev.g000sha256.tdl.dto.InputMessageLocation
 import dev.g000sha256.tdl.dto.InputMessagePaidMedia
 import dev.g000sha256.tdl.dto.InputMessagePhoto
@@ -770,6 +789,7 @@ import dev.g000sha256.tdl.dto.InputMessageReplyTo
 import dev.g000sha256.tdl.dto.InputMessageReplyToExternalMessage
 import dev.g000sha256.tdl.dto.InputMessageReplyToMessage
 import dev.g000sha256.tdl.dto.InputMessageReplyToStory
+import dev.g000sha256.tdl.dto.InputMessageRichMessage
 import dev.g000sha256.tdl.dto.InputMessageStakeDice
 import dev.g000sha256.tdl.dto.InputMessageSticker
 import dev.g000sha256.tdl.dto.InputMessageStory
@@ -808,10 +828,22 @@ import dev.g000sha256.tdl.dto.InputPassportElementRentalAgreement
 import dev.g000sha256.tdl.dto.InputPassportElementTemporaryRegistration
 import dev.g000sha256.tdl.dto.InputPassportElementUtilityBill
 import dev.g000sha256.tdl.dto.InputPersonalDocument
+import dev.g000sha256.tdl.dto.InputPhoto
+import dev.g000sha256.tdl.dto.InputPollMedia
+import dev.g000sha256.tdl.dto.InputPollMediaAnimation
+import dev.g000sha256.tdl.dto.InputPollMediaAudio
+import dev.g000sha256.tdl.dto.InputPollMediaDocument
+import dev.g000sha256.tdl.dto.InputPollMediaLink
+import dev.g000sha256.tdl.dto.InputPollMediaLocation
+import dev.g000sha256.tdl.dto.InputPollMediaPhoto
+import dev.g000sha256.tdl.dto.InputPollMediaSticker
+import dev.g000sha256.tdl.dto.InputPollMediaVenue
+import dev.g000sha256.tdl.dto.InputPollMediaVideo
 import dev.g000sha256.tdl.dto.InputPollOption
 import dev.g000sha256.tdl.dto.InputPollType
 import dev.g000sha256.tdl.dto.InputPollTypeQuiz
 import dev.g000sha256.tdl.dto.InputPollTypeRegular
+import dev.g000sha256.tdl.dto.InputRichMessage
 import dev.g000sha256.tdl.dto.InputSticker
 import dev.g000sha256.tdl.dto.InputStoryArea
 import dev.g000sha256.tdl.dto.InputStoryAreaType
@@ -830,6 +862,7 @@ import dev.g000sha256.tdl.dto.InputStoryContentVideo
 import dev.g000sha256.tdl.dto.InputSuggestedPostInfo
 import dev.g000sha256.tdl.dto.InputTextQuote
 import dev.g000sha256.tdl.dto.InputThumbnail
+import dev.g000sha256.tdl.dto.InputVideo
 import dev.g000sha256.tdl.dto.InternalLinkType
 import dev.g000sha256.tdl.dto.InternalLinkTypeAttachmentMenuBot
 import dev.g000sha256.tdl.dto.InternalLinkTypeAuthenticationCode
@@ -973,6 +1006,7 @@ import dev.g000sha256.tdl.dto.LinkPreviewTypeVideoChat
 import dev.g000sha256.tdl.dto.LinkPreviewTypeVideoNote
 import dev.g000sha256.tdl.dto.LinkPreviewTypeVoiceNote
 import dev.g000sha256.tdl.dto.LinkPreviewTypeWebApp
+import dev.g000sha256.tdl.dto.LiveLocation
 import dev.g000sha256.tdl.dto.LiveStoryDonors
 import dev.g000sha256.tdl.dto.LocalFile
 import dev.g000sha256.tdl.dto.LocalizationTargetInfo
@@ -1068,6 +1102,7 @@ import dev.g000sha256.tdl.dto.MessageInviteVideoChatParticipants
 import dev.g000sha256.tdl.dto.MessageInvoice
 import dev.g000sha256.tdl.dto.MessageLink
 import dev.g000sha256.tdl.dto.MessageLinkInfo
+import dev.g000sha256.tdl.dto.MessageLiveLocation
 import dev.g000sha256.tdl.dto.MessageLocation
 import dev.g000sha256.tdl.dto.MessageManagedBotCreated
 import dev.g000sha256.tdl.dto.MessageOrigin
@@ -1106,6 +1141,7 @@ import dev.g000sha256.tdl.dto.MessageReplyInfo
 import dev.g000sha256.tdl.dto.MessageReplyTo
 import dev.g000sha256.tdl.dto.MessageReplyToMessage
 import dev.g000sha256.tdl.dto.MessageReplyToStory
+import dev.g000sha256.tdl.dto.MessageRichMessage
 import dev.g000sha256.tdl.dto.MessageSchedulingState
 import dev.g000sha256.tdl.dto.MessageSchedulingStateSendAtDate
 import dev.g000sha256.tdl.dto.MessageSchedulingStateSendWhenOnline
@@ -1233,17 +1269,20 @@ import dev.g000sha256.tdl.dto.PageBlockKicker
 import dev.g000sha256.tdl.dto.PageBlockList
 import dev.g000sha256.tdl.dto.PageBlockListItem
 import dev.g000sha256.tdl.dto.PageBlockMap
+import dev.g000sha256.tdl.dto.PageBlockMathematicalExpression
 import dev.g000sha256.tdl.dto.PageBlockParagraph
 import dev.g000sha256.tdl.dto.PageBlockPhoto
 import dev.g000sha256.tdl.dto.PageBlockPreformatted
 import dev.g000sha256.tdl.dto.PageBlockPullQuote
 import dev.g000sha256.tdl.dto.PageBlockRelatedArticle
 import dev.g000sha256.tdl.dto.PageBlockRelatedArticles
+import dev.g000sha256.tdl.dto.PageBlockSectionHeading
 import dev.g000sha256.tdl.dto.PageBlockSlideshow
 import dev.g000sha256.tdl.dto.PageBlockSubheader
 import dev.g000sha256.tdl.dto.PageBlockSubtitle
 import dev.g000sha256.tdl.dto.PageBlockTable
 import dev.g000sha256.tdl.dto.PageBlockTableCell
+import dev.g000sha256.tdl.dto.PageBlockThinking
 import dev.g000sha256.tdl.dto.PageBlockTitle
 import dev.g000sha256.tdl.dto.PageBlockVerticalAlignment
 import dev.g000sha256.tdl.dto.PageBlockVerticalAlignmentBottom
@@ -1335,6 +1374,16 @@ import dev.g000sha256.tdl.dto.Photo
 import dev.g000sha256.tdl.dto.PhotoSize
 import dev.g000sha256.tdl.dto.Point
 import dev.g000sha256.tdl.dto.Poll
+import dev.g000sha256.tdl.dto.PollMedia
+import dev.g000sha256.tdl.dto.PollMediaAnimation
+import dev.g000sha256.tdl.dto.PollMediaAudio
+import dev.g000sha256.tdl.dto.PollMediaDocument
+import dev.g000sha256.tdl.dto.PollMediaLink
+import dev.g000sha256.tdl.dto.PollMediaLocation
+import dev.g000sha256.tdl.dto.PollMediaPhoto
+import dev.g000sha256.tdl.dto.PollMediaSticker
+import dev.g000sha256.tdl.dto.PollMediaVenue
+import dev.g000sha256.tdl.dto.PollMediaVideo
 import dev.g000sha256.tdl.dto.PollOption
 import dev.g000sha256.tdl.dto.PollOptionProperties
 import dev.g000sha256.tdl.dto.PollType
@@ -1397,6 +1446,7 @@ import dev.g000sha256.tdl.dto.PremiumLimitTypeChatFolderInviteLinkCount
 import dev.g000sha256.tdl.dto.PremiumLimitTypeCreatedPublicChatCount
 import dev.g000sha256.tdl.dto.PremiumLimitTypeCustomTextCompositionStyleCount
 import dev.g000sha256.tdl.dto.PremiumLimitTypeFavoriteStickerCount
+import dev.g000sha256.tdl.dto.PremiumLimitTypeMessageTextLength
 import dev.g000sha256.tdl.dto.PremiumLimitTypeMonthlyPostedStoryCount
 import dev.g000sha256.tdl.dto.PremiumLimitTypeOwnedBotCount
 import dev.g000sha256.tdl.dto.PremiumLimitTypePinnedArchivedChatCount
@@ -1571,18 +1621,33 @@ import dev.g000sha256.tdl.dto.RevenueWithdrawalState
 import dev.g000sha256.tdl.dto.RevenueWithdrawalStateFailed
 import dev.g000sha256.tdl.dto.RevenueWithdrawalStatePending
 import dev.g000sha256.tdl.dto.RevenueWithdrawalStateSucceeded
+import dev.g000sha256.tdl.dto.RichMessage
+import dev.g000sha256.tdl.dto.RichMessageSource
+import dev.g000sha256.tdl.dto.RichMessageSourceHtml
+import dev.g000sha256.tdl.dto.RichMessageSourceMarkdown
 import dev.g000sha256.tdl.dto.RichText
 import dev.g000sha256.tdl.dto.RichTextAnchor
 import dev.g000sha256.tdl.dto.RichTextAnchorLink
+import dev.g000sha256.tdl.dto.RichTextBankCardNumber
 import dev.g000sha256.tdl.dto.RichTextBold
+import dev.g000sha256.tdl.dto.RichTextBotCommand
+import dev.g000sha256.tdl.dto.RichTextCashtag
+import dev.g000sha256.tdl.dto.RichTextCustomEmoji
+import dev.g000sha256.tdl.dto.RichTextDateTime
 import dev.g000sha256.tdl.dto.RichTextEmailAddress
 import dev.g000sha256.tdl.dto.RichTextFixed
+import dev.g000sha256.tdl.dto.RichTextHashtag
 import dev.g000sha256.tdl.dto.RichTextIcon
 import dev.g000sha256.tdl.dto.RichTextItalic
 import dev.g000sha256.tdl.dto.RichTextMarked
+import dev.g000sha256.tdl.dto.RichTextMathematicalExpression
+import dev.g000sha256.tdl.dto.RichTextMention
+import dev.g000sha256.tdl.dto.RichTextMentionName
 import dev.g000sha256.tdl.dto.RichTextPhoneNumber
 import dev.g000sha256.tdl.dto.RichTextPlain
 import dev.g000sha256.tdl.dto.RichTextReference
+import dev.g000sha256.tdl.dto.RichTextReferenceLink
+import dev.g000sha256.tdl.dto.RichTextSpoiler
 import dev.g000sha256.tdl.dto.RichTextStrikethrough
 import dev.g000sha256.tdl.dto.RichTextSubscript
 import dev.g000sha256.tdl.dto.RichTextSuperscript
@@ -1600,6 +1665,9 @@ import dev.g000sha256.tdl.dto.SavedMessagesTopicTypeMyNotes
 import dev.g000sha256.tdl.dto.SavedMessagesTopicTypeSavedFromChat
 import dev.g000sha256.tdl.dto.ScopeAutosaveSettings
 import dev.g000sha256.tdl.dto.ScopeNotificationSettings
+import dev.g000sha256.tdl.dto.SearchChatTypeFilter
+import dev.g000sha256.tdl.dto.SearchChatTypeFilterBot
+import dev.g000sha256.tdl.dto.SearchChatTypeFilterChannel
 import dev.g000sha256.tdl.dto.SearchMessagesChatTypeFilter
 import dev.g000sha256.tdl.dto.SearchMessagesChatTypeFilterChannel
 import dev.g000sha256.tdl.dto.SearchMessagesChatTypeFilterGroup
@@ -1634,24 +1702,27 @@ import dev.g000sha256.tdl.dto.SentGift
 import dev.g000sha256.tdl.dto.SentGiftRegular
 import dev.g000sha256.tdl.dto.SentGiftUpgraded
 import dev.g000sha256.tdl.dto.Session
+import dev.g000sha256.tdl.dto.SessionDeviceType
+import dev.g000sha256.tdl.dto.SessionDeviceTypeAndroid
+import dev.g000sha256.tdl.dto.SessionDeviceTypeApple
+import dev.g000sha256.tdl.dto.SessionDeviceTypeBrave
+import dev.g000sha256.tdl.dto.SessionDeviceTypeChrome
+import dev.g000sha256.tdl.dto.SessionDeviceTypeEdge
+import dev.g000sha256.tdl.dto.SessionDeviceTypeFirefox
+import dev.g000sha256.tdl.dto.SessionDeviceTypeIpad
+import dev.g000sha256.tdl.dto.SessionDeviceTypeIphone
+import dev.g000sha256.tdl.dto.SessionDeviceTypeLinux
+import dev.g000sha256.tdl.dto.SessionDeviceTypeMac
+import dev.g000sha256.tdl.dto.SessionDeviceTypeOpera
+import dev.g000sha256.tdl.dto.SessionDeviceTypeSafari
+import dev.g000sha256.tdl.dto.SessionDeviceTypeUbuntu
+import dev.g000sha256.tdl.dto.SessionDeviceTypeUnknown
+import dev.g000sha256.tdl.dto.SessionDeviceTypeVivaldi
+import dev.g000sha256.tdl.dto.SessionDeviceTypeWindows
+import dev.g000sha256.tdl.dto.SessionDeviceTypeXbox
 import dev.g000sha256.tdl.dto.SessionType
-import dev.g000sha256.tdl.dto.SessionTypeAndroid
-import dev.g000sha256.tdl.dto.SessionTypeApple
-import dev.g000sha256.tdl.dto.SessionTypeBrave
-import dev.g000sha256.tdl.dto.SessionTypeChrome
-import dev.g000sha256.tdl.dto.SessionTypeEdge
-import dev.g000sha256.tdl.dto.SessionTypeFirefox
-import dev.g000sha256.tdl.dto.SessionTypeIpad
-import dev.g000sha256.tdl.dto.SessionTypeIphone
-import dev.g000sha256.tdl.dto.SessionTypeLinux
-import dev.g000sha256.tdl.dto.SessionTypeMac
-import dev.g000sha256.tdl.dto.SessionTypeOpera
-import dev.g000sha256.tdl.dto.SessionTypeSafari
-import dev.g000sha256.tdl.dto.SessionTypeUbuntu
-import dev.g000sha256.tdl.dto.SessionTypeUnknown
-import dev.g000sha256.tdl.dto.SessionTypeVivaldi
-import dev.g000sha256.tdl.dto.SessionTypeWindows
-import dev.g000sha256.tdl.dto.SessionTypeXbox
+import dev.g000sha256.tdl.dto.SessionTypeConnectedBot
+import dev.g000sha256.tdl.dto.SessionTypeDevice
 import dev.g000sha256.tdl.dto.Sessions
 import dev.g000sha256.tdl.dto.SettingsSection
 import dev.g000sha256.tdl.dto.SettingsSectionAppearance
@@ -2021,6 +2092,7 @@ import dev.g000sha256.tdl.dto.UpdateChatHasProtectedContent
 import dev.g000sha256.tdl.dto.UpdateChatHasScheduledMessages
 import dev.g000sha256.tdl.dto.UpdateChatIsMarkedAsUnread
 import dev.g000sha256.tdl.dto.UpdateChatIsTranslatable
+import dev.g000sha256.tdl.dto.UpdateChatJoinResult
 import dev.g000sha256.tdl.dto.UpdateChatLastMessage
 import dev.g000sha256.tdl.dto.UpdateChatMember
 import dev.g000sha256.tdl.dto.UpdateChatMessageAutoDeleteTime
@@ -2116,7 +2188,7 @@ import dev.g000sha256.tdl.dto.UpdateOption
 import dev.g000sha256.tdl.dto.UpdateOwnedStarCount
 import dev.g000sha256.tdl.dto.UpdateOwnedTonCount
 import dev.g000sha256.tdl.dto.UpdatePaidMediaPurchased
-import dev.g000sha256.tdl.dto.UpdatePendingTextMessage
+import dev.g000sha256.tdl.dto.UpdatePendingMessage
 import dev.g000sha256.tdl.dto.UpdatePoll
 import dev.g000sha256.tdl.dto.UpdatePollAnswer
 import dev.g000sha256.tdl.dto.UpdateProfileAccentColors
@@ -2163,6 +2235,7 @@ import dev.g000sha256.tdl.dto.UpdateUserPrivacySettingRules
 import dev.g000sha256.tdl.dto.UpdateUserStatus
 import dev.g000sha256.tdl.dto.UpdateVideoPublished
 import dev.g000sha256.tdl.dto.UpdateWebAppMessageSent
+import dev.g000sha256.tdl.dto.UpdateWebBrowserSettings
 import dev.g000sha256.tdl.dto.Updates
 import dev.g000sha256.tdl.dto.UpgradeGiftResult
 import dev.g000sha256.tdl.dto.UpgradedGift
@@ -2262,6 +2335,12 @@ import dev.g000sha256.tdl.dto.WebAppOpenModeCompact
 import dev.g000sha256.tdl.dto.WebAppOpenModeFullScreen
 import dev.g000sha256.tdl.dto.WebAppOpenModeFullSize
 import dev.g000sha256.tdl.dto.WebAppOpenParameters
+import dev.g000sha256.tdl.dto.WebAppUrl
+import dev.g000sha256.tdl.dto.WebBrowserSettings
+import dev.g000sha256.tdl.dto.WebBrowserType
+import dev.g000sha256.tdl.dto.WebBrowserTypeExternal
+import dev.g000sha256.tdl.dto.WebBrowserTypeInApp
+import dev.g000sha256.tdl.dto.WebDomainException
 import dev.g000sha256.tdl.dto.WebPageInstantView
 import dev.g000sha256.tdl.function.AcceptCall
 import dev.g000sha256.tdl.function.AcceptOauthRequest
@@ -2299,9 +2378,11 @@ import dev.g000sha256.tdl.function.AddSavedNotificationSound
 import dev.g000sha256.tdl.function.AddStickerToSet
 import dev.g000sha256.tdl.function.AddStoryAlbumStories
 import dev.g000sha256.tdl.function.AddTextCompositionStyle
+import dev.g000sha256.tdl.function.AddWebBrowserSettingsException
 import dev.g000sha256.tdl.function.AllowBotToSendMessages
 import dev.g000sha256.tdl.function.AllowUnpaidMessagesFromUser
 import dev.g000sha256.tdl.function.AnswerCallbackQuery
+import dev.g000sha256.tdl.function.AnswerChatJoinRequestQuery
 import dev.g000sha256.tdl.function.AnswerCustomQuery
 import dev.g000sha256.tdl.function.AnswerGuestQuery
 import dev.g000sha256.tdl.function.AnswerInlineQuery
@@ -2328,6 +2409,7 @@ import dev.g000sha256.tdl.function.CancelPreliminaryUploadFile
 import dev.g000sha256.tdl.function.CancelRecoveryEmailAddressVerification
 import dev.g000sha256.tdl.function.ChangeImportedContacts
 import dev.g000sha256.tdl.function.ChangeStickerSet
+import dev.g000sha256.tdl.function.ChangeWebBrowserSettings
 import dev.g000sha256.tdl.function.CheckAuthenticationBotToken
 import dev.g000sha256.tdl.function.CheckAuthenticationCode
 import dev.g000sha256.tdl.function.CheckAuthenticationEmailCode
@@ -2335,6 +2417,7 @@ import dev.g000sha256.tdl.function.CheckAuthenticationPasskey
 import dev.g000sha256.tdl.function.CheckAuthenticationPassword
 import dev.g000sha256.tdl.function.CheckAuthenticationPasswordRecoveryCode
 import dev.g000sha256.tdl.function.CheckAuthenticationPremiumPurchase
+import dev.g000sha256.tdl.function.CheckAuthenticationWebToken
 import dev.g000sha256.tdl.function.CheckBotUsername
 import dev.g000sha256.tdl.function.CheckChatFolderInviteLink
 import dev.g000sha256.tdl.function.CheckChatInviteLink
@@ -2372,6 +2455,7 @@ import dev.g000sha256.tdl.function.CloseWebApp
 import dev.g000sha256.tdl.function.CommitPendingLiveStoryReactions
 import dev.g000sha256.tdl.function.CommitPendingPaidMessageReactions
 import dev.g000sha256.tdl.function.ComposeTextWithAi
+import dev.g000sha256.tdl.function.ConfirmBusinessConnectedBot
 import dev.g000sha256.tdl.function.ConfirmQrCodeAuthentication
 import dev.g000sha256.tdl.function.ConfirmSession
 import dev.g000sha256.tdl.function.ConnectAffiliateProgram
@@ -2591,6 +2675,7 @@ import dev.g000sha256.tdl.function.GetConnectedAffiliatePrograms
 import dev.g000sha256.tdl.function.GetConnectedWebsites
 import dev.g000sha256.tdl.function.GetContacts
 import dev.g000sha256.tdl.function.GetCountries
+import dev.g000sha256.tdl.function.GetCountry
 import dev.g000sha256.tdl.function.GetCountryCode
 import dev.g000sha256.tdl.function.GetCountryFlagEmoji
 import dev.g000sha256.tdl.function.GetCreatedPublicChats
@@ -2626,6 +2711,7 @@ import dev.g000sha256.tdl.function.GetForumTopicDefaultIcons
 import dev.g000sha256.tdl.function.GetForumTopicHistory
 import dev.g000sha256.tdl.function.GetForumTopicLink
 import dev.g000sha256.tdl.function.GetForumTopics
+import dev.g000sha256.tdl.function.GetFullRichMessage
 import dev.g000sha256.tdl.function.GetGameHighScores
 import dev.g000sha256.tdl.function.GetGiftAuctionAcquiredGifts
 import dev.g000sha256.tdl.function.GetGiftAuctionState
@@ -2656,6 +2742,7 @@ import dev.g000sha256.tdl.function.GetLanguagePackInfo
 import dev.g000sha256.tdl.function.GetLanguagePackString
 import dev.g000sha256.tdl.function.GetLanguagePackStrings
 import dev.g000sha256.tdl.function.GetLinkPreview
+import dev.g000sha256.tdl.function.GetLinkWebBrowserType
 import dev.g000sha256.tdl.function.GetLiveStoryAvailableMessageSenders
 import dev.g000sha256.tdl.function.GetLiveStoryRtmpUrl
 import dev.g000sha256.tdl.function.GetLiveStoryStreamer
@@ -2889,6 +2976,7 @@ import dev.g000sha256.tdl.function.RefundStarPayment
 import dev.g000sha256.tdl.function.RegisterDevice
 import dev.g000sha256.tdl.function.RegisterUser
 import dev.g000sha256.tdl.function.RemoveAllFilesFromDownloads
+import dev.g000sha256.tdl.function.RemoveAllWebBrowserSettingsExceptions
 import dev.g000sha256.tdl.function.RemoveBusinessConnectedBotFromChat
 import dev.g000sha256.tdl.function.RemoveChatActionBar
 import dev.g000sha256.tdl.function.RemoveContacts
@@ -2915,6 +3003,7 @@ import dev.g000sha256.tdl.function.RemoveStickerFromSet
 import dev.g000sha256.tdl.function.RemoveStoryAlbumStories
 import dev.g000sha256.tdl.function.RemoveTextCompositionStyle
 import dev.g000sha256.tdl.function.RemoveTopChat
+import dev.g000sha256.tdl.function.RemoveWebBrowserSettingsException
 import dev.g000sha256.tdl.function.ReorderActiveUsernames
 import dev.g000sha256.tdl.function.ReorderBotActiveUsernames
 import dev.g000sha256.tdl.function.ReorderBotMediaPreviews
@@ -3022,6 +3111,7 @@ import dev.g000sha256.tdl.function.SendPhoneNumberCode
 import dev.g000sha256.tdl.function.SendPhoneNumberFirebaseSms
 import dev.g000sha256.tdl.function.SendQuickReplyShortcutMessages
 import dev.g000sha256.tdl.function.SendResoldGift
+import dev.g000sha256.tdl.function.SendRichMessageDraft
 import dev.g000sha256.tdl.function.SendTextMessageDraft
 import dev.g000sha256.tdl.function.SendWebAppCustomRequest
 import dev.g000sha256.tdl.function.SendWebAppData
@@ -3301,9 +3391,11 @@ internal class TdlSerializer internal constructor() {
             is AddStickerToSet -> return serialize(requestId = requestId, function = function)
             is AddStoryAlbumStories -> return serialize(requestId = requestId, function = function)
             is AddTextCompositionStyle -> return serialize(requestId = requestId, function = function)
+            is AddWebBrowserSettingsException -> return serialize(requestId = requestId, function = function)
             is AllowBotToSendMessages -> return serialize(requestId = requestId, function = function)
             is AllowUnpaidMessagesFromUser -> return serialize(requestId = requestId, function = function)
             is AnswerCallbackQuery -> return serialize(requestId = requestId, function = function)
+            is AnswerChatJoinRequestQuery -> return serialize(requestId = requestId, function = function)
             is AnswerCustomQuery -> return serialize(requestId = requestId, function = function)
             is AnswerGuestQuery -> return serialize(requestId = requestId, function = function)
             is AnswerInlineQuery -> return serialize(requestId = requestId, function = function)
@@ -3330,6 +3422,7 @@ internal class TdlSerializer internal constructor() {
             is CancelRecoveryEmailAddressVerification -> return serialize(requestId = requestId, function = function)
             is ChangeImportedContacts -> return serialize(requestId = requestId, function = function)
             is ChangeStickerSet -> return serialize(requestId = requestId, function = function)
+            is ChangeWebBrowserSettings -> return serialize(requestId = requestId, function = function)
             is CheckAuthenticationBotToken -> return serialize(requestId = requestId, function = function)
             is CheckAuthenticationCode -> return serialize(requestId = requestId, function = function)
             is CheckAuthenticationEmailCode -> return serialize(requestId = requestId, function = function)
@@ -3337,6 +3430,7 @@ internal class TdlSerializer internal constructor() {
             is CheckAuthenticationPassword -> return serialize(requestId = requestId, function = function)
             is CheckAuthenticationPasswordRecoveryCode -> return serialize(requestId = requestId, function = function)
             is CheckAuthenticationPremiumPurchase -> return serialize(requestId = requestId, function = function)
+            is CheckAuthenticationWebToken -> return serialize(requestId = requestId, function = function)
             is CheckBotUsername -> return serialize(requestId = requestId, function = function)
             is CheckChatFolderInviteLink -> return serialize(requestId = requestId, function = function)
             is CheckChatInviteLink -> return serialize(requestId = requestId, function = function)
@@ -3374,6 +3468,7 @@ internal class TdlSerializer internal constructor() {
             is CommitPendingLiveStoryReactions -> return serialize(requestId = requestId, function = function)
             is CommitPendingPaidMessageReactions -> return serialize(requestId = requestId, function = function)
             is ComposeTextWithAi -> return serialize(requestId = requestId, function = function)
+            is ConfirmBusinessConnectedBot -> return serialize(requestId = requestId, function = function)
             is ConfirmQrCodeAuthentication -> return serialize(requestId = requestId, function = function)
             is ConfirmSession -> return serialize(requestId = requestId, function = function)
             is ConnectAffiliateProgram -> return serialize(requestId = requestId, function = function)
@@ -3593,6 +3688,7 @@ internal class TdlSerializer internal constructor() {
             is GetConnectedWebsites -> return serialize(requestId = requestId, function = function)
             is GetContacts -> return serialize(requestId = requestId, function = function)
             is GetCountries -> return serialize(requestId = requestId, function = function)
+            is GetCountry -> return serialize(requestId = requestId, function = function)
             is GetCountryCode -> return serialize(requestId = requestId, function = function)
             is GetCountryFlagEmoji -> return serialize(requestId = requestId, function = function)
             is GetCreatedPublicChats -> return serialize(requestId = requestId, function = function)
@@ -3628,6 +3724,7 @@ internal class TdlSerializer internal constructor() {
             is GetForumTopicHistory -> return serialize(requestId = requestId, function = function)
             is GetForumTopicLink -> return serialize(requestId = requestId, function = function)
             is GetForumTopics -> return serialize(requestId = requestId, function = function)
+            is GetFullRichMessage -> return serialize(requestId = requestId, function = function)
             is GetGameHighScores -> return serialize(requestId = requestId, function = function)
             is GetGiftAuctionAcquiredGifts -> return serialize(requestId = requestId, function = function)
             is GetGiftAuctionState -> return serialize(requestId = requestId, function = function)
@@ -3658,6 +3755,7 @@ internal class TdlSerializer internal constructor() {
             is GetLanguagePackString -> return serialize(requestId = requestId, function = function)
             is GetLanguagePackStrings -> return serialize(requestId = requestId, function = function)
             is GetLinkPreview -> return serialize(requestId = requestId, function = function)
+            is GetLinkWebBrowserType -> return serialize(requestId = requestId, function = function)
             is GetLiveStoryAvailableMessageSenders -> return serialize(requestId = requestId, function = function)
             is GetLiveStoryRtmpUrl -> return serialize(requestId = requestId, function = function)
             is GetLiveStoryStreamer -> return serialize(requestId = requestId, function = function)
@@ -3891,6 +3989,7 @@ internal class TdlSerializer internal constructor() {
             is RegisterDevice -> return serialize(requestId = requestId, function = function)
             is RegisterUser -> return serialize(requestId = requestId, function = function)
             is RemoveAllFilesFromDownloads -> return serialize(requestId = requestId, function = function)
+            is RemoveAllWebBrowserSettingsExceptions -> return serialize(requestId = requestId, function = function)
             is RemoveBusinessConnectedBotFromChat -> return serialize(requestId = requestId, function = function)
             is RemoveChatActionBar -> return serialize(requestId = requestId, function = function)
             is RemoveContacts -> return serialize(requestId = requestId, function = function)
@@ -3917,6 +4016,7 @@ internal class TdlSerializer internal constructor() {
             is RemoveStoryAlbumStories -> return serialize(requestId = requestId, function = function)
             is RemoveTextCompositionStyle -> return serialize(requestId = requestId, function = function)
             is RemoveTopChat -> return serialize(requestId = requestId, function = function)
+            is RemoveWebBrowserSettingsException -> return serialize(requestId = requestId, function = function)
             is ReorderActiveUsernames -> return serialize(requestId = requestId, function = function)
             is ReorderBotActiveUsernames -> return serialize(requestId = requestId, function = function)
             is ReorderBotMediaPreviews -> return serialize(requestId = requestId, function = function)
@@ -4024,6 +4124,7 @@ internal class TdlSerializer internal constructor() {
             is SendPhoneNumberFirebaseSms -> return serialize(requestId = requestId, function = function)
             is SendQuickReplyShortcutMessages -> return serialize(requestId = requestId, function = function)
             is SendResoldGift -> return serialize(requestId = requestId, function = function)
+            is SendRichMessageDraft -> return serialize(requestId = requestId, function = function)
             is SendTextMessageDraft -> return serialize(requestId = requestId, function = function)
             is SendWebAppCustomRequest -> return serialize(requestId = requestId, function = function)
             is SendWebAppData -> return serialize(requestId = requestId, function = function)
@@ -4602,6 +4703,15 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(requestId: Long, function: AddWebBrowserSettingsException): String {
+        return buildJsonObjectString {
+            put(key = "@type", string = "addWebBrowserSettingsException")
+            put(key = "@extra", long = requestId)
+            put(key = "open_external_browser", boolean = function.openExternalBrowser)
+            put(key = "url", string = function.url)
+        }
+    }
+
     private fun serialize(requestId: Long, function: AllowBotToSendMessages): String {
         return buildJsonObjectString {
             put(key = "@type", string = "allowBotToSendMessages")
@@ -4628,6 +4738,16 @@ internal class TdlSerializer internal constructor() {
             put(key = "show_alert", boolean = function.showAlert)
             put(key = "url", string = function.url)
             put(key = "cache_time", int = function.cacheTime)
+        }
+    }
+
+    private fun serialize(requestId: Long, function: AnswerChatJoinRequestQuery): String {
+        return buildJsonObjectString {
+            put(key = "@type", string = "answerChatJoinRequestQuery")
+            put(key = "@extra", long = requestId)
+            put(key = "query_id", long = function.queryId)
+            put(key = "result", value = function.result) { data -> serialize(dto = data) }
+            put(key = "url", string = function.url)
         }
     }
 
@@ -4864,6 +4984,15 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(requestId: Long, function: ChangeWebBrowserSettings): String {
+        return buildJsonObjectString {
+            put(key = "@type", string = "changeWebBrowserSettings")
+            put(key = "@extra", long = requestId)
+            put(key = "open_external_browser", boolean = function.openExternalBrowser)
+            put(key = "display_close_button", boolean = function.displayCloseButton)
+        }
+    }
+
     private fun serialize(requestId: Long, function: CheckAuthenticationBotToken): String {
         return buildJsonObjectString {
             put(key = "@type", string = "checkAuthenticationBotToken")
@@ -4923,6 +5052,15 @@ internal class TdlSerializer internal constructor() {
             put(key = "premium_day_count", int = function.premiumDayCount)
             put(key = "currency", string = function.currency)
             put(key = "amount", long = function.amount)
+        }
+    }
+
+    private fun serialize(requestId: Long, function: CheckAuthenticationWebToken): String {
+        return buildJsonObjectString {
+            put(key = "@type", string = "checkAuthenticationWebToken")
+            put(key = "@extra", long = requestId)
+            put(key = "token", string = function.token)
+            put(key = "dc_id", int = function.dcId)
         }
     }
 
@@ -5225,6 +5363,14 @@ internal class TdlSerializer internal constructor() {
             put(key = "translate_to_language_code", string = function.translateToLanguageCode)
             put(key = "style_name", string = function.styleName)
             put(key = "add_emojis", boolean = function.addEmojis)
+        }
+    }
+
+    private fun serialize(requestId: Long, function: ConfirmBusinessConnectedBot): String {
+        return buildJsonObjectString {
+            put(key = "@type", string = "confirmBusinessConnectedBot")
+            put(key = "@extra", long = requestId)
+            put(key = "bot_user_id", long = function.botUserId)
         }
     }
 
@@ -6044,9 +6190,6 @@ internal class TdlSerializer internal constructor() {
             put(key = "message_id", long = function.messageId)
             put(key = "reply_markup", value = function.replyMarkup) { data -> serialize(dto = data) }
             put(key = "location", value = function.location) { data -> serialize(dto = data) }
-            put(key = "live_period", int = function.livePeriod)
-            put(key = "heading", int = function.heading)
-            put(key = "proximity_alert_radius", int = function.proximityAlertRadius)
         }
     }
 
@@ -6179,9 +6322,6 @@ internal class TdlSerializer internal constructor() {
             put(key = "inline_message_id", string = function.inlineMessageId)
             put(key = "reply_markup", value = function.replyMarkup) { data -> serialize(dto = data) }
             put(key = "location", value = function.location) { data -> serialize(dto = data) }
-            put(key = "live_period", int = function.livePeriod)
-            put(key = "heading", int = function.heading)
-            put(key = "proximity_alert_radius", int = function.proximityAlertRadius)
         }
     }
 
@@ -6245,9 +6385,6 @@ internal class TdlSerializer internal constructor() {
             put(key = "message_id", long = function.messageId)
             put(key = "reply_markup", value = function.replyMarkup) { data -> serialize(dto = data) }
             put(key = "location", value = function.location) { data -> serialize(dto = data) }
-            put(key = "live_period", int = function.livePeriod)
-            put(key = "heading", int = function.heading)
-            put(key = "proximity_alert_radius", int = function.proximityAlertRadius)
         }
     }
 
@@ -7255,6 +7392,14 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(requestId: Long, function: GetCountry): String {
+        return buildJsonObjectString {
+            put(key = "@type", string = "getCountry")
+            put(key = "@extra", long = requestId)
+            put(key = "country_code", string = function.countryCode)
+        }
+    }
+
     private fun serialize(requestId: Long, function: GetCountryCode): String {
         return buildJsonObjectString {
             put(key = "@type", string = "getCountryCode")
@@ -7543,6 +7688,15 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(requestId: Long, function: GetFullRichMessage): String {
+        return buildJsonObjectString {
+            put(key = "@type", string = "getFullRichMessage")
+            put(key = "@extra", long = requestId)
+            put(key = "chat_id", long = function.chatId)
+            put(key = "message_id", long = function.messageId)
+        }
+    }
+
     private fun serialize(requestId: Long, function: GetGameHighScores): String {
         return buildJsonObjectString {
             put(key = "@type", string = "getGameHighScores")
@@ -7803,6 +7957,14 @@ internal class TdlSerializer internal constructor() {
             put(key = "@extra", long = requestId)
             put(key = "text", value = function.text) { data -> serialize(dto = data) }
             put(key = "link_preview_options", value = function.linkPreviewOptions) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(requestId: Long, function: GetLinkWebBrowserType): String {
+        return buildJsonObjectString {
+            put(key = "@type", string = "getLinkWebBrowserType")
+            put(key = "@extra", long = requestId)
+            put(key = "link", string = function.link)
         }
     }
 
@@ -9866,6 +10028,13 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(requestId: Long, function: RemoveAllWebBrowserSettingsExceptions): String {
+        return buildJsonObjectString {
+            put(key = "@type", string = "removeAllWebBrowserSettingsExceptions")
+            put(key = "@extra", long = requestId)
+        }
+    }
+
     private fun serialize(requestId: Long, function: RemoveBusinessConnectedBotFromChat): String {
         return buildJsonObjectString {
             put(key = "@type", string = "removeBusinessConnectedBotFromChat")
@@ -10084,6 +10253,14 @@ internal class TdlSerializer internal constructor() {
             put(key = "@extra", long = requestId)
             put(key = "category", value = function.category) { data -> serialize(dto = data) }
             put(key = "chat_id", long = function.chatId)
+        }
+    }
+
+    private fun serialize(requestId: Long, function: RemoveWebBrowserSettingsException): String {
+        return buildJsonObjectString {
+            put(key = "@type", string = "removeWebBrowserSettingsException")
+            put(key = "@extra", long = requestId)
+            put(key = "url", string = function.url)
         }
     }
 
@@ -10564,6 +10741,7 @@ internal class TdlSerializer internal constructor() {
             put(key = "@type", string = "searchChats")
             put(key = "@extra", long = requestId)
             put(key = "query", string = function.query)
+            put(key = "type_filter", value = function.typeFilter) { data -> serialize(dto = data) }
             put(key = "limit", int = function.limit)
         }
     }
@@ -10573,6 +10751,7 @@ internal class TdlSerializer internal constructor() {
             put(key = "@type", string = "searchChatsOnServer")
             put(key = "@extra", long = requestId)
             put(key = "query", string = function.query)
+            put(key = "type_filter", value = function.typeFilter) { data -> serialize(dto = data) }
             put(key = "limit", int = function.limit)
         }
     }
@@ -10677,6 +10856,7 @@ internal class TdlSerializer internal constructor() {
             put(key = "@type", string = "searchPublicChats")
             put(key = "@extra", long = requestId)
             put(key = "query", string = function.query)
+            put(key = "type_filter", value = function.typeFilter) { data -> serialize(dto = data) }
         }
     }
 
@@ -10748,6 +10928,7 @@ internal class TdlSerializer internal constructor() {
             put(key = "@type", string = "searchRecentlyFoundChats")
             put(key = "@extra", long = requestId)
             put(key = "query", string = function.query)
+            put(key = "type_filter", value = function.typeFilter) { data -> serialize(dto = data) }
             put(key = "limit", int = function.limit)
         }
     }
@@ -11118,6 +11299,17 @@ internal class TdlSerializer internal constructor() {
             put(key = "gift_name", string = function.giftName)
             put(key = "owner_id", value = function.ownerId) { data -> serialize(dto = data) }
             put(key = "price", value = function.price) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(requestId: Long, function: SendRichMessageDraft): String {
+        return buildJsonObjectString {
+            put(key = "@type", string = "sendRichMessageDraft")
+            put(key = "@extra", long = requestId)
+            put(key = "chat_id", long = function.chatId)
+            put(key = "forum_topic_id", int = function.forumTopicId)
+            put(key = "draft_id", long = function.draftId)
+            put(key = "message", value = function.message) { data -> serialize(dto = data) }
         }
     }
 
@@ -13005,6 +13197,8 @@ internal class TdlSerializer internal constructor() {
             put(key = "@extra", long = requestId)
             put(key = "supergroup_id", long = function.supergroupId)
             put(key = "join_by_request", boolean = function.joinByRequest)
+            put(key = "guard_bot_user_id", long = function.guardBotUserId)
+            put(key = "apply_to_invite_links", boolean = function.applyToInviteLinks)
         }
     }
 
@@ -13272,6 +13466,13 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: RichMessageSource): JsonElement {
+        when(dto) {
+            is RichMessageSourceMarkdown -> return serialize(dto = dto)
+            is RichMessageSourceHtml -> return serialize(dto = dto)
+        }
+    }
+
     private fun serialize(dto: AuthorizationState): JsonElement {
         when(dto) {
             is AuthorizationStateWaitTdlibParameters -> return serialize(dto = dto)
@@ -13419,6 +13620,14 @@ internal class TdlSerializer internal constructor() {
             is InputChatPhotoStatic -> return serialize(dto = dto)
             is InputChatPhotoAnimation -> return serialize(dto = dto)
             is InputChatPhotoSticker -> return serialize(dto = dto)
+        }
+    }
+
+    private fun serialize(dto: WebAppOpenMode): JsonElement {
+        when(dto) {
+            is WebAppOpenModeCompact -> return serialize(dto = dto)
+            is WebAppOpenModeFullSize -> return serialize(dto = dto)
+            is WebAppOpenModeFullScreen -> return serialize(dto = dto)
         }
     }
 
@@ -13703,6 +13912,23 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: ChatJoinResult): JsonElement {
+        when(dto) {
+            is ChatJoinResultSuccess -> return serialize(dto = dto)
+            is ChatJoinResultRequestSent -> return serialize(dto = dto)
+            is ChatJoinResultGuardBotApprovalRequired -> return serialize(dto = dto)
+            is ChatJoinResultDeclined -> return serialize(dto = dto)
+        }
+    }
+
+    private fun serialize(dto: ChatJoinRequestResult): JsonElement {
+        when(dto) {
+            is ChatJoinRequestResultApproved -> return serialize(dto = dto)
+            is ChatJoinRequestResultDeclined -> return serialize(dto = dto)
+            is ChatJoinRequestResultQueued -> return serialize(dto = dto)
+        }
+    }
+
     private fun serialize(dto: InviteLinkChatType): JsonElement {
         when(dto) {
             is InviteLinkChatTypeBasicGroup -> return serialize(dto = dto)
@@ -13841,6 +14067,15 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: DraftMessageContent): JsonElement {
+        when(dto) {
+            is DraftMessageContentText -> return serialize(dto = dto)
+            is DraftMessageContentRichMessage -> return serialize(dto = dto)
+            is DraftMessageContentVideoNote -> return serialize(dto = dto)
+            is DraftMessageContentVoiceNote -> return serialize(dto = dto)
+        }
+    }
+
     private fun serialize(dto: ChatType): JsonElement {
         when(dto) {
             is ChatTypePrivate -> return serialize(dto = dto)
@@ -13950,14 +14185,6 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
-    private fun serialize(dto: WebAppOpenMode): JsonElement {
-        when(dto) {
-            is WebAppOpenModeCompact -> return serialize(dto = dto)
-            is WebAppOpenModeFullSize -> return serialize(dto = dto)
-            is WebAppOpenModeFullScreen -> return serialize(dto = dto)
-        }
-    }
-
     private fun serialize(dto: SavedMessagesTopicType): JsonElement {
         when(dto) {
             is SavedMessagesTopicTypeMyNotes -> return serialize(dto = dto)
@@ -13983,15 +14210,26 @@ internal class TdlSerializer internal constructor() {
             is RichTextItalic -> return serialize(dto = dto)
             is RichTextUnderline -> return serialize(dto = dto)
             is RichTextStrikethrough -> return serialize(dto = dto)
+            is RichTextSpoiler -> return serialize(dto = dto)
+            is RichTextDateTime -> return serialize(dto = dto)
+            is RichTextMention -> return serialize(dto = dto)
+            is RichTextHashtag -> return serialize(dto = dto)
+            is RichTextCashtag -> return serialize(dto = dto)
+            is RichTextBotCommand -> return serialize(dto = dto)
             is RichTextFixed -> return serialize(dto = dto)
+            is RichTextMentionName -> return serialize(dto = dto)
             is RichTextUrl -> return serialize(dto = dto)
             is RichTextEmailAddress -> return serialize(dto = dto)
+            is RichTextBankCardNumber -> return serialize(dto = dto)
             is RichTextSubscript -> return serialize(dto = dto)
             is RichTextSuperscript -> return serialize(dto = dto)
             is RichTextMarked -> return serialize(dto = dto)
             is RichTextPhoneNumber -> return serialize(dto = dto)
+            is RichTextCustomEmoji -> return serialize(dto = dto)
             is RichTextIcon -> return serialize(dto = dto)
+            is RichTextMathematicalExpression -> return serialize(dto = dto)
             is RichTextReference -> return serialize(dto = dto)
+            is RichTextReferenceLink -> return serialize(dto = dto)
             is RichTextAnchor -> return serialize(dto = dto)
             is RichTextAnchorLink -> return serialize(dto = dto)
             is RichTexts -> return serialize(dto = dto)
@@ -14021,11 +14259,14 @@ internal class TdlSerializer internal constructor() {
             is PageBlockAuthorDate -> return serialize(dto = dto)
             is PageBlockHeader -> return serialize(dto = dto)
             is PageBlockSubheader -> return serialize(dto = dto)
+            is PageBlockSectionHeading -> return serialize(dto = dto)
             is PageBlockKicker -> return serialize(dto = dto)
             is PageBlockParagraph -> return serialize(dto = dto)
             is PageBlockPreformatted -> return serialize(dto = dto)
             is PageBlockFooter -> return serialize(dto = dto)
+            is PageBlockThinking -> return serialize(dto = dto)
             is PageBlockDivider -> return serialize(dto = dto)
+            is PageBlockMathematicalExpression -> return serialize(dto = dto)
             is PageBlockAnchor -> return serialize(dto = dto)
             is PageBlockList -> return serialize(dto = dto)
             is PageBlockBlockQuote -> return serialize(dto = dto)
@@ -14238,9 +14479,24 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: PollMedia): JsonElement {
+        when(dto) {
+            is PollMediaAnimation -> return serialize(dto = dto)
+            is PollMediaAudio -> return serialize(dto = dto)
+            is PollMediaDocument -> return serialize(dto = dto)
+            is PollMediaLink -> return serialize(dto = dto)
+            is PollMediaLocation -> return serialize(dto = dto)
+            is PollMediaPhoto -> return serialize(dto = dto)
+            is PollMediaSticker -> return serialize(dto = dto)
+            is PollMediaVenue -> return serialize(dto = dto)
+            is PollMediaVideo -> return serialize(dto = dto)
+        }
+    }
+
     private fun serialize(dto: MessageContent): JsonElement {
         when(dto) {
             is MessageText -> return serialize(dto = dto)
+            is MessageRichMessage -> return serialize(dto = dto)
             is MessageAnimation -> return serialize(dto = dto)
             is MessageAudio -> return serialize(dto = dto)
             is MessageDocument -> return serialize(dto = dto)
@@ -14254,6 +14510,7 @@ internal class TdlSerializer internal constructor() {
             is MessageExpiredVideo -> return serialize(dto = dto)
             is MessageExpiredVideoNote -> return serialize(dto = dto)
             is MessageExpiredVoiceNote -> return serialize(dto = dto)
+            is MessageLiveLocation -> return serialize(dto = dto)
             is MessageLocation -> return serialize(dto = dto)
             is MessageVenue -> return serialize(dto = dto)
             is MessageContact -> return serialize(dto = dto)
@@ -14416,9 +14673,24 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: InputPollMedia): JsonElement {
+        when(dto) {
+            is InputPollMediaAnimation -> return serialize(dto = dto)
+            is InputPollMediaAudio -> return serialize(dto = dto)
+            is InputPollMediaDocument -> return serialize(dto = dto)
+            is InputPollMediaLink -> return serialize(dto = dto)
+            is InputPollMediaLocation -> return serialize(dto = dto)
+            is InputPollMediaPhoto -> return serialize(dto = dto)
+            is InputPollMediaSticker -> return serialize(dto = dto)
+            is InputPollMediaVenue -> return serialize(dto = dto)
+            is InputPollMediaVideo -> return serialize(dto = dto)
+        }
+    }
+
     private fun serialize(dto: InputMessageContent): JsonElement {
         when(dto) {
             is InputMessageText -> return serialize(dto = dto)
+            is InputMessageRichMessage -> return serialize(dto = dto)
             is InputMessageAnimation -> return serialize(dto = dto)
             is InputMessageAudio -> return serialize(dto = dto)
             is InputMessageDocument -> return serialize(dto = dto)
@@ -14428,6 +14700,7 @@ internal class TdlSerializer internal constructor() {
             is InputMessageVideo -> return serialize(dto = dto)
             is InputMessageVideoNote -> return serialize(dto = dto)
             is InputMessageVoiceNote -> return serialize(dto = dto)
+            is InputMessageLiveLocation -> return serialize(dto = dto)
             is InputMessageLocation -> return serialize(dto = dto)
             is InputMessageVenue -> return serialize(dto = dto)
             is InputMessageContact -> return serialize(dto = dto)
@@ -14471,6 +14744,13 @@ internal class TdlSerializer internal constructor() {
             is SearchMessagesChatTypeFilterPrivate -> return serialize(dto = dto)
             is SearchMessagesChatTypeFilterGroup -> return serialize(dto = dto)
             is SearchMessagesChatTypeFilterChannel -> return serialize(dto = dto)
+        }
+    }
+
+    private fun serialize(dto: SearchChatTypeFilter): JsonElement {
+        when(dto) {
+            is SearchChatTypeFilterBot -> return serialize(dto = dto)
+            is SearchChatTypeFilterChannel -> return serialize(dto = dto)
         }
     }
 
@@ -14869,6 +15149,7 @@ internal class TdlSerializer internal constructor() {
             is PremiumLimitTypeChatFolderChosenChatCount -> return serialize(dto = dto)
             is PremiumLimitTypePinnedArchivedChatCount -> return serialize(dto = dto)
             is PremiumLimitTypePinnedSavedMessagesTopicCount -> return serialize(dto = dto)
+            is PremiumLimitTypeMessageTextLength -> return serialize(dto = dto)
             is PremiumLimitTypeCaptionLength -> return serialize(dto = dto)
             is PremiumLimitTypeBioLength -> return serialize(dto = dto)
             is PremiumLimitTypeChatFolderInviteLinkCount -> return serialize(dto = dto)
@@ -15250,23 +15531,30 @@ internal class TdlSerializer internal constructor() {
 
     private fun serialize(dto: SessionType): JsonElement {
         when(dto) {
-            is SessionTypeAndroid -> return serialize(dto = dto)
-            is SessionTypeApple -> return serialize(dto = dto)
-            is SessionTypeBrave -> return serialize(dto = dto)
-            is SessionTypeChrome -> return serialize(dto = dto)
-            is SessionTypeEdge -> return serialize(dto = dto)
-            is SessionTypeFirefox -> return serialize(dto = dto)
-            is SessionTypeIpad -> return serialize(dto = dto)
-            is SessionTypeIphone -> return serialize(dto = dto)
-            is SessionTypeLinux -> return serialize(dto = dto)
-            is SessionTypeMac -> return serialize(dto = dto)
-            is SessionTypeOpera -> return serialize(dto = dto)
-            is SessionTypeSafari -> return serialize(dto = dto)
-            is SessionTypeUbuntu -> return serialize(dto = dto)
-            is SessionTypeUnknown -> return serialize(dto = dto)
-            is SessionTypeVivaldi -> return serialize(dto = dto)
-            is SessionTypeWindows -> return serialize(dto = dto)
-            is SessionTypeXbox -> return serialize(dto = dto)
+            is SessionTypeDevice -> return serialize(dto = dto)
+            is SessionTypeConnectedBot -> return serialize(dto = dto)
+        }
+    }
+
+    private fun serialize(dto: SessionDeviceType): JsonElement {
+        when(dto) {
+            is SessionDeviceTypeAndroid -> return serialize(dto = dto)
+            is SessionDeviceTypeApple -> return serialize(dto = dto)
+            is SessionDeviceTypeBrave -> return serialize(dto = dto)
+            is SessionDeviceTypeChrome -> return serialize(dto = dto)
+            is SessionDeviceTypeEdge -> return serialize(dto = dto)
+            is SessionDeviceTypeFirefox -> return serialize(dto = dto)
+            is SessionDeviceTypeIpad -> return serialize(dto = dto)
+            is SessionDeviceTypeIphone -> return serialize(dto = dto)
+            is SessionDeviceTypeLinux -> return serialize(dto = dto)
+            is SessionDeviceTypeMac -> return serialize(dto = dto)
+            is SessionDeviceTypeOpera -> return serialize(dto = dto)
+            is SessionDeviceTypeSafari -> return serialize(dto = dto)
+            is SessionDeviceTypeUbuntu -> return serialize(dto = dto)
+            is SessionDeviceTypeUnknown -> return serialize(dto = dto)
+            is SessionDeviceTypeVivaldi -> return serialize(dto = dto)
+            is SessionDeviceTypeWindows -> return serialize(dto = dto)
+            is SessionDeviceTypeXbox -> return serialize(dto = dto)
         }
     }
 
@@ -15450,6 +15738,13 @@ internal class TdlSerializer internal constructor() {
             is AutosaveSettingsScopeGroupChats -> return serialize(dto = dto)
             is AutosaveSettingsScopeChannelChats -> return serialize(dto = dto)
             is AutosaveSettingsScopeChat -> return serialize(dto = dto)
+        }
+    }
+
+    private fun serialize(dto: WebBrowserType): JsonElement {
+        when(dto) {
+            is WebBrowserTypeExternal -> return serialize(dto = dto)
+            is WebBrowserTypeInApp -> return serialize(dto = dto)
         }
     }
 
@@ -15663,7 +15958,7 @@ internal class TdlSerializer internal constructor() {
             is UpdateHavePendingNotifications -> return serialize(dto = dto)
             is UpdateDeleteMessages -> return serialize(dto = dto)
             is UpdateChatAction -> return serialize(dto = dto)
-            is UpdatePendingTextMessage -> return serialize(dto = dto)
+            is UpdatePendingMessage -> return serialize(dto = dto)
             is UpdateUserStatus -> return serialize(dto = dto)
             is UpdateUser -> return serialize(dto = dto)
             is UpdateBasicGroup -> return serialize(dto = dto)
@@ -15699,6 +15994,7 @@ internal class TdlSerializer internal constructor() {
             is UpdateUserPrivacySettingRules -> return serialize(dto = dto)
             is UpdateUnreadMessageCount -> return serialize(dto = dto)
             is UpdateUnreadChatCount -> return serialize(dto = dto)
+            is UpdateChatJoinResult -> return serialize(dto = dto)
             is UpdateStory -> return serialize(dto = dto)
             is UpdateStoryDeleted -> return serialize(dto = dto)
             is UpdateStoryPostSucceeded -> return serialize(dto = dto)
@@ -15719,6 +16015,7 @@ internal class TdlSerializer internal constructor() {
             is UpdateEmojiChatThemes -> return serialize(dto = dto)
             is UpdateAccentColors -> return serialize(dto = dto)
             is UpdateProfileAccentColors -> return serialize(dto = dto)
+            is UpdateWebBrowserSettings -> return serialize(dto = dto)
             is UpdateLanguagePackStrings -> return serialize(dto = dto)
             is UpdateConnectionState -> return serialize(dto = dto)
             is UpdateFreezeState -> return serialize(dto = dto)
@@ -15947,6 +16244,38 @@ internal class TdlSerializer internal constructor() {
             put(key = "@type", string = "formattedText")
             put(key = "text", string = dto.text)
             put(key = "entities", objects = dto.entities) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: RichMessage): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richMessage")
+            put(key = "blocks", objects = dto.blocks) { data -> serialize(dto = data) }
+            put(key = "is_rtl", boolean = dto.isRtl)
+            put(key = "is_full", boolean = dto.isFull)
+        }
+    }
+
+    private fun serialize(dto: RichMessageSourceMarkdown): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richMessageSourceMarkdown")
+            put(key = "text", string = dto.text)
+        }
+    }
+
+    private fun serialize(dto: RichMessageSourceHtml): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richMessageSourceHtml")
+            put(key = "text", string = dto.text)
+        }
+    }
+
+    private fun serialize(dto: InputRichMessage): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputRichMessage")
+            put(key = "source", value = dto.source) { data -> serialize(dto = data) }
+            put(key = "is_rtl", boolean = dto.isRtl)
+            put(key = "detect_automatic_blocks", boolean = dto.detectAutomaticBlocks)
         }
     }
 
@@ -16684,6 +17013,16 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: LiveLocation): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "liveLocation")
+            put(key = "location", value = dto.location) { data -> serialize(dto = data) }
+            put(key = "live_period", int = dto.livePeriod)
+            put(key = "heading", int = dto.heading)
+            put(key = "proximity_alert_radius", int = dto.proximityAlertRadius)
+        }
+    }
+
     private fun serialize(dto: Venue): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "venue")
@@ -16741,6 +17080,7 @@ internal class TdlSerializer internal constructor() {
             put(key = "total_voter_count", int = dto.totalVoterCount)
             put(key = "recent_voter_ids", objects = dto.recentVoterIds) { data -> serialize(dto = data) }
             put(key = "can_get_voters", boolean = dto.canGetVoters)
+            put(key = "can_see_results", boolean = dto.canSeeResults)
             put(key = "is_anonymous", boolean = dto.isAnonymous)
             put(key = "allows_multiple_answers", boolean = dto.allowsMultipleAnswers)
             put(key = "allows_revoting", boolean = dto.allowsRevoting)
@@ -16900,6 +17240,7 @@ internal class TdlSerializer internal constructor() {
             put(key = "is_inline", boolean = dto.isInline)
             put(key = "inline_query_placeholder", string = dto.inlineQueryPlaceholder)
             put(key = "supports_guest_queries", boolean = dto.supportsGuestQueries)
+            put(key = "is_guard", boolean = dto.isGuard)
             put(key = "need_location", boolean = dto.needLocation)
             put(key = "can_connect_to_business", boolean = dto.canConnectToBusiness)
             put(key = "can_be_added_to_attachment_menu", boolean = dto.canBeAddedToAttachmentMenu)
@@ -17085,6 +17426,16 @@ internal class TdlSerializer internal constructor() {
             put(key = "bot_user_id", long = dto.botUserId)
             put(key = "recipients", value = dto.recipients) { data -> serialize(dto = data) }
             put(key = "rights", value = dto.rights) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: BusinessConnectedBotInfo): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "businessConnectedBotInfo")
+            put(key = "bot", value = dto.bot) { data -> serialize(dto = data) }
+            put(key = "connection_date", int = dto.connectionDate)
+            put(key = "device_model", string = dto.deviceModel)
+            put(key = "location", string = dto.location)
         }
     }
 
@@ -17293,6 +17644,87 @@ internal class TdlSerializer internal constructor() {
             put(key = "can_manage_direct_messages", boolean = dto.canManageDirectMessages)
             put(key = "can_manage_tags", boolean = dto.canManageTags)
             put(key = "is_anonymous", boolean = dto.isAnonymous)
+        }
+    }
+
+    private fun serialize(dto: ThemeParameters): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "themeParameters")
+            put(key = "background_color", int = dto.backgroundColor)
+            put(key = "secondary_background_color", int = dto.secondaryBackgroundColor)
+            put(key = "header_background_color", int = dto.headerBackgroundColor)
+            put(key = "bottom_bar_background_color", int = dto.bottomBarBackgroundColor)
+            put(key = "section_background_color", int = dto.sectionBackgroundColor)
+            put(key = "section_separator_color", int = dto.sectionSeparatorColor)
+            put(key = "text_color", int = dto.textColor)
+            put(key = "accent_text_color", int = dto.accentTextColor)
+            put(key = "section_header_text_color", int = dto.sectionHeaderTextColor)
+            put(key = "subtitle_text_color", int = dto.subtitleTextColor)
+            put(key = "destructive_text_color", int = dto.destructiveTextColor)
+            put(key = "hint_color", int = dto.hintColor)
+            put(key = "link_color", int = dto.linkColor)
+            put(key = "button_color", int = dto.buttonColor)
+            put(key = "button_text_color", int = dto.buttonTextColor)
+        }
+    }
+
+    private fun serialize(dto: WebAppOpenModeCompact): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "webAppOpenModeCompact")
+        }
+    }
+
+    private fun serialize(dto: WebAppOpenModeFullSize): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "webAppOpenModeFullSize")
+        }
+    }
+
+    private fun serialize(dto: WebAppOpenModeFullScreen): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "webAppOpenModeFullScreen")
+        }
+    }
+
+    private fun serialize(dto: FoundWebApp): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "foundWebApp")
+            put(key = "web_app", value = dto.webApp) { data -> serialize(dto = data) }
+            put(key = "request_write_access", boolean = dto.requestWriteAccess)
+            put(key = "skip_confirmation", boolean = dto.skipConfirmation)
+        }
+    }
+
+    private fun serialize(dto: WebAppUrl): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "webAppUrl")
+            put(key = "url", string = dto.url)
+            put(key = "require_same_origin", boolean = dto.requireSameOrigin)
+        }
+    }
+
+    private fun serialize(dto: WebAppInfo): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "webAppInfo")
+            put(key = "launch_id", long = dto.launchId)
+            put(key = "url", value = dto.url) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: MainWebApp): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "mainWebApp")
+            put(key = "url", value = dto.url) { data -> serialize(dto = data) }
+            put(key = "mode", value = dto.mode) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: WebAppOpenParameters): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "webAppOpenParameters")
+            put(key = "theme", value = dto.theme) { data -> serialize(dto = data) }
+            put(key = "application_name", string = dto.applicationName)
+            put(key = "mode", value = dto.mode) { data -> serialize(dto = data) }
         }
     }
 
@@ -18890,6 +19322,17 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: LinkPreviewOptions): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "linkPreviewOptions")
+            put(key = "is_disabled", boolean = dto.isDisabled)
+            put(key = "url", string = dto.url)
+            put(key = "force_small_media", boolean = dto.forceSmallMedia)
+            put(key = "force_large_media", boolean = dto.forceLargeMedia)
+            put(key = "show_above_text", boolean = dto.showAboveText)
+        }
+    }
+
     private fun serialize(dto: AccentColor): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "accentColor")
@@ -19284,6 +19727,52 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: ChatJoinResultSuccess): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "chatJoinResultSuccess")
+            put(key = "chat_id", long = dto.chatId)
+        }
+    }
+
+    private fun serialize(dto: ChatJoinResultRequestSent): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "chatJoinResultRequestSent")
+        }
+    }
+
+    private fun serialize(dto: ChatJoinResultGuardBotApprovalRequired): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "chatJoinResultGuardBotApprovalRequired")
+            put(key = "bot_user_id", long = dto.botUserId)
+            put(key = "url", value = dto.url) { data -> serialize(dto = data) }
+            put(key = "query_id", long = dto.queryId)
+        }
+    }
+
+    private fun serialize(dto: ChatJoinResultDeclined): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "chatJoinResultDeclined")
+        }
+    }
+
+    private fun serialize(dto: ChatJoinRequestResultApproved): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "chatJoinRequestResultApproved")
+        }
+    }
+
+    private fun serialize(dto: ChatJoinRequestResultDeclined): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "chatJoinRequestResultDeclined")
+        }
+    }
+
+    private fun serialize(dto: ChatJoinRequestResultQueued): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "chatJoinRequestResultQueued")
+        }
+    }
+
     private fun serialize(dto: ChatInviteLink): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "chatInviteLink")
@@ -19511,6 +20000,7 @@ internal class TdlSerializer internal constructor() {
             put(key = "custom_emoji_sticker_set_id", long = dto.customEmojiStickerSetId)
             put(key = "location", value = dto.location) { data -> serialize(dto = data) }
             put(key = "invite_link", value = dto.inviteLink) { data -> serialize(dto = data) }
+            put(key = "guard_bot_user_id", long = dto.guardBotUserId)
             put(key = "bot_commands", objects = dto.botCommands) { data -> serialize(dto = data) }
             put(key = "bot_verification", value = dto.botVerification) { data -> serialize(dto = data) }
             put(key = "main_profile_tab", value = dto.mainProfileTab) { data -> serialize(dto = data) }
@@ -20402,12 +20892,47 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: DraftMessageContentText): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "draftMessageContentText")
+            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+            put(key = "link_preview_options", value = dto.linkPreviewOptions) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: DraftMessageContentRichMessage): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "draftMessageContentRichMessage")
+            put(key = "message", value = dto.message) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: DraftMessageContentVideoNote): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "draftMessageContentVideoNote")
+            put(key = "file_path", string = dto.filePath)
+            put(key = "duration", int = dto.duration)
+            put(key = "length", int = dto.length)
+            put(key = "self_destruct_type", value = dto.selfDestructType) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: DraftMessageContentVoiceNote): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "draftMessageContentVoiceNote")
+            put(key = "file_path", string = dto.filePath)
+            put(key = "duration", int = dto.duration)
+            put(key = "waveform", bytes = dto.waveform)
+            put(key = "self_destruct_type", value = dto.selfDestructType) { data -> serialize(dto = data) }
+        }
+    }
+
     private fun serialize(dto: DraftMessage): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "draftMessage")
             put(key = "reply_to", value = dto.replyTo) { data -> serialize(dto = data) }
             put(key = "date", int = dto.date)
-            put(key = "input_message_text", value = dto.inputMessageText) { data -> serialize(dto = data) }
+            put(key = "content", value = dto.content) { data -> serialize(dto = data) }
             put(key = "effect_id", long = dto.effectId)
             put(key = "suggested_post_info", value = dto.suggestedPostInfo) { data -> serialize(dto = data) }
         }
@@ -21065,79 +21590,6 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
-    private fun serialize(dto: ThemeParameters): JsonElement {
-        return buildJsonObject {
-            put(key = "@type", string = "themeParameters")
-            put(key = "background_color", int = dto.backgroundColor)
-            put(key = "secondary_background_color", int = dto.secondaryBackgroundColor)
-            put(key = "header_background_color", int = dto.headerBackgroundColor)
-            put(key = "bottom_bar_background_color", int = dto.bottomBarBackgroundColor)
-            put(key = "section_background_color", int = dto.sectionBackgroundColor)
-            put(key = "section_separator_color", int = dto.sectionSeparatorColor)
-            put(key = "text_color", int = dto.textColor)
-            put(key = "accent_text_color", int = dto.accentTextColor)
-            put(key = "section_header_text_color", int = dto.sectionHeaderTextColor)
-            put(key = "subtitle_text_color", int = dto.subtitleTextColor)
-            put(key = "destructive_text_color", int = dto.destructiveTextColor)
-            put(key = "hint_color", int = dto.hintColor)
-            put(key = "link_color", int = dto.linkColor)
-            put(key = "button_color", int = dto.buttonColor)
-            put(key = "button_text_color", int = dto.buttonTextColor)
-        }
-    }
-
-    private fun serialize(dto: WebAppOpenModeCompact): JsonElement {
-        return buildJsonObject {
-            put(key = "@type", string = "webAppOpenModeCompact")
-        }
-    }
-
-    private fun serialize(dto: WebAppOpenModeFullSize): JsonElement {
-        return buildJsonObject {
-            put(key = "@type", string = "webAppOpenModeFullSize")
-        }
-    }
-
-    private fun serialize(dto: WebAppOpenModeFullScreen): JsonElement {
-        return buildJsonObject {
-            put(key = "@type", string = "webAppOpenModeFullScreen")
-        }
-    }
-
-    private fun serialize(dto: FoundWebApp): JsonElement {
-        return buildJsonObject {
-            put(key = "@type", string = "foundWebApp")
-            put(key = "web_app", value = dto.webApp) { data -> serialize(dto = data) }
-            put(key = "request_write_access", boolean = dto.requestWriteAccess)
-            put(key = "skip_confirmation", boolean = dto.skipConfirmation)
-        }
-    }
-
-    private fun serialize(dto: WebAppInfo): JsonElement {
-        return buildJsonObject {
-            put(key = "@type", string = "webAppInfo")
-            put(key = "launch_id", long = dto.launchId)
-            put(key = "url", string = dto.url)
-        }
-    }
-
-    private fun serialize(dto: MainWebApp): JsonElement {
-        return buildJsonObject {
-            put(key = "@type", string = "mainWebApp")
-            put(key = "url", string = dto.url)
-            put(key = "mode", value = dto.mode) { data -> serialize(dto = data) }
-        }
-    }
-
-    private fun serialize(dto: WebAppOpenParameters): JsonElement {
-        return buildJsonObject {
-            put(key = "@type", string = "webAppOpenParameters")
-            put(key = "theme", value = dto.theme) { data -> serialize(dto = data) }
-            put(key = "application_name", string = dto.applicationName)
-            put(key = "mode", value = dto.mode) { data -> serialize(dto = data) }
-        }
-    }
-
     private fun serialize(dto: MessageThreadInfo): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "messageThreadInfo")
@@ -21253,17 +21705,6 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
-    private fun serialize(dto: LinkPreviewOptions): JsonElement {
-        return buildJsonObject {
-            put(key = "@type", string = "linkPreviewOptions")
-            put(key = "is_disabled", boolean = dto.isDisabled)
-            put(key = "url", string = dto.url)
-            put(key = "force_small_media", boolean = dto.forceSmallMedia)
-            put(key = "force_large_media", boolean = dto.forceLargeMedia)
-            put(key = "show_above_text", boolean = dto.showAboveText)
-        }
-    }
-
     private fun serialize(dto: SharedUser): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "sharedUser")
@@ -21362,10 +21803,66 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: RichTextSpoiler): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richTextSpoiler")
+            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: RichTextDateTime): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richTextDateTime")
+            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+            put(key = "unix_time", int = dto.unixTime)
+            put(key = "formatting_type", value = dto.formattingType) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: RichTextMention): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richTextMention")
+            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+            put(key = "username", string = dto.username)
+        }
+    }
+
+    private fun serialize(dto: RichTextHashtag): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richTextHashtag")
+            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+            put(key = "hashtag", string = dto.hashtag)
+        }
+    }
+
+    private fun serialize(dto: RichTextCashtag): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richTextCashtag")
+            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+            put(key = "cashtag", string = dto.cashtag)
+        }
+    }
+
+    private fun serialize(dto: RichTextBotCommand): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richTextBotCommand")
+            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+            put(key = "bot_command", string = dto.botCommand)
+        }
+    }
+
     private fun serialize(dto: RichTextFixed): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "richTextFixed")
             put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: RichTextMentionName): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richTextMentionName")
+            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+            put(key = "user_id", long = dto.userId)
         }
     }
 
@@ -21383,6 +21880,14 @@ internal class TdlSerializer internal constructor() {
             put(key = "@type", string = "richTextEmailAddress")
             put(key = "text", value = dto.text) { data -> serialize(dto = data) }
             put(key = "email_address", string = dto.emailAddress)
+        }
+    }
+
+    private fun serialize(dto: RichTextBankCardNumber): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richTextBankCardNumber")
+            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+            put(key = "bank_card_number", string = dto.bankCardNumber)
         }
     }
 
@@ -21415,6 +21920,14 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: RichTextCustomEmoji): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richTextCustomEmoji")
+            put(key = "custom_emoji_id", long = dto.customEmojiId)
+            put(key = "alternative_text", string = dto.alternativeText)
+        }
+    }
+
     private fun serialize(dto: RichTextIcon): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "richTextIcon")
@@ -21424,11 +21937,26 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: RichTextMathematicalExpression): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richTextMathematicalExpression")
+            put(key = "expression", string = dto.expression)
+        }
+    }
+
     private fun serialize(dto: RichTextReference): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "richTextReference")
+            put(key = "name", string = dto.name)
             put(key = "text", value = dto.text) { data -> serialize(dto = data) }
-            put(key = "anchor_name", string = dto.anchorName)
+        }
+    }
+
+    private fun serialize(dto: RichTextReferenceLink): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "richTextReferenceLink")
+            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+            put(key = "reference_name", string = dto.referenceName)
             put(key = "url", string = dto.url)
         }
     }
@@ -21468,7 +21996,11 @@ internal class TdlSerializer internal constructor() {
         return buildJsonObject {
             put(key = "@type", string = "pageBlockListItem")
             put(key = "label", string = dto.label)
-            put(key = "page_blocks", objects = dto.pageBlocks) { data -> serialize(dto = data) }
+            put(key = "blocks", objects = dto.blocks) { data -> serialize(dto = data) }
+            put(key = "has_checkbox", boolean = dto.hasCheckbox)
+            put(key = "is_checked", boolean = dto.isChecked)
+            put(key = "value", int = dto.value)
+            put(key = "type", string = dto.type)
         }
     }
 
@@ -21568,6 +22100,14 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: PageBlockSectionHeading): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "pageBlockSectionHeading")
+            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+            put(key = "size", int = dto.size)
+        }
+    }
+
     private fun serialize(dto: PageBlockKicker): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "pageBlockKicker")
@@ -21597,9 +22137,23 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: PageBlockThinking): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "pageBlockThinking")
+            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+        }
+    }
+
     private fun serialize(dto: PageBlockDivider): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "pageBlockDivider")
+        }
+    }
+
+    private fun serialize(dto: PageBlockMathematicalExpression): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "pageBlockMathematicalExpression")
+            put(key = "expression", string = dto.expression)
         }
     }
 
@@ -21620,7 +22174,7 @@ internal class TdlSerializer internal constructor() {
     private fun serialize(dto: PageBlockBlockQuote): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "pageBlockBlockQuote")
-            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+            put(key = "blocks", objects = dto.blocks) { data -> serialize(dto = data) }
             put(key = "credit", value = dto.credit) { data -> serialize(dto = data) }
         }
     }
@@ -21639,6 +22193,7 @@ internal class TdlSerializer internal constructor() {
             put(key = "animation", value = dto.animation) { data -> serialize(dto = data) }
             put(key = "caption", value = dto.caption) { data -> serialize(dto = data) }
             put(key = "need_autoplay", boolean = dto.needAutoplay)
+            put(key = "has_spoiler", boolean = dto.hasSpoiler)
         }
     }
 
@@ -21656,6 +22211,7 @@ internal class TdlSerializer internal constructor() {
             put(key = "photo", value = dto.photo) { data -> serialize(dto = data) }
             put(key = "caption", value = dto.caption) { data -> serialize(dto = data) }
             put(key = "url", string = dto.url)
+            put(key = "has_spoiler", boolean = dto.hasSpoiler)
         }
     }
 
@@ -21666,6 +22222,7 @@ internal class TdlSerializer internal constructor() {
             put(key = "caption", value = dto.caption) { data -> serialize(dto = data) }
             put(key = "need_autoplay", boolean = dto.needAutoplay)
             put(key = "is_looped", boolean = dto.isLooped)
+            put(key = "has_spoiler", boolean = dto.hasSpoiler)
         }
     }
 
@@ -21705,7 +22262,7 @@ internal class TdlSerializer internal constructor() {
             put(key = "author", string = dto.author)
             put(key = "author_photo", value = dto.authorPhoto) { data -> serialize(dto = data) }
             put(key = "date", int = dto.date)
-            put(key = "page_blocks", objects = dto.pageBlocks) { data -> serialize(dto = data) }
+            put(key = "blocks", objects = dto.blocks) { data -> serialize(dto = data) }
             put(key = "caption", value = dto.caption) { data -> serialize(dto = data) }
         }
     }
@@ -21713,7 +22270,7 @@ internal class TdlSerializer internal constructor() {
     private fun serialize(dto: PageBlockCollage): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "pageBlockCollage")
-            put(key = "page_blocks", objects = dto.pageBlocks) { data -> serialize(dto = data) }
+            put(key = "blocks", objects = dto.blocks) { data -> serialize(dto = data) }
             put(key = "caption", value = dto.caption) { data -> serialize(dto = data) }
         }
     }
@@ -21721,7 +22278,7 @@ internal class TdlSerializer internal constructor() {
     private fun serialize(dto: PageBlockSlideshow): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "pageBlockSlideshow")
-            put(key = "page_blocks", objects = dto.pageBlocks) { data -> serialize(dto = data) }
+            put(key = "blocks", objects = dto.blocks) { data -> serialize(dto = data) }
             put(key = "caption", value = dto.caption) { data -> serialize(dto = data) }
         }
     }
@@ -21750,7 +22307,7 @@ internal class TdlSerializer internal constructor() {
         return buildJsonObject {
             put(key = "@type", string = "pageBlockDetails")
             put(key = "header", value = dto.header) { data -> serialize(dto = data) }
-            put(key = "page_blocks", objects = dto.pageBlocks) { data -> serialize(dto = data) }
+            put(key = "blocks", objects = dto.blocks) { data -> serialize(dto = data) }
             put(key = "is_open", boolean = dto.isOpen)
         }
     }
@@ -21777,7 +22334,7 @@ internal class TdlSerializer internal constructor() {
     private fun serialize(dto: WebPageInstantView): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "webPageInstantView")
-            put(key = "page_blocks", objects = dto.pageBlocks) { data -> serialize(dto = data) }
+            put(key = "blocks", objects = dto.blocks) { data -> serialize(dto = data) }
             put(key = "view_count", int = dto.viewCount)
             put(key = "version", int = dto.version)
             put(key = "is_rtl", boolean = dto.isRtl)
@@ -23026,12 +23583,88 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: PollMediaAnimation): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "pollMediaAnimation")
+            put(key = "animation", value = dto.animation) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: PollMediaAudio): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "pollMediaAudio")
+            put(key = "audio", value = dto.audio) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: PollMediaDocument): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "pollMediaDocument")
+            put(key = "document", value = dto.document) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: PollMediaLink): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "pollMediaLink")
+            put(key = "url", string = dto.url)
+            put(key = "link_preview", value = dto.linkPreview) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: PollMediaLocation): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "pollMediaLocation")
+            put(key = "location", value = dto.location) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: PollMediaPhoto): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "pollMediaPhoto")
+            put(key = "photo", value = dto.photo) { data -> serialize(dto = data) }
+            put(key = "video", value = dto.video) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: PollMediaSticker): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "pollMediaSticker")
+            put(key = "sticker", value = dto.sticker) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: PollMediaVenue): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "pollMediaVenue")
+            put(key = "venue", value = dto.venue) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: PollMediaVideo): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "pollMediaVideo")
+            put(key = "video", value = dto.video) { data -> serialize(dto = data) }
+            put(key = "alternative_videos", objects = dto.alternativeVideos) { data -> serialize(dto = data) }
+            put(key = "storyboards", objects = dto.storyboards) { data -> serialize(dto = data) }
+            put(key = "cover", value = dto.cover) { data -> serialize(dto = data) }
+            put(key = "start_timestamp", int = dto.startTimestamp)
+        }
+    }
+
     private fun serialize(dto: MessageText): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "messageText")
             put(key = "text", value = dto.text) { data -> serialize(dto = data) }
             put(key = "link_preview", value = dto.linkPreview) { data -> serialize(dto = data) }
             put(key = "link_preview_options", value = dto.linkPreviewOptions) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: MessageRichMessage): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "messageRichMessage")
+            put(key = "message", value = dto.message) { data -> serialize(dto = data) }
         }
     }
 
@@ -23149,14 +23782,18 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: MessageLiveLocation): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "messageLiveLocation")
+            put(key = "location", value = dto.location) { data -> serialize(dto = data) }
+            put(key = "expires_in", int = dto.expiresIn)
+        }
+    }
+
     private fun serialize(dto: MessageLocation): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "messageLocation")
             put(key = "location", value = dto.location) { data -> serialize(dto = data) }
-            put(key = "live_period", int = dto.livePeriod)
-            put(key = "expires_in", int = dto.expiresIn)
-            put(key = "heading", int = dto.heading)
-            put(key = "proximity_alert_radius", int = dto.proximityAlertRadius)
         }
     }
 
@@ -24136,6 +24773,65 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: InputAnimation): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputAnimation")
+            put(key = "animation", value = dto.animation) { data -> serialize(dto = data) }
+            put(key = "thumbnail", value = dto.thumbnail) { data -> serialize(dto = data) }
+            put(key = "added_sticker_file_ids", ints = dto.addedStickerFileIds)
+            put(key = "duration", int = dto.duration)
+            put(key = "width", int = dto.width)
+            put(key = "height", int = dto.height)
+        }
+    }
+
+    private fun serialize(dto: InputAudio): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputAudio")
+            put(key = "audio", value = dto.audio) { data -> serialize(dto = data) }
+            put(key = "album_cover_thumbnail", value = dto.albumCoverThumbnail) { data -> serialize(dto = data) }
+            put(key = "duration", int = dto.duration)
+            put(key = "title", string = dto.title)
+            put(key = "performer", string = dto.performer)
+        }
+    }
+
+    private fun serialize(dto: InputDocument): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputDocument")
+            put(key = "document", value = dto.document) { data -> serialize(dto = data) }
+            put(key = "thumbnail", value = dto.thumbnail) { data -> serialize(dto = data) }
+            put(key = "disable_content_type_detection", boolean = dto.disableContentTypeDetection)
+        }
+    }
+
+    private fun serialize(dto: InputPhoto): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputPhoto")
+            put(key = "photo", value = dto.photo) { data -> serialize(dto = data) }
+            put(key = "thumbnail", value = dto.thumbnail) { data -> serialize(dto = data) }
+            put(key = "video", value = dto.video) { data -> serialize(dto = data) }
+            put(key = "added_sticker_file_ids", ints = dto.addedStickerFileIds)
+            put(key = "width", int = dto.width)
+            put(key = "height", int = dto.height)
+        }
+    }
+
+    private fun serialize(dto: InputVideo): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputVideo")
+            put(key = "video", value = dto.video) { data -> serialize(dto = data) }
+            put(key = "thumbnail", value = dto.thumbnail) { data -> serialize(dto = data) }
+            put(key = "cover", value = dto.cover) { data -> serialize(dto = data) }
+            put(key = "start_timestamp", int = dto.startTimestamp)
+            put(key = "added_sticker_file_ids", ints = dto.addedStickerFileIds)
+            put(key = "duration", int = dto.duration)
+            put(key = "width", int = dto.width)
+            put(key = "height", int = dto.height)
+            put(key = "supports_streaming", boolean = dto.supportsStreaming)
+        }
+    }
+
     private fun serialize(dto: InputPaidMediaTypePhoto): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "inputPaidMediaTypePhoto")
@@ -24226,6 +24922,72 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: InputPollMediaAnimation): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputPollMediaAnimation")
+            put(key = "animation", value = dto.animation) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: InputPollMediaAudio): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputPollMediaAudio")
+            put(key = "audio", value = dto.audio) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: InputPollMediaDocument): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputPollMediaDocument")
+            put(key = "document", value = dto.document) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: InputPollMediaLink): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputPollMediaLink")
+            put(key = "url", string = dto.url)
+        }
+    }
+
+    private fun serialize(dto: InputPollMediaLocation): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputPollMediaLocation")
+            put(key = "location", value = dto.location) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: InputPollMediaPhoto): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputPollMediaPhoto")
+            put(key = "photo", value = dto.photo) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: InputPollMediaSticker): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputPollMediaSticker")
+            put(key = "sticker", value = dto.sticker) { data -> serialize(dto = data) }
+            put(key = "thumbnail", value = dto.thumbnail) { data -> serialize(dto = data) }
+            put(key = "width", int = dto.width)
+            put(key = "height", int = dto.height)
+        }
+    }
+
+    private fun serialize(dto: InputPollMediaVenue): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputPollMediaVenue")
+            put(key = "venue", value = dto.venue) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: InputPollMediaVideo): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputPollMediaVideo")
+            put(key = "video", value = dto.video) { data -> serialize(dto = data) }
+        }
+    }
+
     private fun serialize(dto: InputMessageText): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "inputMessageText")
@@ -24235,15 +24997,18 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: InputMessageRichMessage): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputMessageRichMessage")
+            put(key = "message", value = dto.message) { data -> serialize(dto = data) }
+            put(key = "clear_draft", boolean = dto.clearDraft)
+        }
+    }
+
     private fun serialize(dto: InputMessageAnimation): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "inputMessageAnimation")
             put(key = "animation", value = dto.animation) { data -> serialize(dto = data) }
-            put(key = "thumbnail", value = dto.thumbnail) { data -> serialize(dto = data) }
-            put(key = "added_sticker_file_ids", ints = dto.addedStickerFileIds)
-            put(key = "duration", int = dto.duration)
-            put(key = "width", int = dto.width)
-            put(key = "height", int = dto.height)
             put(key = "caption", value = dto.caption) { data -> serialize(dto = data) }
             put(key = "show_caption_above_media", boolean = dto.showCaptionAboveMedia)
             put(key = "has_spoiler", boolean = dto.hasSpoiler)
@@ -24254,10 +25019,6 @@ internal class TdlSerializer internal constructor() {
         return buildJsonObject {
             put(key = "@type", string = "inputMessageAudio")
             put(key = "audio", value = dto.audio) { data -> serialize(dto = data) }
-            put(key = "album_cover_thumbnail", value = dto.albumCoverThumbnail) { data -> serialize(dto = data) }
-            put(key = "duration", int = dto.duration)
-            put(key = "title", string = dto.title)
-            put(key = "performer", string = dto.performer)
             put(key = "caption", value = dto.caption) { data -> serialize(dto = data) }
         }
     }
@@ -24266,8 +25027,6 @@ internal class TdlSerializer internal constructor() {
         return buildJsonObject {
             put(key = "@type", string = "inputMessageDocument")
             put(key = "document", value = dto.document) { data -> serialize(dto = data) }
-            put(key = "thumbnail", value = dto.thumbnail) { data -> serialize(dto = data) }
-            put(key = "disable_content_type_detection", boolean = dto.disableContentTypeDetection)
             put(key = "caption", value = dto.caption) { data -> serialize(dto = data) }
         }
     }
@@ -24287,11 +25046,6 @@ internal class TdlSerializer internal constructor() {
         return buildJsonObject {
             put(key = "@type", string = "inputMessagePhoto")
             put(key = "photo", value = dto.photo) { data -> serialize(dto = data) }
-            put(key = "thumbnail", value = dto.thumbnail) { data -> serialize(dto = data) }
-            put(key = "video", value = dto.video) { data -> serialize(dto = data) }
-            put(key = "added_sticker_file_ids", ints = dto.addedStickerFileIds)
-            put(key = "width", int = dto.width)
-            put(key = "height", int = dto.height)
             put(key = "caption", value = dto.caption) { data -> serialize(dto = data) }
             put(key = "show_caption_above_media", boolean = dto.showCaptionAboveMedia)
             put(key = "self_destruct_type", value = dto.selfDestructType) { data -> serialize(dto = data) }
@@ -24314,14 +25068,6 @@ internal class TdlSerializer internal constructor() {
         return buildJsonObject {
             put(key = "@type", string = "inputMessageVideo")
             put(key = "video", value = dto.video) { data -> serialize(dto = data) }
-            put(key = "thumbnail", value = dto.thumbnail) { data -> serialize(dto = data) }
-            put(key = "cover", value = dto.cover) { data -> serialize(dto = data) }
-            put(key = "start_timestamp", int = dto.startTimestamp)
-            put(key = "added_sticker_file_ids", ints = dto.addedStickerFileIds)
-            put(key = "duration", int = dto.duration)
-            put(key = "width", int = dto.width)
-            put(key = "height", int = dto.height)
-            put(key = "supports_streaming", boolean = dto.supportsStreaming)
             put(key = "caption", value = dto.caption) { data -> serialize(dto = data) }
             put(key = "show_caption_above_media", boolean = dto.showCaptionAboveMedia)
             put(key = "self_destruct_type", value = dto.selfDestructType) { data -> serialize(dto = data) }
@@ -24351,13 +25097,17 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: InputMessageLiveLocation): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "inputMessageLiveLocation")
+            put(key = "location", value = dto.location) { data -> serialize(dto = data) }
+        }
+    }
+
     private fun serialize(dto: InputMessageLocation): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "inputMessageLocation")
             put(key = "location", value = dto.location) { data -> serialize(dto = data) }
-            put(key = "live_period", int = dto.livePeriod)
-            put(key = "heading", int = dto.heading)
-            put(key = "proximity_alert_radius", int = dto.proximityAlertRadius)
         }
     }
 
@@ -24651,6 +25401,18 @@ internal class TdlSerializer internal constructor() {
     private fun serialize(dto: SearchMessagesChatTypeFilterChannel): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "searchMessagesChatTypeFilterChannel")
+        }
+    }
+
+    private fun serialize(dto: SearchChatTypeFilterBot): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "searchChatTypeFilterBot")
+        }
+    }
+
+    private fun serialize(dto: SearchChatTypeFilterChannel): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "searchChatTypeFilterChannel")
         }
     }
 
@@ -27283,6 +28045,12 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: PremiumLimitTypeMessageTextLength): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "premiumLimitTypeMessageTextLength")
+        }
+    }
+
     private fun serialize(dto: PremiumLimitTypeCaptionLength): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "premiumLimitTypeCaptionLength")
@@ -29085,105 +29853,119 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
-    private fun serialize(dto: SessionTypeAndroid): JsonElement {
+    private fun serialize(dto: SessionTypeDevice): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeAndroid")
+            put(key = "@type", string = "sessionTypeDevice")
+            put(key = "session_id", long = dto.sessionId)
         }
     }
 
-    private fun serialize(dto: SessionTypeApple): JsonElement {
+    private fun serialize(dto: SessionTypeConnectedBot): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeApple")
+            put(key = "@type", string = "sessionTypeConnectedBot")
+            put(key = "bot_user_id", long = dto.botUserId)
         }
     }
 
-    private fun serialize(dto: SessionTypeBrave): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeAndroid): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeBrave")
+            put(key = "@type", string = "sessionDeviceTypeAndroid")
         }
     }
 
-    private fun serialize(dto: SessionTypeChrome): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeApple): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeChrome")
+            put(key = "@type", string = "sessionDeviceTypeApple")
         }
     }
 
-    private fun serialize(dto: SessionTypeEdge): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeBrave): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeEdge")
+            put(key = "@type", string = "sessionDeviceTypeBrave")
         }
     }
 
-    private fun serialize(dto: SessionTypeFirefox): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeChrome): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeFirefox")
+            put(key = "@type", string = "sessionDeviceTypeChrome")
         }
     }
 
-    private fun serialize(dto: SessionTypeIpad): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeEdge): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeIpad")
+            put(key = "@type", string = "sessionDeviceTypeEdge")
         }
     }
 
-    private fun serialize(dto: SessionTypeIphone): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeFirefox): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeIphone")
+            put(key = "@type", string = "sessionDeviceTypeFirefox")
         }
     }
 
-    private fun serialize(dto: SessionTypeLinux): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeIpad): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeLinux")
+            put(key = "@type", string = "sessionDeviceTypeIpad")
         }
     }
 
-    private fun serialize(dto: SessionTypeMac): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeIphone): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeMac")
+            put(key = "@type", string = "sessionDeviceTypeIphone")
         }
     }
 
-    private fun serialize(dto: SessionTypeOpera): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeLinux): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeOpera")
+            put(key = "@type", string = "sessionDeviceTypeLinux")
         }
     }
 
-    private fun serialize(dto: SessionTypeSafari): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeMac): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeSafari")
+            put(key = "@type", string = "sessionDeviceTypeMac")
         }
     }
 
-    private fun serialize(dto: SessionTypeUbuntu): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeOpera): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeUbuntu")
+            put(key = "@type", string = "sessionDeviceTypeOpera")
         }
     }
 
-    private fun serialize(dto: SessionTypeUnknown): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeSafari): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeUnknown")
+            put(key = "@type", string = "sessionDeviceTypeSafari")
         }
     }
 
-    private fun serialize(dto: SessionTypeVivaldi): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeUbuntu): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeVivaldi")
+            put(key = "@type", string = "sessionDeviceTypeUbuntu")
         }
     }
 
-    private fun serialize(dto: SessionTypeWindows): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeUnknown): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeWindows")
+            put(key = "@type", string = "sessionDeviceTypeUnknown")
         }
     }
 
-    private fun serialize(dto: SessionTypeXbox): JsonElement {
+    private fun serialize(dto: SessionDeviceTypeVivaldi): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "sessionTypeXbox")
+            put(key = "@type", string = "sessionDeviceTypeVivaldi")
+        }
+    }
+
+    private fun serialize(dto: SessionDeviceTypeWindows): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "sessionDeviceTypeWindows")
+        }
+    }
+
+    private fun serialize(dto: SessionDeviceTypeXbox): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "sessionDeviceTypeXbox")
         }
     }
 
@@ -29196,7 +29978,7 @@ internal class TdlSerializer internal constructor() {
             put(key = "is_unconfirmed", boolean = dto.isUnconfirmed)
             put(key = "can_accept_secret_chats", boolean = dto.canAcceptSecretChats)
             put(key = "can_accept_calls", boolean = dto.canAcceptCalls)
-            put(key = "type", value = dto.type) { data -> serialize(dto = data) }
+            put(key = "device_type", value = dto.deviceType) { data -> serialize(dto = data) }
             put(key = "api_id", int = dto.apiId)
             put(key = "application_name", string = dto.applicationName)
             put(key = "application_version", string = dto.applicationVersion)
@@ -29222,8 +30004,8 @@ internal class TdlSerializer internal constructor() {
     private fun serialize(dto: UnconfirmedSession): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "unconfirmedSession")
-            put(key = "id", long = dto.id)
-            put(key = "log_in_date", int = dto.logInDate)
+            put(key = "type", value = dto.type) { data -> serialize(dto = data) }
+            put(key = "date", int = dto.date)
             put(key = "device_model", string = dto.deviceModel)
             put(key = "location", string = dto.location)
         }
@@ -30303,6 +31085,38 @@ internal class TdlSerializer internal constructor() {
             put(key = "group_settings", value = dto.groupSettings) { data -> serialize(dto = data) }
             put(key = "channel_settings", value = dto.channelSettings) { data -> serialize(dto = data) }
             put(key = "exceptions", objects = dto.exceptions) { data -> serialize(dto = data) }
+        }
+    }
+
+    private fun serialize(dto: WebDomainException): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "webDomainException")
+            put(key = "url", string = dto.url)
+            put(key = "domain", string = dto.domain)
+            put(key = "title", string = dto.title)
+            put(key = "favicon_custom_emoji_id", long = dto.faviconCustomEmojiId)
+        }
+    }
+
+    private fun serialize(dto: WebBrowserSettings): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "webBrowserSettings")
+            put(key = "open_external_browser", boolean = dto.openExternalBrowser)
+            put(key = "external_exceptions", objects = dto.externalExceptions) { data -> serialize(dto = data) }
+            put(key = "in_app_exceptions", objects = dto.inAppExceptions) { data -> serialize(dto = data) }
+            put(key = "display_close_button", boolean = dto.displayCloseButton)
+        }
+    }
+
+    private fun serialize(dto: WebBrowserTypeExternal): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "webBrowserTypeExternal")
+        }
+    }
+
+    private fun serialize(dto: WebBrowserTypeInApp): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "webBrowserTypeInApp")
         }
     }
 
@@ -31665,13 +32479,13 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
-    private fun serialize(dto: UpdatePendingTextMessage): JsonElement {
+    private fun serialize(dto: UpdatePendingMessage): JsonElement {
         return buildJsonObject {
-            put(key = "@type", string = "updatePendingTextMessage")
+            put(key = "@type", string = "updatePendingMessage")
             put(key = "chat_id", long = dto.chatId)
             put(key = "forum_topic_id", int = dto.forumTopicId)
             put(key = "draft_id", long = dto.draftId)
-            put(key = "text", value = dto.text) { data -> serialize(dto = data) }
+            put(key = "content", value = dto.content) { data -> serialize(dto = data) }
         }
     }
 
@@ -31961,6 +32775,15 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: UpdateChatJoinResult): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "updateChatJoinResult")
+            put(key = "query_id", long = dto.queryId)
+            put(key = "chat_id", long = dto.chatId)
+            put(key = "result", value = dto.result) { data -> serialize(dto = data) }
+        }
+    }
+
     private fun serialize(dto: UpdateStory): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "updateStory")
@@ -32114,6 +32937,13 @@ internal class TdlSerializer internal constructor() {
         }
     }
 
+    private fun serialize(dto: UpdateWebBrowserSettings): JsonElement {
+        return buildJsonObject {
+            put(key = "@type", string = "updateWebBrowserSettings")
+            put(key = "settings", value = dto.settings) { data -> serialize(dto = data) }
+        }
+    }
+
     private fun serialize(dto: UpdateLanguagePackStrings): JsonElement {
         return buildJsonObject {
             put(key = "@type", string = "updateLanguagePackStrings")
@@ -32159,6 +32989,7 @@ internal class TdlSerializer internal constructor() {
         return buildJsonObject {
             put(key = "@type", string = "updateUnconfirmedSession")
             put(key = "session", value = dto.session) { data -> serialize(dto = data) }
+            put(key = "unconfirmed_session_count", int = dto.unconfirmedSessionCount)
         }
     }
 
@@ -32526,6 +33357,7 @@ internal class TdlSerializer internal constructor() {
             put(key = "request", value = dto.request) { data -> serialize(dto = data) }
             put(key = "user_chat_id", long = dto.userChatId)
             put(key = "invite_link", value = dto.inviteLink) { data -> serialize(dto = data) }
+            put(key = "query_id", long = dto.queryId)
         }
     }
 

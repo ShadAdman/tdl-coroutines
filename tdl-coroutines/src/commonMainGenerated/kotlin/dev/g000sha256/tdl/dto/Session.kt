@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import kotlin.String
  * @property isUnconfirmed True, if the session wasn't confirmed from another session.
  * @property canAcceptSecretChats True, if incoming secret chats can be accepted by the session.
  * @property canAcceptCalls True, if incoming calls can be accepted by the session.
- * @property type Session type based on the system and application version, which can be used to display a corresponding icon.
+ * @property deviceType Session device type based on the system and application version, which can be used to display a corresponding icon.
  * @property apiId Telegram API identifier, as provided by the application.
  * @property applicationName Name of the application, as provided by the application.
  * @property applicationVersion The version of the application, as provided by the application.
@@ -51,7 +51,7 @@ public class Session public constructor(
     public val isUnconfirmed: Boolean,
     public val canAcceptSecretChats: Boolean,
     public val canAcceptCalls: Boolean,
-    public val type: SessionType,
+    public val deviceType: SessionDeviceType,
     public val apiId: Int,
     public val applicationName: String,
     public val applicationVersion: String,
@@ -93,7 +93,7 @@ public class Session public constructor(
         if (other.canAcceptCalls != canAcceptCalls) {
             return false
         }
-        if (other.type != type) {
+        if (other.deviceType != deviceType) {
             return false
         }
         if (other.apiId != apiId) {
@@ -137,7 +137,7 @@ public class Session public constructor(
         hashCode = 31 * hashCode + isUnconfirmed.hashCode()
         hashCode = 31 * hashCode + canAcceptSecretChats.hashCode()
         hashCode = 31 * hashCode + canAcceptCalls.hashCode()
-        hashCode = 31 * hashCode + type.hashCode()
+        hashCode = 31 * hashCode + deviceType.hashCode()
         hashCode = 31 * hashCode + apiId.hashCode()
         hashCode = 31 * hashCode + applicationName.hashCode()
         hashCode = 31 * hashCode + applicationVersion.hashCode()
@@ -174,8 +174,8 @@ public class Session public constructor(
             append("canAcceptCalls=")
             append(canAcceptCalls)
             append(", ")
-            append("type=")
-            append(type)
+            append("deviceType=")
+            append(deviceType)
             append(", ")
             append("apiId=")
             append(apiId)
