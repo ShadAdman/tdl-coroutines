@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,12 @@ import kotlin.String
  * A collapsible block.
  *
  * @property header Always visible heading for the block.
- * @property pageBlocks Block contents.
+ * @property blocks Block contents.
  * @property isOpen True, if the block is open by default.
  */
 public class PageBlockDetails public constructor(
     public val header: RichText,
-    public val pageBlocks: Array<PageBlock>,
+    public val blocks: Array<PageBlock>,
     public val isOpen: Boolean,
 ) : PageBlock() {
     override fun equals(other: Any?): Boolean {
@@ -48,8 +48,8 @@ public class PageBlockDetails public constructor(
         if (other.header != header) {
             return false
         }
-        val pageBlocksEquals = other.pageBlocks.contentDeepEquals(pageBlocks)
-        if (!pageBlocksEquals) {
+        val blocksEquals = other.blocks.contentDeepEquals(blocks)
+        if (!blocksEquals) {
             return false
         }
         return other.isOpen == isOpen
@@ -58,7 +58,7 @@ public class PageBlockDetails public constructor(
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + header.hashCode()
-        hashCode = 31 * hashCode + pageBlocks.contentDeepHashCode()
+        hashCode = 31 * hashCode + blocks.contentDeepHashCode()
         hashCode = 31 * hashCode + isOpen.hashCode()
         return hashCode
     }
@@ -70,8 +70,8 @@ public class PageBlockDetails public constructor(
             append("header=")
             append(header)
             append(", ")
-            append("pageBlocks=")
-            pageBlocks
+            append("blocks=")
+            blocks
                 .contentDeepToString()
                 .also { append(it) }
             append(", ")

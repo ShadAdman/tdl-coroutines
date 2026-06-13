@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,22 +23,22 @@ import kotlin.Int
 import kotlin.String
 
 /**
- * An embedded post.
+ * An embedded post; instant view only.
  *
  * @property url URL of the embedded post.
  * @property author Post author.
  * @property authorPhoto Post author photo; may be null.
  * @property date Point in time (Unix timestamp) when the post was created; 0 if unknown.
- * @property pageBlocks Post content.
- * @property caption Post caption.
+ * @property blocks Post content.
+ * @property caption Post caption; may be null if none.
  */
 public class PageBlockEmbeddedPost public constructor(
     public val url: String,
     public val author: String,
     public val authorPhoto: Photo?,
     public val date: Int,
-    public val pageBlocks: Array<PageBlock>,
-    public val caption: PageBlockCaption,
+    public val blocks: Array<PageBlock>,
+    public val caption: PageBlockCaption?,
 ) : PageBlock() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -63,8 +63,8 @@ public class PageBlockEmbeddedPost public constructor(
         if (other.date != date) {
             return false
         }
-        val pageBlocksEquals = other.pageBlocks.contentDeepEquals(pageBlocks)
-        if (!pageBlocksEquals) {
+        val blocksEquals = other.blocks.contentDeepEquals(blocks)
+        if (!blocksEquals) {
             return false
         }
         return other.caption == caption
@@ -76,7 +76,7 @@ public class PageBlockEmbeddedPost public constructor(
         hashCode = 31 * hashCode + author.hashCode()
         hashCode = 31 * hashCode + authorPhoto.hashCode()
         hashCode = 31 * hashCode + date.hashCode()
-        hashCode = 31 * hashCode + pageBlocks.contentDeepHashCode()
+        hashCode = 31 * hashCode + blocks.contentDeepHashCode()
         hashCode = 31 * hashCode + caption.hashCode()
         return hashCode
     }
@@ -97,8 +97,8 @@ public class PageBlockEmbeddedPost public constructor(
             append("date=")
             append(date)
             append(", ")
-            append("pageBlocks=")
-            pageBlocks
+            append("blocks=")
+            blocks
                 .contentDeepToString()
                 .also { append(it) }
             append(", ")

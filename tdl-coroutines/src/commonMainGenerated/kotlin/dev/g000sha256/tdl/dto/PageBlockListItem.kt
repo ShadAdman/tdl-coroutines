@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,19 @@ import kotlin.String
  * Describes an item of a list page block.
  *
  * @property label Item label.
- * @property pageBlocks Item blocks.
+ * @property blocks Item blocks.
+ * @property hasCheckbox True, if the item has a checkbox.
+ * @property isChecked True, if the item is checked.
+ * @property value Value of the item; 0 for unordered lists.
+ * @property type Type of the item numbering type; must be one of &quot;a&quot; for a lowercase letters, &quot;A&quot; for an uppercase letters, &quot;i&quot; for lowercase Roman numerals, &quot;I&quot; for uppercase Roman numerals, &quot;1&quot; for decimal numbers, or empty for unordered lists.
  */
 public class PageBlockListItem public constructor(
     public val label: String,
-    public val pageBlocks: Array<PageBlock>,
+    public val blocks: Array<PageBlock>,
+    public val hasCheckbox: Boolean,
+    public val isChecked: Boolean,
+    public val value: Int,
+    public val type: String,
 ) {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -46,13 +54,30 @@ public class PageBlockListItem public constructor(
         if (other.label != label) {
             return false
         }
-        return other.pageBlocks.contentDeepEquals(pageBlocks)
+        val blocksEquals = other.blocks.contentDeepEquals(blocks)
+        if (!blocksEquals) {
+            return false
+        }
+        if (other.hasCheckbox != hasCheckbox) {
+            return false
+        }
+        if (other.isChecked != isChecked) {
+            return false
+        }
+        if (other.value != value) {
+            return false
+        }
+        return other.type == type
     }
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + label.hashCode()
-        hashCode = 31 * hashCode + pageBlocks.contentDeepHashCode()
+        hashCode = 31 * hashCode + blocks.contentDeepHashCode()
+        hashCode = 31 * hashCode + hasCheckbox.hashCode()
+        hashCode = 31 * hashCode + isChecked.hashCode()
+        hashCode = 31 * hashCode + value.hashCode()
+        hashCode = 31 * hashCode + type.hashCode()
         return hashCode
     }
 
@@ -63,10 +88,22 @@ public class PageBlockListItem public constructor(
             append("label=")
             append(label)
             append(", ")
-            append("pageBlocks=")
-            pageBlocks
+            append("blocks=")
+            blocks
                 .contentDeepToString()
                 .also { append(it) }
+            append(", ")
+            append("hasCheckbox=")
+            append(hasCheckbox)
+            append(", ")
+            append("isChecked=")
+            append(isChecked)
+            append(", ")
+            append("value=")
+            append(value)
+            append(", ")
+            append("type=")
+            append(type)
             append(")")
         }
     }

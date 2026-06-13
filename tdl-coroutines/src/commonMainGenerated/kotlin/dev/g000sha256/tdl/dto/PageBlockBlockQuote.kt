@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package dev.g000sha256.tdl.dto
 
 import kotlin.Any
+import kotlin.Array
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.String
@@ -24,12 +25,12 @@ import kotlin.String
 /**
  * A block quote.
  *
- * @property text Quote text.
- * @property credit Quote credit.
+ * @property blocks Quote blocks.
+ * @property credit Quote credit; may be null if none.
  */
 public class PageBlockBlockQuote public constructor(
-    public val text: RichText,
-    public val credit: RichText,
+    public val blocks: Array<PageBlock>,
+    public val credit: RichText?,
 ) : PageBlock() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -42,7 +43,8 @@ public class PageBlockBlockQuote public constructor(
             return false
         }
         other as PageBlockBlockQuote
-        if (other.text != text) {
+        val blocksEquals = other.blocks.contentDeepEquals(blocks)
+        if (!blocksEquals) {
             return false
         }
         return other.credit == credit
@@ -50,7 +52,7 @@ public class PageBlockBlockQuote public constructor(
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
-        hashCode = 31 * hashCode + text.hashCode()
+        hashCode = 31 * hashCode + blocks.contentDeepHashCode()
         hashCode = 31 * hashCode + credit.hashCode()
         return hashCode
     }
@@ -59,8 +61,10 @@ public class PageBlockBlockQuote public constructor(
         return buildString {
             append("PageBlockBlockQuote")
             append("(")
-            append("text=")
-            append(text)
+            append("blocks=")
+            blocks
+                .contentDeepToString()
+                .also { append(it) }
             append(", ")
             append("credit=")
             append(credit)

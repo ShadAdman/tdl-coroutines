@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +25,12 @@ import kotlin.String
 /**
  * A collage.
  *
- * @property pageBlocks Collage item contents.
- * @property caption Block caption.
+ * @property blocks Collage item contents.
+ * @property caption Block caption; may be null if none.
  */
 public class PageBlockCollage public constructor(
-    public val pageBlocks: Array<PageBlock>,
-    public val caption: PageBlockCaption,
+    public val blocks: Array<PageBlock>,
+    public val caption: PageBlockCaption?,
 ) : PageBlock() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -43,8 +43,8 @@ public class PageBlockCollage public constructor(
             return false
         }
         other as PageBlockCollage
-        val pageBlocksEquals = other.pageBlocks.contentDeepEquals(pageBlocks)
-        if (!pageBlocksEquals) {
+        val blocksEquals = other.blocks.contentDeepEquals(blocks)
+        if (!blocksEquals) {
             return false
         }
         return other.caption == caption
@@ -52,7 +52,7 @@ public class PageBlockCollage public constructor(
 
     override fun hashCode(): Int {
         var hashCode = this::class.hashCode()
-        hashCode = 31 * hashCode + pageBlocks.contentDeepHashCode()
+        hashCode = 31 * hashCode + blocks.contentDeepHashCode()
         hashCode = 31 * hashCode + caption.hashCode()
         return hashCode
     }
@@ -61,8 +61,8 @@ public class PageBlockCollage public constructor(
         return buildString {
             append("PageBlockCollage")
             append("(")
-            append("pageBlocks=")
-            pageBlocks
+            append("blocks=")
+            blocks
                 .contentDeepToString()
                 .also { append(it) }
             append(", ")

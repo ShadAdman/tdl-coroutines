@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,13 +25,15 @@ import kotlin.String
  * An animation.
  *
  * @property animation Animation file; may be null.
- * @property caption Animation caption.
+ * @property caption Animation caption; may be null if none.
  * @property needAutoplay True, if the animation must be played automatically.
+ * @property hasSpoiler True, if the animation preview must be covered by a spoiler animation.
  */
 public class PageBlockAnimation public constructor(
     public val animation: Animation?,
-    public val caption: PageBlockCaption,
+    public val caption: PageBlockCaption?,
     public val needAutoplay: Boolean,
+    public val hasSpoiler: Boolean,
 ) : PageBlock() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -50,7 +52,10 @@ public class PageBlockAnimation public constructor(
         if (other.caption != caption) {
             return false
         }
-        return other.needAutoplay == needAutoplay
+        if (other.needAutoplay != needAutoplay) {
+            return false
+        }
+        return other.hasSpoiler == hasSpoiler
     }
 
     override fun hashCode(): Int {
@@ -58,6 +63,7 @@ public class PageBlockAnimation public constructor(
         hashCode = 31 * hashCode + animation.hashCode()
         hashCode = 31 * hashCode + caption.hashCode()
         hashCode = 31 * hashCode + needAutoplay.hashCode()
+        hashCode = 31 * hashCode + hasSpoiler.hashCode()
         return hashCode
     }
 
@@ -73,6 +79,9 @@ public class PageBlockAnimation public constructor(
             append(", ")
             append("needAutoplay=")
             append(needAutoplay)
+            append(", ")
+            append("hasSpoiler=")
+            append(hasSpoiler)
             append(")")
         }
     }

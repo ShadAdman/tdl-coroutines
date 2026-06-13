@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import kotlin.String
  * @property mode The mode in which the Web App must be opened.
  */
 public class MainWebApp public constructor(
-    public val url: String,
+    public val url: WebAppUrl,
     public val mode: WebAppOpenMode,
 ) {
     override fun equals(other: Any?): Boolean {

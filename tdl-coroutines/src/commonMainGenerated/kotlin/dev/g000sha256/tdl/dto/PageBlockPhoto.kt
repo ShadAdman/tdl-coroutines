@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,13 +25,15 @@ import kotlin.String
  * A photo.
  *
  * @property photo Photo file; may be null.
- * @property caption Photo caption.
- * @property url URL that needs to be opened when the photo is clicked.
+ * @property caption Photo caption; may be null if none.
+ * @property url URL that needs to be opened when the photo is clicked; instant view only.
+ * @property hasSpoiler True, if the photo preview must be covered by a spoiler animation.
  */
 public class PageBlockPhoto public constructor(
     public val photo: Photo?,
-    public val caption: PageBlockCaption,
+    public val caption: PageBlockCaption?,
     public val url: String,
+    public val hasSpoiler: Boolean,
 ) : PageBlock() {
     override fun equals(other: Any?): Boolean {
         if (other === this) {
@@ -50,7 +52,10 @@ public class PageBlockPhoto public constructor(
         if (other.caption != caption) {
             return false
         }
-        return other.url == url
+        if (other.url != url) {
+            return false
+        }
+        return other.hasSpoiler == hasSpoiler
     }
 
     override fun hashCode(): Int {
@@ -58,6 +63,7 @@ public class PageBlockPhoto public constructor(
         hashCode = 31 * hashCode + photo.hashCode()
         hashCode = 31 * hashCode + caption.hashCode()
         hashCode = 31 * hashCode + url.hashCode()
+        hashCode = 31 * hashCode + hasSpoiler.hashCode()
         return hashCode
     }
 
@@ -73,6 +79,9 @@ public class PageBlockPhoto public constructor(
             append(", ")
             append("url=")
             append(url)
+            append(", ")
+            append("hasSpoiler=")
+            append(hasSpoiler)
             append(")")
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,14 +27,14 @@ import kotlin.String
  *
  * @property replyTo Information about the message to be replied; inputMessageReplyToStory is unsupported; may be null if none.
  * @property date Point in time (Unix timestamp) when the draft was created.
- * @property inputMessageText Content of the message draft; must be of the type inputMessageText, inputMessageVideoNote, or inputMessageVoiceNote.
+ * @property content Content of the message draft.
  * @property effectId Identifier of the effect to apply to the message when it is sent; 0 if none.
  * @property suggestedPostInfo Information about the suggested post; may be null if none.
  */
 public class DraftMessage public constructor(
     public val replyTo: InputMessageReplyTo?,
     public val date: Int,
-    public val inputMessageText: InputMessageContent,
+    public val content: DraftMessageContent,
     public val effectId: Long,
     public val suggestedPostInfo: InputSuggestedPostInfo?,
 ) {
@@ -55,7 +55,7 @@ public class DraftMessage public constructor(
         if (other.date != date) {
             return false
         }
-        if (other.inputMessageText != inputMessageText) {
+        if (other.content != content) {
             return false
         }
         if (other.effectId != effectId) {
@@ -68,7 +68,7 @@ public class DraftMessage public constructor(
         var hashCode = this::class.hashCode()
         hashCode = 31 * hashCode + replyTo.hashCode()
         hashCode = 31 * hashCode + date.hashCode()
-        hashCode = 31 * hashCode + inputMessageText.hashCode()
+        hashCode = 31 * hashCode + content.hashCode()
         hashCode = 31 * hashCode + effectId.hashCode()
         hashCode = 31 * hashCode + suggestedPostInfo.hashCode()
         return hashCode
@@ -84,8 +84,8 @@ public class DraftMessage public constructor(
             append("date=")
             append(date)
             append(", ")
-            append("inputMessageText=")
-            append(inputMessageText)
+            append("content=")
+            append(content)
             append(", ")
             append("effectId=")
             append(effectId)

@@ -26,7 +26,7 @@ import kotlin.String
  *
  * @property text Formatted text to be sent; 0-getOption(&quot;message_text_length_max&quot;) characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl, MentionName, and DateTime entities are allowed to be specified manually.
  * @property linkPreviewOptions Options to be used for generation of a link preview; may be null if none; pass null to use default link preview options.
- * @property clearDraft True, if the chat message draft must be deleted.
+ * @property clearDraft Pass true to delete message draft in the chat.
  */
 public class InputMessageText public constructor(
     public val text: FormattedText,

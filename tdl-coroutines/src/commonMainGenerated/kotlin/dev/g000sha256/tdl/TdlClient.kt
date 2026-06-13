@@ -58,6 +58,7 @@ import dev.g000sha256.tdl.dto.BusinessChatLink
 import dev.g000sha256.tdl.dto.BusinessChatLinkInfo
 import dev.g000sha256.tdl.dto.BusinessChatLinks
 import dev.g000sha256.tdl.dto.BusinessConnectedBot
+import dev.g000sha256.tdl.dto.BusinessConnectedBotInfo
 import dev.g000sha256.tdl.dto.BusinessConnection
 import dev.g000sha256.tdl.dto.BusinessFeature
 import dev.g000sha256.tdl.dto.BusinessFeatures
@@ -102,7 +103,9 @@ import dev.g000sha256.tdl.dto.ChatInviteLinkMember
 import dev.g000sha256.tdl.dto.ChatInviteLinkMembers
 import dev.g000sha256.tdl.dto.ChatInviteLinks
 import dev.g000sha256.tdl.dto.ChatJoinRequest
+import dev.g000sha256.tdl.dto.ChatJoinRequestResult
 import dev.g000sha256.tdl.dto.ChatJoinRequests
+import dev.g000sha256.tdl.dto.ChatJoinResult
 import dev.g000sha256.tdl.dto.ChatList
 import dev.g000sha256.tdl.dto.ChatLists
 import dev.g000sha256.tdl.dto.ChatLocation
@@ -127,6 +130,7 @@ import dev.g000sha256.tdl.dto.ConnectedAffiliatePrograms
 import dev.g000sha256.tdl.dto.ConnectedWebsites
 import dev.g000sha256.tdl.dto.Count
 import dev.g000sha256.tdl.dto.Countries
+import dev.g000sha256.tdl.dto.CountryInfo
 import dev.g000sha256.tdl.dto.CraftGiftResult
 import dev.g000sha256.tdl.dto.CreatedBasicGroupChat
 import dev.g000sha256.tdl.dto.CurrentWeather
@@ -219,6 +223,7 @@ import dev.g000sha256.tdl.dto.InputMessageReplyTo
 import dev.g000sha256.tdl.dto.InputPassportElement
 import dev.g000sha256.tdl.dto.InputPassportElementError
 import dev.g000sha256.tdl.dto.InputPollOption
+import dev.g000sha256.tdl.dto.InputRichMessage
 import dev.g000sha256.tdl.dto.InputSticker
 import dev.g000sha256.tdl.dto.InputStoryAreas
 import dev.g000sha256.tdl.dto.InputStoryContent
@@ -234,6 +239,7 @@ import dev.g000sha256.tdl.dto.LanguagePackStringValue
 import dev.g000sha256.tdl.dto.LanguagePackStrings
 import dev.g000sha256.tdl.dto.LinkPreview
 import dev.g000sha256.tdl.dto.LinkPreviewOptions
+import dev.g000sha256.tdl.dto.LiveLocation
 import dev.g000sha256.tdl.dto.LiveStoryDonors
 import dev.g000sha256.tdl.dto.LocalizationTargetInfo
 import dev.g000sha256.tdl.dto.Location
@@ -327,10 +333,12 @@ import dev.g000sha256.tdl.dto.ReportSponsoredResult
 import dev.g000sha256.tdl.dto.ReportStoryResult
 import dev.g000sha256.tdl.dto.ResendCodeReason
 import dev.g000sha256.tdl.dto.ResetPasswordResult
+import dev.g000sha256.tdl.dto.RichMessage
 import dev.g000sha256.tdl.dto.RtmpUrl
 import dev.g000sha256.tdl.dto.SavedMessagesTags
 import dev.g000sha256.tdl.dto.ScopeAutosaveSettings
 import dev.g000sha256.tdl.dto.ScopeNotificationSettings
+import dev.g000sha256.tdl.dto.SearchChatTypeFilter
 import dev.g000sha256.tdl.dto.SearchMessagesChatTypeFilter
 import dev.g000sha256.tdl.dto.SearchMessagesFilter
 import dev.g000sha256.tdl.dto.Seconds
@@ -435,6 +443,7 @@ import dev.g000sha256.tdl.dto.UpdateChatHasProtectedContent
 import dev.g000sha256.tdl.dto.UpdateChatHasScheduledMessages
 import dev.g000sha256.tdl.dto.UpdateChatIsMarkedAsUnread
 import dev.g000sha256.tdl.dto.UpdateChatIsTranslatable
+import dev.g000sha256.tdl.dto.UpdateChatJoinResult
 import dev.g000sha256.tdl.dto.UpdateChatLastMessage
 import dev.g000sha256.tdl.dto.UpdateChatMember
 import dev.g000sha256.tdl.dto.UpdateChatMessageAutoDeleteTime
@@ -530,7 +539,7 @@ import dev.g000sha256.tdl.dto.UpdateOption
 import dev.g000sha256.tdl.dto.UpdateOwnedStarCount
 import dev.g000sha256.tdl.dto.UpdateOwnedTonCount
 import dev.g000sha256.tdl.dto.UpdatePaidMediaPurchased
-import dev.g000sha256.tdl.dto.UpdatePendingTextMessage
+import dev.g000sha256.tdl.dto.UpdatePendingMessage
 import dev.g000sha256.tdl.dto.UpdatePoll
 import dev.g000sha256.tdl.dto.UpdatePollAnswer
 import dev.g000sha256.tdl.dto.UpdateProfileAccentColors
@@ -577,6 +586,7 @@ import dev.g000sha256.tdl.dto.UpdateUserPrivacySettingRules
 import dev.g000sha256.tdl.dto.UpdateUserStatus
 import dev.g000sha256.tdl.dto.UpdateVideoPublished
 import dev.g000sha256.tdl.dto.UpdateWebAppMessageSent
+import dev.g000sha256.tdl.dto.UpdateWebBrowserSettings
 import dev.g000sha256.tdl.dto.Updates
 import dev.g000sha256.tdl.dto.UpgradeGiftResult
 import dev.g000sha256.tdl.dto.UpgradedGift
@@ -593,6 +603,8 @@ import dev.g000sha256.tdl.dto.ValidatedOrderInfo
 import dev.g000sha256.tdl.dto.VideoMessageAdvertisements
 import dev.g000sha256.tdl.dto.WebAppInfo
 import dev.g000sha256.tdl.dto.WebAppOpenParameters
+import dev.g000sha256.tdl.dto.WebAppUrl
+import dev.g000sha256.tdl.dto.WebBrowserType
 import dev.g000sha256.tdl.dto.WebPageInstantView
 import kotlin.Array
 import kotlin.Boolean
@@ -975,9 +987,9 @@ public abstract class TdlClient internal constructor() {
     public abstract val chatActionUpdates: Flow<UpdateChatAction>
 
     /**
-     * A new pending text message was received in a chat with a bot. The message must be shown in the chat for at most getOption(&quot;pending_text_message_period&quot;) seconds, replace any other pending message with the same draftId, and be deleted whenever any incoming message from the bot in the message thread is received.
+     * A new pending text or rich message was received in a chat with a bot. The message must be shown in the chat for at most getOption(&quot;pending_text_message_period&quot;) seconds, replace any other pending message with the same draftId, and be deleted whenever any incoming message from the bot in the message thread is received.
      */
-    public abstract val pendingTextMessageUpdates: Flow<UpdatePendingTextMessage>
+    public abstract val pendingMessageUpdates: Flow<UpdatePendingMessage>
 
     /**
      * The user went online or offline.
@@ -1157,6 +1169,11 @@ public abstract class TdlClient internal constructor() {
     public abstract val unreadChatCountUpdates: Flow<UpdateUnreadChatCount>
 
     /**
+     * A join request from the user was completed.
+     */
+    public abstract val chatJoinResultUpdates: Flow<UpdateChatJoinResult>
+
+    /**
      * A story was changed.
      */
     public abstract val storyUpdates: Flow<UpdateStory>
@@ -1255,6 +1272,11 @@ public abstract class TdlClient internal constructor() {
      * The list of supported accent colors for user profiles has changed.
      */
     public abstract val profileAccentColorsUpdates: Flow<UpdateProfileAccentColors>
+
+    /**
+     * Web browser settings have been updated.
+     */
+    public abstract val webBrowserSettingsUpdates: Flow<UpdateWebBrowserSettings>
 
     /**
      * Some language pack strings have been updated.
@@ -1830,7 +1852,7 @@ public abstract class TdlClient internal constructor() {
      *
      * @param shortcutName Name of the target shortcut.
      * @param replyToMessageId Identifier of a quick reply message in the same shortcut to be replied; pass 0 if none.
-     * @param inputMessageContent The content of the message to be added; inputMessagePaidMedia, inputMessageForwarded and inputMessageLocation with livePeriod aren't supported.
+     * @param inputMessageContent The content of the message to be added; inputMessagePaidMedia, inputMessageForwarded and inputMessageLiveLocation.
      */
     public abstract suspend fun addQuickReplyShortcutMessage(
         shortcutName: String,
@@ -1914,6 +1936,14 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun addTextCompositionStyle(name: String): TdlResult<Ok>
 
     /**
+     * Adds a special handling for the opening of the specified URL.
+     *
+     * @param openExternalBrowser Pass true if the specified website must be opened in an external browser; pass false to open it in the in-app browser. There can be at most 100 exceptions in each list of the exceptions.
+     * @param url URL of the website.
+     */
+    public abstract suspend fun addWebBrowserSettingsException(openExternalBrowser: Boolean, url: String): TdlResult<Ok>
+
+    /**
      * Allows the specified bot to send messages to the user.
      *
      * @param botUserId Identifier of the target bot.
@@ -1943,6 +1973,19 @@ public abstract class TdlClient internal constructor() {
         showAlert: Boolean,
         url: String,
         cacheTime: Int,
+    ): TdlResult<Ok>
+
+    /**
+     * Sets the result of a chat join query; for bots only.
+     *
+     * @param queryId Identifier of the query.
+     * @param result The result.
+     * @param url URL of the Web App to open.
+     */
+    public abstract suspend fun answerChatJoinRequestQuery(
+        queryId: Long,
+        result: ChatJoinRequestResult,
+        url: String,
     ): TdlResult<Ok>
 
     /**
@@ -2183,6 +2226,14 @@ public abstract class TdlClient internal constructor() {
     ): TdlResult<Ok>
 
     /**
+     * Changes web browser settings.
+     *
+     * @param openExternalBrowser Pass true if links must be opened in an external browser by default.
+     * @param displayCloseButton Pass true if a close button must be shown in the in-app browser; for Android app only.
+     */
+    public abstract suspend fun changeWebBrowserSettings(openExternalBrowser: Boolean, displayCloseButton: Boolean): TdlResult<Ok>
+
+    /**
      * Checks the authentication token of a bot; to log in as a bot. Works only when the current authorization state is authorizationStateWaitPhoneNumber. Can be used instead of setAuthenticationPhoneNumber and checkAuthenticationCode to log in.
      *
      * @param token The bot token.
@@ -2246,6 +2297,14 @@ public abstract class TdlClient internal constructor() {
         currency: String,
         amount: Long,
     ): TdlResult<Ok>
+
+    /**
+     * Checks a web token to log in to the corresponding account; for official Telegram apps only. Works only when the current authorization state is authorizationStateWaitPhoneNumber or authorizationStateWaitOtherDeviceConfirmation.
+     *
+     * @param token The token to check.
+     * @param dcId Identifier of the datacenter of the user.
+     */
+    public abstract suspend fun checkAuthenticationWebToken(token: String, dcId: Int): TdlResult<Ok>
 
     /**
      * Checks whether a username can be set for a new bot. Use checkChatUsername to check username for other chat types.
@@ -2518,6 +2577,13 @@ public abstract class TdlClient internal constructor() {
         styleName: String,
         addEmojis: Boolean,
     ): TdlResult<FormattedText>
+
+    /**
+     * Confirms an unconfirmed business connection of the current user from another device.
+     *
+     * @param botUserId User identifier of the bot.
+     */
+    public abstract suspend fun confirmBusinessConnectedBot(botUserId: Long): TdlResult<Ok>
 
     /**
      * Confirms QR code authentication on another device. Returns created session on success.
@@ -3389,20 +3455,14 @@ public abstract class TdlClient internal constructor() {
      * @param chatId The chat the message belongs to.
      * @param messageId Identifier of the message.
      * @param replyMarkup The new message reply markup; pass null if none.
-     * @param location New location content of the message; pass null to stop sharing the live location.
-     * @param livePeriod New time relative to the message send date, for which the location can be updated, in seconds. If 0x7FFFFFFF specified, then the location can be updated forever. Otherwise, must not exceed the current livePeriod by more than a day, and the live location expiration date must remain in the next 90 days. Pass 0 to keep the current livePeriod.
-     * @param heading The new direction in which the location moves, in degrees; 1-360. Pass 0 if unknown.
-     * @param proximityAlertRadius The new maximum distance for proximity alerts, in meters (0-100000). Pass 0 if the notification is disabled.
+     * @param location New live location of the message; pass null to stop sharing the live location. If the new livePeriod isn't set to 0x7FFFFFFF, then it must not exceed the current livePeriod by more than a day, and the live location expiration date must remain in the next 90 days.
      */
     public abstract suspend fun editBusinessMessageLiveLocation(
         businessConnectionId: String,
         chatId: Long,
         messageId: Long,
         replyMarkup: ReplyMarkup? = null,
-        location: Location? = null,
-        livePeriod: Int,
-        heading: Int,
-        proximityAlertRadius: Int,
+        location: LiveLocation? = null,
     ): TdlResult<BusinessMessage>
 
     /**
@@ -3444,7 +3504,7 @@ public abstract class TdlClient internal constructor() {
      * @param chatId The chat the message belongs to.
      * @param messageId Identifier of the message.
      * @param replyMarkup The new message reply markup; pass null if none.
-     * @param inputMessageContent New text content of the message. Must be of type inputMessageText.
+     * @param inputMessageContent New text content of the message. Must be of type inputMessageText or inputMessageRichMessage.
      */
     public abstract suspend fun editBusinessMessageText(
         businessConnectionId: String,
@@ -3572,18 +3632,12 @@ public abstract class TdlClient internal constructor() {
      *
      * @param inlineMessageId Inline message identifier.
      * @param replyMarkup The new message reply markup; pass null if none.
-     * @param location New location content of the message; pass null to stop sharing the live location.
-     * @param livePeriod New time relative to the message send date, for which the location can be updated, in seconds. If 0x7FFFFFFF specified, then the location can be updated forever. Otherwise, must not exceed the current livePeriod by more than a day, and the live location expiration date must remain in the next 90 days. Pass 0 to keep the current livePeriod.
-     * @param heading The new direction in which the location moves, in degrees; 1-360. Pass 0 if unknown.
-     * @param proximityAlertRadius The new maximum distance for proximity alerts, in meters (0-100000). Pass 0 if the notification is disabled.
+     * @param location New live location of the message; pass null to stop sharing the live location. If the new livePeriod isn't set to 0x7FFFFFFF, then it must not exceed the current livePeriod by more than a day, and the live location expiration date must remain in the next 90 days.
      */
     public abstract suspend fun editInlineMessageLiveLocation(
         inlineMessageId: String,
         replyMarkup: ReplyMarkup? = null,
-        location: Location? = null,
-        livePeriod: Int,
-        heading: Int,
-        proximityAlertRadius: Int,
+        location: LiveLocation? = null,
     ): TdlResult<Ok>
 
     /**
@@ -3612,7 +3666,7 @@ public abstract class TdlClient internal constructor() {
      *
      * @param inlineMessageId Inline message identifier.
      * @param replyMarkup The new message reply markup; pass null if none.
-     * @param inputMessageContent New text content of the message. Must be of type inputMessageText.
+     * @param inputMessageContent New text content of the message. Must be of type inputMessageText or inputMessageRichMessage.
      */
     public abstract suspend fun editInlineMessageText(
         inlineMessageId: String,
@@ -3658,19 +3712,13 @@ public abstract class TdlClient internal constructor() {
      * @param chatId The chat the message belongs to.
      * @param messageId Identifier of the message. Use messageProperties.canBeEdited to check whether the message can be edited.
      * @param replyMarkup The new message reply markup; pass null if none; for bots only.
-     * @param location New location content of the message; pass null to stop sharing the live location.
-     * @param livePeriod New time relative to the message send date, for which the location can be updated, in seconds. If 0x7FFFFFFF specified, then the location can be updated forever. Otherwise, must not exceed the current livePeriod by more than a day, and the live location expiration date must remain in the next 90 days. Pass 0 to keep the current livePeriod.
-     * @param heading The new direction in which the location moves, in degrees; 1-360. Pass 0 if unknown.
-     * @param proximityAlertRadius The new maximum distance for proximity alerts, in meters (0-100000). Pass 0 if the notification is disabled.
+     * @param location New live location of the message; pass null to stop sharing the live location. If the new livePeriod isn't set to 0x7FFFFFFF, then it must not exceed the current livePeriod by more than a day, and the live location expiration date must remain in the next 90 days.
      */
     public abstract suspend fun editMessageLiveLocation(
         chatId: Long,
         messageId: Long,
         replyMarkup: ReplyMarkup? = null,
-        location: Location? = null,
-        livePeriod: Int,
-        heading: Int,
-        proximityAlertRadius: Int,
+        location: LiveLocation? = null,
     ): TdlResult<Message>
 
     /**
@@ -3720,7 +3768,7 @@ public abstract class TdlClient internal constructor() {
      * @param chatId The chat the message belongs to.
      * @param messageId Identifier of the message. Use messageProperties.canBeEdited to check whether the message can be edited.
      * @param replyMarkup The new message reply markup; pass null if none; for bots only.
-     * @param inputMessageContent New text content of the message. Must be of type inputMessageText.
+     * @param inputMessageContent New text content of the message. Must be of type inputMessageText or inputMessageRichMessage.
      */
     public abstract suspend fun editMessageText(
         chatId: Long,
@@ -3749,7 +3797,7 @@ public abstract class TdlClient internal constructor() {
      *
      * @param shortcutId Unique identifier of the quick reply shortcut with the message.
      * @param messageId Identifier of the message.
-     * @param inputMessageContent New content of the message. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageChecklist, inputMessageDocument, inputMessagePhoto, inputMessageText, or inputMessageVideo.
+     * @param inputMessageContent New content of the message. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageChecklist, inputMessageDocument, inputMessagePhoto, inputMessageRichMessage, inputMessageText, or inputMessageVideo.
      */
     public abstract suspend fun editQuickReplyMessage(
         shortcutId: Int,
@@ -3910,7 +3958,7 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun getAccountTtl(): TdlResult<AccountTtl>
 
     /**
-     * Returns all active sessions of the current user.
+     * Returns all active sessions of the current user. Additionally, getBusinessConnectedBot must be used to show the bot on top of active sessions.
      */
     public abstract suspend fun getActiveSessions(): TdlResult<Sessions>
 
@@ -4131,9 +4179,9 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun getBusinessChatLinks(): TdlResult<BusinessChatLinks>
 
     /**
-     * Returns the business bot that is connected to the current user account. Returns a 404 error if there is no connected bot.
+     * Returns information about the business bot that is connected to the current user account. Returns a 404 error if there is no connected bot.
      */
-    public abstract suspend fun getBusinessConnectedBot(): TdlResult<BusinessConnectedBot>
+    public abstract suspend fun getBusinessConnectedBot(): TdlResult<BusinessConnectedBotInfo>
 
     /**
      * Returns information about a business connection by its identifier; for bots only.
@@ -4497,7 +4545,7 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun getChatNotificationSettingsExceptions(scope: NotificationSettingsScope? = null, compareSound: Boolean): TdlResult<Chats>
 
     /**
-     * Returns the user who will become the owner of the chat after 7 days if the current user does not return to the supergroup or channel during that period or immediately for basic groups; requires owner privileges in the chat. Available only for supergroups and channel chats.
+     * Returns the user who will become the owner of the chat after 7 days if the current user does not return to the supergroup or channel during that period or immediately for basic groups; requires owner privileges in the chat. Available only for basic groups, supergroups, and channel chats.
      *
      * @param chatId Chat identifier.
      */
@@ -4575,7 +4623,7 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun getChatSimilarChats(chatId: Long): TdlResult<Chats>
 
     /**
-     * Returns sparse positions of messages of the specified type in the chat to be used for shared media scroll implementation. Returns the results in reverse chronological order (i.e., in order of decreasing messageId). Cannot be used in secret chats or with searchMessagesFilterFailedToSend filter without an enabled message database.
+     * Returns sparse positions of messages of the specified type in the chat to be used for Shared Media scroll implementation. Returns the results in reverse chronological order (i.e., in order of decreasing messageId). Cannot be used in secret chats or with searchMessagesFilterFailedToSend filter without an enabled message database.
      *
      * @param chatId Identifier of the chat in which to return information about message positions.
      * @param filter Filter for message content. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, and searchMessagesFilterUnreadPollVote are unsupported in this function.
@@ -4707,6 +4755,13 @@ public abstract class TdlClient internal constructor() {
      * Returns information about existing countries. Can be called before authorization.
      */
     public abstract suspend fun getCountries(): TdlResult<Countries>
+
+    /**
+     * Returns information about an existing country. Can be called before authorization.
+     *
+     * @param countryCode A two-letter ISO 3166-1 alpha-2 country code.
+     */
+    public abstract suspend fun getCountry(countryCode: String): TdlResult<CountryInfo>
 
     /**
      * Uses the current IP address to find the current country. Returns two-letter ISO 3166-1 alpha-2 country code. Can be called before authorization.
@@ -4874,7 +4929,7 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun getExternalLink(link: String, allowWriteAccess: Boolean): TdlResult<HttpUrl>
 
     /**
-     * Returns information about an action to be done when the current user clicks an external link. Don't use this method for links from secret chats if link preview is disabled in secret chats.
+     * Returns information about an action to be done when the current user clicks an external link. Don't use this method for links from secret chats if link preview is disabled in secret chats, and use directly getLinkWebBrowserType.
      *
      * @param link The link.
      */
@@ -4970,6 +5025,14 @@ public abstract class TdlClient internal constructor() {
         offsetForumTopicId: Int,
         limit: Int,
     ): TdlResult<ForumTopics>
+
+    /**
+     * Returns the full version of a rich message.
+     *
+     * @param chatId Identifier of the chat the messages belong to.
+     * @param messageId Identifier of the message.
+     */
+    public abstract suspend fun getFullRichMessage(chatId: Long, messageId: Long): TdlResult<RichMessage>
 
     /**
      * Returns the high scores for a game and some part of the high score table in the range of the specified user; for bots only.
@@ -5229,6 +5292,13 @@ public abstract class TdlClient internal constructor() {
      * @param linkPreviewOptions Options to be used for generation of the link preview; pass null to use default link preview options.
      */
     public abstract suspend fun getLinkPreview(text: FormattedText, linkPreviewOptions: LinkPreviewOptions? = null): TdlResult<LinkPreview>
+
+    /**
+     * Returns a type of the web browser which must be used to open the link.
+     *
+     * @param link The HTTP link.
+     */
+    public abstract suspend fun getLinkWebBrowserType(link: String): TdlResult<WebBrowserType>
 
     /**
      * Returns the list of message sender identifiers, on whose behalf messages can be sent to a live story.
@@ -6607,7 +6677,7 @@ public abstract class TdlClient internal constructor() {
         startParameter: String,
         allowWriteAccess: Boolean,
         parameters: WebAppOpenParameters,
-    ): TdlResult<HttpUrl>
+    ): TdlResult<WebAppUrl>
 
     /**
      * Returns a default placeholder for Web Apps of a bot. This is an offline method. Returns a 404 error if the placeholder isn't known.
@@ -6627,7 +6697,7 @@ public abstract class TdlClient internal constructor() {
         botUserId: Long,
         url: String,
         parameters: WebAppOpenParameters,
-    ): TdlResult<HttpUrl>
+    ): TdlResult<WebAppUrl>
 
     /**
      * Returns an instant view version of a web page if available. This is an offline method if onlyLocal is true. Returns a 404 error if the web page has no instant view page.
@@ -6726,18 +6796,18 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun isProfileAudio(fileId: Int): TdlResult<Ok>
 
     /**
-     * Adds the current user as a new member to a chat. Private and secret chats can't be joined using this method. May return an error with a message &quot;INVITE_REQUEST_SENT&quot; if only a join request was created.
+     * Adds the current user as a new member to a chat. Private and secret chats can't be joined using this method.
      *
      * @param chatId Chat identifier.
      */
-    public abstract suspend fun joinChat(chatId: Long): TdlResult<Ok>
+    public abstract suspend fun joinChat(chatId: Long): TdlResult<ChatJoinResult>
 
     /**
-     * Uses an invite link to add the current user to the chat if possible. May return an error with a message &quot;INVITE_REQUEST_SENT&quot; if only a join request was created.
+     * Uses an invite link to add the current user to the chat if possible.
      *
      * @param inviteLink Invite link to use.
      */
-    public abstract suspend fun joinChatByInviteLink(inviteLink: String): TdlResult<Chat>
+    public abstract suspend fun joinChatByInviteLink(inviteLink: String): TdlResult<ChatJoinResult>
 
     /**
      * Joins a regular group call that is not bound to a chat.
@@ -7314,6 +7384,11 @@ public abstract class TdlClient internal constructor() {
     ): TdlResult<Ok>
 
     /**
+     * Removes special handling for the opening of all links.
+     */
+    public abstract suspend fun removeAllWebBrowserSettingsExceptions(): TdlResult<Ok>
+
+    /**
      * Removes the connected business bot from a specific chat by adding the chat to businessRecipients.excludedChatIds.
      *
      * @param chatId Chat identifier.
@@ -7519,6 +7594,13 @@ public abstract class TdlClient internal constructor() {
      * @param chatId Chat identifier.
      */
     public abstract suspend fun removeTopChat(category: TopChatCategory, chatId: Long): TdlResult<Ok>
+
+    /**
+     * Removes a special handling for the opening of the specified URL.
+     *
+     * @param url URL of the website.
+     */
+    public abstract suspend fun removeWebBrowserSettingsException(url: String): TdlResult<Ok>
 
     /**
      * Changes order of active usernames of the current user.
@@ -7998,7 +8080,7 @@ public abstract class TdlClient internal constructor() {
     ): TdlResult<FoundChatMessages>
 
     /**
-     * Returns information about the recent locations of chat members that were sent to the chat. Returns up to 1 location message per user.
+     * Returns information about the recent live locations of chat members that were sent to the chat. Returns at most one live location message per user.
      *
      * @param chatId Chat identifier.
      * @param limit The maximum number of messages to be returned.
@@ -8009,17 +8091,27 @@ public abstract class TdlClient internal constructor() {
      * Searches for the specified query in the title and username of already known chats. This is an offline method. Returns chats in the order seen in the main chat list.
      *
      * @param query Query to search for. If the query is empty, returns up to 50 recently found chats.
+     * @param typeFilter Additional filter for type of the chats to be returned; pass null to search for chats of all types.
      * @param limit The maximum number of chats to be returned.
      */
-    public abstract suspend fun searchChats(query: String, limit: Int): TdlResult<Chats>
+    public abstract suspend fun searchChats(
+        query: String,
+        typeFilter: SearchChatTypeFilter? = null,
+        limit: Int,
+    ): TdlResult<Chats>
 
     /**
      * Searches for the specified query in the title and username of already known chats via request to the server. Returns chats in the order seen in the main chat list.
      *
      * @param query Query to search for.
+     * @param typeFilter Additional filter for type of the chats to be returned; pass null to search for chats of all types.
      * @param limit The maximum number of chats to be returned.
      */
-    public abstract suspend fun searchChatsOnServer(query: String, limit: Int): TdlResult<Chats>
+    public abstract suspend fun searchChatsOnServer(
+        query: String,
+        typeFilter: SearchChatTypeFilter? = null,
+        limit: Int,
+    ): TdlResult<Chats>
 
     /**
      * Searches for the specified query in the first names, last names and usernames of the known user contacts.
@@ -8138,8 +8230,9 @@ public abstract class TdlClient internal constructor() {
      * Searches public chats by looking for specified query in their username and title. Currently, only private chats, supergroups and channels can be public. Returns a meaningful number of results. Excludes private chats with contacts and chats from the chat list from the results.
      *
      * @param query Query to search for.
+     * @param typeFilter Additional filter for type of the chats to be returned; pass null to search for chats of all types.
      */
-    public abstract suspend fun searchPublicChats(query: String): TdlResult<Chats>
+    public abstract suspend fun searchPublicChats(query: String, typeFilter: SearchChatTypeFilter? = null): TdlResult<Chats>
 
     /**
      * Searches for public channel posts containing the given hashtag or cashtag. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit.
@@ -8229,9 +8322,14 @@ public abstract class TdlClient internal constructor() {
      * Searches for the specified query in the title and username of up to 50 recently found chats. This is an offline method.
      *
      * @param query Query to search for.
+     * @param typeFilter Additional filter for type of the chats to be returned; pass null to search for chats of all types.
      * @param limit The maximum number of chats to be returned.
      */
-    public abstract suspend fun searchRecentlyFoundChats(query: String, limit: Int): TdlResult<Chats>
+    public abstract suspend fun searchRecentlyFoundChats(
+        query: String,
+        typeFilter: SearchChatTypeFilter? = null,
+        limit: Int,
+    ): TdlResult<Chats>
 
     /**
      * Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only. Returns the results in reverse chronological order, i.e. in order of decreasing messageId. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit.
@@ -8685,6 +8783,21 @@ public abstract class TdlClient internal constructor() {
         ownerId: MessageSender,
         price: GiftResalePrice,
     ): TdlResult<GiftResaleResult>
+
+    /**
+     * Sends a draft for a being generated rich message; for bots only.
+     *
+     * @param chatId Chat identifier.
+     * @param forumTopicId The forum topic identifier in which the message will be sent; pass 0 if none.
+     * @param draftId Unique identifier of the draft.
+     * @param message Draft of the message.
+     */
+    public abstract suspend fun sendRichMessageDraft(
+        chatId: Long,
+        forumTopicId: Int,
+        draftId: Long,
+        message: InputRichMessage,
+    ): TdlResult<Ok>
 
     /**
      * Sends a draft for a being generated text message; for bots only.
@@ -10170,7 +10283,7 @@ public abstract class TdlClient internal constructor() {
     public abstract suspend fun synchronizeLanguagePack(languagePackId: String): TdlResult<Ok>
 
     /**
-     * Terminates all other sessions of the current user.
+     * Terminates all other sessions of the current user. Additionally, the user must be suggested to delete the connected business bot using deleteBusinessConnectedBot if there is any.
      */
     public abstract suspend fun terminateAllOtherSessions(): TdlResult<Ok>
 
@@ -10619,8 +10732,15 @@ public abstract class TdlClient internal constructor() {
      *
      * @param supergroupId Identifier of the supergroup that isn't a broadcast group and isn't a channel direct message group.
      * @param joinByRequest New value of joinByRequest.
+     * @param guardBotUserId Identifier of the bot which will be the guard bot in the group; pass 0 if none; ignored if joinByRequest == false. The bot must have administrator privileges and canInviteUsers right in the supergroup chat, and must have userTypeBot.isGuard == true.
+     * @param applyToInviteLinks Pass true to apply the change to the existing invite links, including primary links.
      */
-    public abstract suspend fun toggleSupergroupJoinByRequest(supergroupId: Long, joinByRequest: Boolean): TdlResult<Ok>
+    public abstract suspend fun toggleSupergroupJoinByRequest(
+        supergroupId: Long,
+        joinByRequest: Boolean,
+        guardBotUserId: Long,
+        applyToInviteLinks: Boolean,
+    ): TdlResult<Ok>
 
     /**
      * Toggles whether joining is mandatory to send messages to a discussion supergroup; requires canRestrictMembers administrator right.
@@ -10735,7 +10855,7 @@ public abstract class TdlClient internal constructor() {
      * Translates a text to the given language; must not be used in secret chats. If the current user is a Telegram Premium user, then text formatting is preserved.
      *
      * @param text Text to translate.
-     * @param toLanguageCode Language code of the language to which the message is translated. Must be one of &quot;af&quot;, &quot;sq&quot;, &quot;am&quot;, &quot;ar&quot;, &quot;hy&quot;, &quot;az&quot;, &quot;eu&quot;, &quot;be&quot;, &quot;bn&quot;, &quot;bs&quot;, &quot;bg&quot;, &quot;ca&quot;, &quot;ceb&quot;, &quot;zh-CN&quot;, &quot;zh&quot;, &quot;zh-Hans&quot;, &quot;zh-TW&quot;, &quot;zh-Hant&quot;, &quot;co&quot;, &quot;hr&quot;, &quot;cs&quot;, &quot;da&quot;, &quot;nl&quot;, &quot;en&quot;, &quot;eo&quot;, &quot;et&quot;, &quot;fi&quot;, &quot;fr&quot;, &quot;fy&quot;, &quot;gl&quot;, &quot;ka&quot;, &quot;de&quot;, &quot;el&quot;, &quot;gu&quot;, &quot;ht&quot;, &quot;ha&quot;, &quot;haw&quot;, &quot;he&quot;, &quot;iw&quot;, &quot;hi&quot;, &quot;hmn&quot;, &quot;hu&quot;, &quot;is&quot;, &quot;ig&quot;, &quot;id&quot;, &quot;in&quot;, &quot;ga&quot;, &quot;it&quot;, &quot;ja&quot;, &quot;jv&quot;, &quot;kn&quot;, &quot;kk&quot;, &quot;km&quot;, &quot;rw&quot;, &quot;ko&quot;, &quot;ku&quot;, &quot;ky&quot;, &quot;lo&quot;, &quot;la&quot;, &quot;lv&quot;, &quot;lt&quot;, &quot;lb&quot;, &quot;mk&quot;, &quot;mg&quot;, &quot;ms&quot;, &quot;ml&quot;, &quot;mt&quot;, &quot;mi&quot;, &quot;mr&quot;, &quot;mn&quot;, &quot;my&quot;, &quot;ne&quot;, &quot;no&quot;, &quot;ny&quot;, &quot;or&quot;, &quot;ps&quot;, &quot;fa&quot;, &quot;pl&quot;, &quot;pt&quot;, &quot;pa&quot;, &quot;ro&quot;, &quot;ru&quot;, &quot;sm&quot;, &quot;gd&quot;, &quot;sr&quot;, &quot;st&quot;, &quot;sn&quot;, &quot;sd&quot;, &quot;si&quot;, &quot;sk&quot;, &quot;sl&quot;, &quot;so&quot;, &quot;es&quot;, &quot;su&quot;, &quot;sw&quot;, &quot;sv&quot;, &quot;tl&quot;, &quot;tg&quot;, &quot;ta&quot;, &quot;tt&quot;, &quot;te&quot;, &quot;th&quot;, &quot;tr&quot;, &quot;tk&quot;, &quot;uk&quot;, &quot;ur&quot;, &quot;ug&quot;, &quot;uz&quot;, &quot;vi&quot;, &quot;cy&quot;, &quot;xh&quot;, &quot;yi&quot;, &quot;ji&quot;, &quot;yo&quot;, &quot;zu&quot;.
+     * @param toLanguageCode Language code of the language to which the message is translated. Must be one of &quot;af&quot;, &quot;sq&quot;, &quot;am&quot;, &quot;ar&quot;, &quot;hy&quot;, &quot;az&quot;, &quot;eu&quot;, &quot;be&quot;, &quot;bn&quot;, &quot;bs&quot;, &quot;bg&quot;, &quot;ca&quot;, &quot;ceb&quot;, &quot;zh-CN&quot;, &quot;zh&quot;, &quot;zh-Hans&quot;, &quot;zh-TW&quot;, &quot;zh-Hant&quot;, &quot;co&quot;, &quot;hr&quot;, &quot;cs&quot;, &quot;da&quot;, &quot;nl&quot;, &quot;en&quot;, &quot;eo&quot;, &quot;et&quot;, &quot;fi&quot;, &quot;fr&quot;, &quot;fy&quot;, &quot;gl&quot;, &quot;ka&quot;, &quot;de&quot;, &quot;el&quot;, &quot;gu&quot;, &quot;ht&quot;, &quot;ha&quot;, &quot;haw&quot;, &quot;he&quot;, &quot;iw&quot;, &quot;hi&quot;, &quot;hmn&quot;, &quot;hu&quot;, &quot;is&quot;, &quot;ig&quot;, &quot;id&quot;, &quot;in&quot;, &quot;ga&quot;, &quot;it&quot;, &quot;ja&quot;, &quot;jv&quot;, &quot;kn&quot;, &quot;kk&quot;, &quot;km&quot;, &quot;rw&quot;, &quot;ko&quot;, &quot;ku&quot;, &quot;ky&quot;, &quot;lo&quot;, &quot;la&quot;, &quot;lv&quot;, &quot;lt&quot;, &quot;lb&quot;, &quot;mk&quot;, &quot;mg&quot;, &quot;ms&quot;, &quot;ml&quot;, &quot;mt&quot;, &quot;mi&quot;, &quot;mr&quot;, &quot;mn&quot;, &quot;my&quot;, &quot;ne&quot;, &quot;no&quot;, &quot;ny&quot;, &quot;or&quot;, &quot;ps&quot;, &quot;fa&quot;, &quot;pl&quot;, &quot;pt&quot;, &quot;pt-BR&quot;, &quot;pa&quot;, &quot;ro&quot;, &quot;ru&quot;, &quot;sm&quot;, &quot;gd&quot;, &quot;sr&quot;, &quot;st&quot;, &quot;sn&quot;, &quot;sd&quot;, &quot;si&quot;, &quot;sk&quot;, &quot;sl&quot;, &quot;so&quot;, &quot;es&quot;, &quot;su&quot;, &quot;sw&quot;, &quot;sv&quot;, &quot;tl&quot;, &quot;tg&quot;, &quot;ta&quot;, &quot;tt&quot;, &quot;te&quot;, &quot;th&quot;, &quot;tr&quot;, &quot;tk&quot;, &quot;uk&quot;, &quot;ur&quot;, &quot;ug&quot;, &quot;uz&quot;, &quot;vi&quot;, &quot;cy&quot;, &quot;xh&quot;, &quot;yi&quot;, &quot;ji&quot;, &quot;yo&quot;, &quot;zu&quot;.
      * @param tone Tone of the translation; must be one of &quot;&quot;, &quot;formal&quot;, &quot;neutral&quot;, &quot;casual&quot;; defaults to &quot;neutral&quot;.
      */
     public abstract suspend fun translateText(
@@ -10883,12 +11003,12 @@ public abstract class TdlClient internal constructor() {
         /**
          * The Git commit hash of the TDLib.
          */
-        public const val TDL_GIT_COMMIT_HASH: String = "49b3bcbb6bfebf2ed44dd9f25102d2e1a94a58c4"
+        public const val TDL_GIT_COMMIT_HASH: String = "a8f21f5230172634becc1739050ef23ecd6ea291"
 
         /**
          * The version of the TDLib.
          */
-        public const val TDL_VERSION: String = "1.8.64"
+        public const val TDL_VERSION: String = "1.8.65"
 
         /**
          * Creates a new instance of the [TdlClient].

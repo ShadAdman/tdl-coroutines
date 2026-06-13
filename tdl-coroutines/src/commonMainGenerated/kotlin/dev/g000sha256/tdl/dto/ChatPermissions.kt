@@ -24,7 +24,7 @@ import kotlin.String
 /**
  * Describes actions that a user is allowed to take in a chat.
  *
- * @property canSendBasicMessages True, if the user can send text messages, contacts, giveaways, giveaway winners, invoices, locations, and venues.
+ * @property canSendBasicMessages True, if the user can send text messages, rich messages, contacts, giveaways, giveaway winners, invoices, locations, and venues.
  * @property canSendAudios True, if the user can send music files.
  * @property canSendDocuments True, if the user can send documents.
  * @property canSendPhotos True, if the user can send photos.

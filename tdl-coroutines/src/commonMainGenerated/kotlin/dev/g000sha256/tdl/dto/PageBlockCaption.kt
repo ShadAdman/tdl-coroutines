@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Georgii Ippolitov (g000sha256)
+ * Copyright 2025-2026 Georgii Ippolitov (g000sha256)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@ import kotlin.String
  * Contains a caption of another block.
  *
  * @property text Content of the caption.
- * @property credit Block credit (like HTML tag &lt;cite&gt;).
+ * @property credit Block credit (like HTML tag &lt;cite&gt;); may be null if none.
  */
 public class PageBlockCaption public constructor(
     public val text: RichText,
-    public val credit: RichText,
+    public val credit: RichText?,
 ) {
     override fun equals(other: Any?): Boolean {
         if (other === this) {

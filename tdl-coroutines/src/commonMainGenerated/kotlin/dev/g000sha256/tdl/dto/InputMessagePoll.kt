@@ -28,7 +28,7 @@ import kotlin.String
  * @property question Poll question; 1-255 characters (up to 300 characters for bots). Only custom emoji entities are allowed to be added and only by Premium users.
  * @property options List of poll answer options; 1-getOption(&quot;poll_answer_count_max&quot;) options.
  * @property description Poll description; pass null to use an empty description; 0-getOption(&quot;message_caption_length_max&quot;) characters.
- * @property media Media attached to the poll; pass null if none. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, non-live inputMessageLocation, inputMessagePhoto, inputMessageVenue, or inputMessageVideo without caption.
+ * @property media Media attached to the poll; pass null if none. Must be one of the following types: inputPollMediaAnimation, inputPollMediaAudio, inputPollMediaDocument, inputPollMediaLocation, inputPollMediaPhoto, inputPollMediaVenue, or inputPollMediaVideo without caption.
  * @property isAnonymous True, if the poll voters are anonymous. Non-anonymous polls can't be sent or forwarded to channels.
  * @property allowsMultipleAnswers True, if multiple answer options can be chosen simultaneously.
  * @property allowsRevoting True, if the poll can be answered multiple times.
@@ -45,7 +45,7 @@ public class InputMessagePoll public constructor(
     public val question: FormattedText,
     public val options: Array<InputPollOption>,
     public val description: FormattedText?,
-    public val media: InputMessageContent?,
+    public val media: InputPollMedia?,
     public val isAnonymous: Boolean,
     public val allowsMultipleAnswers: Boolean,
     public val allowsRevoting: Boolean,
