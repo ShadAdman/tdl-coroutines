@@ -88,6 +88,10 @@ kotlin {
         configureCompilations(platform = "macos/x64")
     }
 
+    mingwX64{
+        configureCompilations(platform = "windows/x64")
+    }
+
     sourceSets {
         commonMain {
             kotlin.srcDirs("src/commonMainGenerated/kotlin")
@@ -123,6 +127,10 @@ kotlin {
         }
 
         macosX64Main {
+            configureNativeKotlin()
+        }
+
+        mingwX64Main {
             configureNativeKotlin()
         }
     }
@@ -227,13 +235,21 @@ private fun KotlinOnlyTarget<KotlinNativeCompilation>.configureCompilations(plat
     compilations.getByName("main") {
         cinterops {
             register("main") {
-                definitionFile = file("cinterop/config.def")
+                definitionFile = file("cinterop/${platform.extractConfigName()}")
                 includeDirs("generated/$platform/include")
 
                 val libsFile = file("generated/$platform/libs")
                 extraOpts("-libraryPath", libsFile.absolutePath)
             }
         }
+    }
+}
+
+private fun String.extractConfigName(): String{
+    return when {
+        this.startsWith("windows") -> "config-windows.def"
+        this.startsWith("mac") || this.startsWith("ios") -> "config-apple.def"
+        else-> ""
     }
 }
 
