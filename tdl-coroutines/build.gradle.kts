@@ -257,6 +257,7 @@ private fun String.extractConfigName(): String{
     return when {
         this.startsWith("windows") -> "config-windows.def"
         this.startsWith("mac") || this.startsWith("ios") -> "config-apple.def"
+        this.startsWith("linux") -> "config-linux.def"
         else-> ""
     }
 }
