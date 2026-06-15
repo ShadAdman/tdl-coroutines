@@ -96,6 +96,10 @@ kotlin {
         configureCompilations(platform = "linux/x64")
     }
 
+    linuxArm64 {
+        configureCompilations(platform = "linux/arm64")
+    }
+
     sourceSets {
         commonMain {
             kotlin.srcDirs("src/commonMainGenerated/kotlin")
@@ -139,6 +143,10 @@ kotlin {
         }
 
         linuxX64Main{
+            configureNativeKotlin()
+        }
+
+        linuxArm64Main{
             configureNativeKotlin()
         }
     }
