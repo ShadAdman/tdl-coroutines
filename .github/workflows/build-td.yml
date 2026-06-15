@@ -581,11 +581,6 @@ jobs:
           lfs: true
           submodules: true
 
-      - name: Clean submodule
-        run: |
-          cd td
-          git clean -ffdx
-
       - name: Set up dependencies
         run: sudo apt-get update && sudo apt-get install -y cmake gperf php-cli g++ libssl-dev zlib1g-dev
 
