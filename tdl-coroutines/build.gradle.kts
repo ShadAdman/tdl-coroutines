@@ -251,7 +251,9 @@ private fun KotlinOnlyTarget<KotlinNativeCompilation>.configureCompilations(plat
     compilations.getByName("main") {
         cinterops {
             register("main") {
-                definitionFile = file("cinterop/${platform.extractConfigName()}")
+                val configName = platform.extractConfigName()
+                definitionFile = file("cinterop/$configName")
+
                 includeDirs("generated/$platform/include")
 
                 val libsFile = file("generated/$platform/libs")
@@ -263,10 +265,10 @@ private fun KotlinOnlyTarget<KotlinNativeCompilation>.configureCompilations(plat
 
 private fun String.extractConfigName(): String{
     return when {
-        this.startsWith("windows") -> "config-windows.def"
         this.startsWith("mac") || this.startsWith("ios") -> "config-apple.def"
+        this.startsWith("windows") -> "config-windows.def"
         this.startsWith("linux") -> "config-linux.def"
-        else-> ""
+        else -> error(message = "Unknown platform")
     }
 }
 
