@@ -88,7 +88,7 @@ kotlin {
         configureCompilations(platform = "macos/x64")
     }
 
-    mingwX64{
+    mingwX64 {
         configureCompilations(platform = "windows/x64")
     }
 
@@ -142,11 +142,11 @@ kotlin {
             configureNativeKotlin()
         }
 
-        linuxX64Main{
+        linuxX64Main {
             configureNativeKotlin()
         }
 
-        linuxArm64Main{
+        linuxArm64Main {
             configureNativeKotlin()
         }
     }
