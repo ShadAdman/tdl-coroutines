@@ -263,7 +263,7 @@ private fun KotlinOnlyTarget<KotlinNativeCompilation>.configureCompilations(plat
     }
 }
 
-private fun String.extractConfigName(): String{
+private fun String.extractConfigName(): String {
     return when {
         this.startsWith("mac") || this.startsWith("ios") -> "config-apple.def"
         this.startsWith("windows") -> "config-windows.def"
