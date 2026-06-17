@@ -598,7 +598,9 @@ jobs:
 #        run: shasum -a 256 td/tdlib/lib/*.a
 #
       - name: Copy files
-        run: | 
+        run: |
+           DEST="tdl-coroutines/generated/linux/x64"
+          
            cp /usr/lib/x86_64-linux-gnu/libssl.a "$DEST/libs/"
            cp /usr/lib/x86_64-linux-gnu/libcrypto.a "$DEST/libs/"
 
