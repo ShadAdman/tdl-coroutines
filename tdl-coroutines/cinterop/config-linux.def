@@ -1,10 +1,8 @@
 headers = td/telegram/td_json_client.h
 package = org.drinkless.tdlib
-linkerOpts = -ldl -lpthread
+#linkerOpts = -ldl -lpthread
 linkerOpts = \
     -L/usr/lib/x86_64-linux-gnu \
-    -ltdsqlite \
-    -ltdutils \
     -lssl \
     -lcrypto \
     -ldl \
