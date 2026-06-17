@@ -3,7 +3,7 @@ name: Build TDLib
 on:
   push:
     branches:
-      - build-td
+      - build-td-linx
 
   workflow_dispatch:
     inputs:
@@ -45,7 +45,7 @@ on:
 
 jobs:
   run-generator:
-    runs-on: self-hosted
+    runs-on: macos-latest
     permissions:
       contents: write
 
@@ -84,7 +84,7 @@ jobs:
   build-android:
     if: github.event_name == 'push' || inputs.build-android
     needs: run-generator
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions:
       contents: write
 
@@ -105,7 +105,9 @@ jobs:
         uses: ./.github/actions/set-up-java
 
       - name: Set up dependencies
-        run: brew install cmake coreutils gperf openssl php
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake gperf php-cli g++-multilib libssl-dev
 
       - name: Check environment
         run: |
@@ -270,7 +272,7 @@ jobs:
   build-jvm-macos-arm64:
     if: github.event_name == 'push' || inputs.build-jvm
     needs: run-generator
-    runs-on: self-hosted
+    runs-on: macos-latest
     permissions:
       contents: write
 
@@ -324,7 +326,7 @@ jobs:
   build-jvm-macos-x64:
     if: github.event_name == 'push' || inputs.build-jvm
     needs: run-generator
-    runs-on: macos-15-intel
+    runs-on: macos-13
     permissions:
       contents: write
 
@@ -373,7 +375,7 @@ jobs:
   build-jvm-windows-arm64:
     if: github.event_name == 'push' || inputs.build-jvm
     needs: run-generator
-    runs-on: windows-11-arm
+    runs-on: windows-latest
     permissions:
       contents: write
 
@@ -669,7 +671,7 @@ jobs:
   build-ios-arm64:
     if: github.event_name == 'push' || inputs.build-ios
     needs: run-generator
-    runs-on: self-hosted
+    runs-on: macos-latest
     permissions:
       contents: write
 
@@ -731,7 +733,7 @@ jobs:
   build-ios-arm64-simulator:
     if: github.event_name == 'push' || inputs.build-ios
     needs: run-generator
-    runs-on: self-hosted
+    runs-on: macos-latest
     permissions:
       contents: write
 
@@ -793,7 +795,7 @@ jobs:
   build-ios-x64-simulator:
     if: github.event_name == 'push' || inputs.build-ios
     needs: run-generator
-    runs-on: self-hosted
+    runs-on: macos-latest
     permissions:
       contents: write
 
@@ -855,7 +857,7 @@ jobs:
   build-macos-arm64:
     if: github.event_name == 'push' || inputs.build-macos
     needs: run-generator
-    runs-on: self-hosted
+    runs-on: macos-latest
     permissions:
       contents: write
 
@@ -935,7 +937,7 @@ jobs:
   build-macos-x64:
     if: github.event_name == 'push' || inputs.build-macos
     needs: run-generator
-    runs-on: macos-15-intel
+    runs-on: macos-13
     permissions:
       contents: write
 
