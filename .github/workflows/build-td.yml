@@ -597,6 +597,11 @@ jobs:
 #      - name: SHA256 checksums
 #        run: shasum -a 256 td/tdlib/lib/*.a
 #
+      - name: Verify OpenSSL static libs
+        run: |
+          ls -l /usr/lib/x86_64-linux-gnu/libssl.a
+          ls -l /usr/lib/x86_64-linux-gnu/libcrypto.a
+
       - name: Copy files
         run: |
            DEST="tdl-coroutines/generated/linux/x64"
