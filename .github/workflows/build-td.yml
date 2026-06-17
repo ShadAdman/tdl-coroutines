@@ -605,6 +605,10 @@ jobs:
           cp td/tdlib/include/td/telegram/td_json_client.h "$DEST/include/td/telegram/"
           cp td/tdlib/include/td/telegram/tdjson_export.h "$DEST/include/td/telegram/"
           cp td/tdlib/lib/*.a "$DEST/libs/"
+          
+          cp /usr/lib/x86_64-linux-gnu/libssl.a "$DEST/libs/"
+          cp /usr/lib/x86_64-linux-gnu/libcrypto.a "$DEST/libs/"
+          cp /usr/lib/x86_64-linux-gnu/libz.a "$DEST/libs/"
 
       - name: Verify
         shell: bash
@@ -655,6 +659,10 @@ jobs:
           cp td/tdlib/include/td/telegram/td_json_client.h "$DEST/include/td/telegram/"
           cp td/tdlib/include/td/telegram/tdjson_export.h "$DEST/include/td/telegram/"
           cp td/tdlib/lib/*.a "$DEST/libs/"
+          
+          cp /usr/lib/aarch64-linux-gnu/libssl.a "$DEST/libs/"
+          cp /usr/lib/aarch64-linux-gnu/libcrypto.a "$DEST/libs/"
+          cp /usr/lib/aarch64-linux-gnu/libz.a "$DEST/libs/"
 
       - name: Verify
         shell: bash
