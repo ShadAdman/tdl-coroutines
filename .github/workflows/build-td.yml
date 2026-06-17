@@ -597,8 +597,11 @@ jobs:
 #      - name: SHA256 checksums
 #        run: shasum -a 256 td/tdlib/lib/*.a
 #
-#      - name: Copy files
-#        run: |
+      - name: Copy files
+        run: | 
+           cp /usr/lib/x86_64-linux-gnu/libssl.a "$DEST/libs/"
+           cp /usr/lib/x86_64-linux-gnu/libcrypto.a "$DEST/libs/"
+
 #          DEST="tdl-coroutines/generated/linux/x64"
 #          rm -rf "$DEST"
 #          mkdir -p "$DEST/include/td/telegram"
