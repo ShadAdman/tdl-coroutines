@@ -6,4 +6,5 @@ linkerOpts = -ldl -lpthread
 #               -lssl \
 #               -lcrypto
 #
-staticLibraries = libssl.a libcrypto.a libtdactor.a libtdapi.a libtdclient.a libtdcore.a libtddb.a libtde2e.a libtdjson_private.a libtdjson_static.a libtdmtproto.a libtdnet.a libtdsqlite.a libtdutils.a
+# libssl.a libcrypto.a
+staticLibraries = libtdactor.a libtdapi.a libtdclient.a libtdcore.a libtddb.a libtde2e.a libtdjson_private.a libtdjson_static.a libtdmtproto.a libtdnet.a libtdsqlite.a libtdutils.a
