@@ -594,19 +594,19 @@ jobs:
 #          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
 #          cmake --build . --target install
 
-      - name: SHA256 checksums
-        run: shasum -a 256 td/tdlib/lib/*.a
-
-      - name: Copy files
-        run: |
-          DEST="tdl-coroutines/generated/linux/x64"
-          rm -rf "$DEST"
-          mkdir -p "$DEST/include/td/telegram"
-          mkdir -p "$DEST/libs"
-
-          cp td/tdlib/include/td/telegram/td_json_client.h "$DEST/include/td/telegram/"
-          cp td/tdlib/include/td/telegram/tdjson_export.h "$DEST/include/td/telegram/"
-          cp td/tdlib/lib/*.a "$DEST/libs/"
+#      - name: SHA256 checksums
+#        run: shasum -a 256 td/tdlib/lib/*.a
+#
+#      - name: Copy files
+#        run: |
+#          DEST="tdl-coroutines/generated/linux/x64"
+#          rm -rf "$DEST"
+#          mkdir -p "$DEST/include/td/telegram"
+#          mkdir -p "$DEST/libs"
+#
+#          cp td/tdlib/include/td/telegram/td_json_client.h "$DEST/include/td/telegram/"
+#          cp td/tdlib/include/td/telegram/tdjson_export.h "$DEST/include/td/telegram/"
+#          cp td/tdlib/lib/*.a "$DEST/libs/"
 
       - name: Verify
         shell: bash
