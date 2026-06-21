@@ -581,6 +581,11 @@ jobs:
           lfs: true
           submodules: true
 
+      - name: Clean submodule
+        run: |
+          cd td
+          git clean -ffdx
+
       - name: Set up dependencies
         run: sudo apt-get update && sudo apt-get install -y cmake gperf php-cli g++ libssl-dev zlib1g-dev
 
@@ -605,7 +610,6 @@ jobs:
           cp td/tdlib/include/td/telegram/td_json_client.h "$DEST/include/td/telegram/"
           cp td/tdlib/include/td/telegram/tdjson_export.h "$DEST/include/td/telegram/"
           cp td/tdlib/lib/*.a "$DEST/libs/"
-          
           cp /usr/lib/x86_64-linux-gnu/libssl.a "$DEST/libs/"
           cp /usr/lib/x86_64-linux-gnu/libcrypto.a "$DEST/libs/"
           cp /usr/lib/x86_64-linux-gnu/libz.a "$DEST/libs/"
@@ -635,6 +639,11 @@ jobs:
           lfs: true
           submodules: true
 
+      - name: Clean submodule
+        run: |
+          cd td
+          git clean -ffdx
+
       - name: Set up dependencies
         run: sudo apt-get update && sudo apt-get install -y cmake gperf php-cli g++ libssl-dev zlib1g-dev
 
@@ -659,7 +668,6 @@ jobs:
           cp td/tdlib/include/td/telegram/td_json_client.h "$DEST/include/td/telegram/"
           cp td/tdlib/include/td/telegram/tdjson_export.h "$DEST/include/td/telegram/"
           cp td/tdlib/lib/*.a "$DEST/libs/"
-          
           cp /usr/lib/aarch64-linux-gnu/libssl.a "$DEST/libs/"
           cp /usr/lib/aarch64-linux-gnu/libcrypto.a "$DEST/libs/"
           cp /usr/lib/aarch64-linux-gnu/libz.a "$DEST/libs/"
