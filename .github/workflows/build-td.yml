@@ -570,7 +570,7 @@ jobs:
 
   build-linux-x64:
     if: github.event_name == 'push' || inputs.build-linux
-    needs: run-generator
+#    needs: run-generator
     runs-on: ubuntu-22.04
     permissions:
       contents: write
