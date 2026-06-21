@@ -70,8 +70,8 @@ jobs:
       - name: Run generator
         run: ./gradlew :tdl-coroutines-generator:run
 
-#      - name: Dump API
-#        run: ./gradlew :tdl-coroutines:updateKotlinAbi
+      #      - name: Dump API
+      #        run: ./gradlew :tdl-coroutines:updateKotlinAbi
 
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
@@ -571,7 +571,7 @@ jobs:
   build-linux-x64:
     if: github.event_name == 'push' || inputs.build-linux
     #needs: run-generator
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-20.04
     permissions:
       contents: write
 
@@ -591,17 +591,17 @@ jobs:
       - name: Set up dependencies
         run: sudo apt-get update && sudo apt-get install -y cmake gperf php-cli g++ libssl-dev zlib1g-dev
 
-#      - name: Build TDLib Native
-#        run: |
-#          cd td
-#          mkdir build
-#          cd build
-#          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
-#          cmake --build . --target install
+      - name: Build TDLib Native
+        run: |
+          cd td
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
+          cmake --build . --target install
 
-#      - name: SHA256 checksums
-#        run: shasum -a 256 td/tdlib/lib/*.a
-#
+      - name: SHA256 checksums
+        run: shasum -a 256 td/tdlib/lib/*.a
+
       - name: Verify OpenSSL static libs
         run: |
           ls -l /usr/lib/x86_64-linux-gnu/libssl.a
@@ -609,23 +609,21 @@ jobs:
 
       - name: Copy files
         run: |
-           DEST="tdl-coroutines/generated/linux/x64"
-           mkdir -p "$DEST/include/td/telegram"
-           mkdir -p "$DEST/libs"
+          DEST="tdl-coroutines/generated/linux/x64"
+          rm -rf "$DEST"
+          mkdir -p "$DEST/include/td/telegram"
+          mkdir -p "$DEST/libs"
+
+          cp td/tdlib/include/td/telegram/td_json_client.h "$DEST/include/td/telegram/"
+          cp td/tdlib/include/td/telegram/tdjson_export.h "$DEST/include/td/telegram/"
+          cp td/tdlib/lib/*.a "$DEST/libs/"
           
            cp /usr/lib/x86_64-linux-gnu/libssl.a "$DEST/libs/"
            cp /usr/lib/x86_64-linux-gnu/libcrypto.a "$DEST/libs/"
            cp /usr/lib/x86_64-linux-gnu/libz.a "$DEST/libs/"
            cp $(g++ -print-file-name=libstdc++.a) "$DEST/libs/"
            cp $(gcc -print-libgcc-file-name) "$DEST/libs/"
-#          DEST="tdl-coroutines/generated/linux/x64"
-#          rm -rf "$DEST"
-#          mkdir -p "$DEST/include/td/telegram"
-#          mkdir -p "$DEST/libs"
-#
-#          cp td/tdlib/include/td/telegram/td_json_client.h "$DEST/include/td/telegram/"
-#          cp td/tdlib/include/td/telegram/tdjson_export.h "$DEST/include/td/telegram/"
-#          cp td/tdlib/lib/*.a "$DEST/libs/"
+
 
       - name: Verify
         shell: bash
@@ -683,7 +681,7 @@ jobs:
 
       - name: Verify
         shell: bash
-        run: ./gradlew :example:verification:app:linux:runReleaseExecutableLinuxArm64
+        run: ./gradlew :example:verification:app:linux:linkReleaseExecutableLinuxArm64
 
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
