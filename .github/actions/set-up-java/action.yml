@@ -10,3 +10,4 @@ runs:
         java-version: |
           11
           21
+          17

@@ -588,6 +588,9 @@ jobs:
           cd td
           git clean -ffdx    
 
+      - name: Set up Java
+        uses: ./.github/actions/set-up-java
+
       - name: Set up dependencies
         run: sudo apt-get update && sudo apt-get install -y cmake gperf php-cli g++ libssl-dev zlib1g-dev
 
