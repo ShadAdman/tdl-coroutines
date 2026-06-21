@@ -614,8 +614,8 @@ jobs:
         run: |
           DEST="tdl-coroutines/generated/linux/x64"
 #          rm -rf "$DEST"
-          mkdir -p "$DEST/include/td/telegram"
-          mkdir -p "$DEST/libs"
+#          mkdir -p "$DEST/include/td/telegram"
+#          mkdir -p "$DEST/libs"
 
 #          cp td/tdlib/include/td/telegram/td_json_client.h "$DEST/include/td/telegram/"
 #          cp td/tdlib/include/td/telegram/tdjson_export.h "$DEST/include/td/telegram/"
