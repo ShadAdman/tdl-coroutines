@@ -602,13 +602,13 @@ jobs:
 #          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
 #          cmake --build . --target install
 
-      - name: SHA256 checksums
-        run: shasum -a 256 td/tdlib/lib/*.a
+#      - name: SHA256 checksums
+#        run: shasum -a 256 td/tdlib/lib/*.a
 
-      - name: Verify OpenSSL static libs
-        run: |
-          ls -l /usr/lib/x86_64-linux-gnu/libssl.a
-          ls -l /usr/lib/x86_64-linux-gnu/libcrypto.a
+#      - name: Verify OpenSSL static libs
+#        run: |
+#          ls -l /usr/lib/x86_64-linux-gnu/libssl.a
+#          ls -l /usr/lib/x86_64-linux-gnu/libcrypto.a
 
       - name: Copy files
         run: |
@@ -624,8 +624,8 @@ jobs:
            cp /usr/lib/x86_64-linux-gnu/libssl.a "$DEST/libs/"
            cp /usr/lib/x86_64-linux-gnu/libcrypto.a "$DEST/libs/"
            cp /usr/lib/x86_64-linux-gnu/libz.a "$DEST/libs/"
-           cp $(g++ -print-file-name=libstdc++.a) "$DEST/libs/"
-           cp $(gcc -print-libgcc-file-name) "$DEST/libs/"
+#           cp $(g++ -print-file-name=libstdc++.a) "$DEST/libs/"
+#           cp $(gcc -print-libgcc-file-name) "$DEST/libs/"
 
 
       - name: Verify
