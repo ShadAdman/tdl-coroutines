@@ -623,6 +623,9 @@ jobs:
           
            cp /usr/lib/x86_64-linux-gnu/libssl.a "$DEST/libs/"
            cp /usr/lib/x86_64-linux-gnu/libcrypto.a "$DEST/libs/"
+           cp /usr/lib/x86_64-linux-gnu/libz.a "$DEST/libs/"
+           cp $(g++ -print-file-name=libstdc++.a) "$DEST/libs/"
+           cp $(gcc -print-libgcc-file-name) "$DEST/libs/"
 
 
       - name: Verify
