@@ -1,8 +1,9 @@
 headers = td/telegram/td_json_client.h
 package = org.drinkless.tdlib
 
-compilerOpts = -Dfcntl64=fcntl -D_FILE_OFFSET_BITS=64
+compilerOpts = -D_FILE_OFFSET_BITS=64
 
-linkerOpts = --defsym=__libc_single_threaded=0
+# Force the linker to alias fcntl64 to the standard fcntl symbol
+linkerOpts = --defsym=__libc_single_threaded=0 --defsym=fcntl64=fcntl
 
 staticLibraries = libssl.a libcrypto.a libz.a libtdactor.a libtdapi.a libtdclient.a libtdcore.a libtddb.a libtde2e.a libtdjson_private.a libtdjson_static.a libtdmtproto.a libtdnet.a libtdsqlite.a libtdutils.a libstdc++.a
