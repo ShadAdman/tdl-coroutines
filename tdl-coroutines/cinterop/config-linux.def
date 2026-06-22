@@ -5,3 +5,18 @@ compilerOpts = -D_FILE_OFFSET_BITS=64
 linkerOpts = --defsym=__libc_single_threaded=0
 
 staticLibraries = libssl.a libcrypto.a libz.a libtdactor.a libtdapi.a libtdclient.a libtdcore.a libtddb.a libtde2e.a libtdjson_private.a libtdjson_static.a libtdmtproto.a libtdnet.a libtdsqlite.a libtdutils.a libstdc++.a
+
+
+---
+// This creates a physical bridge for fcntl64 that points straight to fcntl.
+
+#include <fcntl.h>
+#include <stdarg.h>
+
+int fcntl64(int fd, int cmd, ...) {
+    va_list va;
+    va_start(va, cmd);
+    void *arg = va_arg(va, void *);
+    va_end(va);
+    return fcntl(fd, cmd, arg);
+}
