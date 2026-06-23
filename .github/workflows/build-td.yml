@@ -599,12 +599,7 @@ jobs:
           cd td
           mkdir build
           cd build
-          cmake \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_INSTALL_PREFIX:PATH=../tdlib \
-          -DCMAKE_C_FLAGS="-D_FILE_OFFSET_BITS=64" \
-          -DCMAKE_CXX_FLAGS="-D_FILE_OFFSET_BITS=64" 
-          
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-D_FILE_OFFSET_BITS=64" -DCMAKE_CXX_FLAGS="-D_FILE_OFFSET_BITS=64" -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
           cmake --build . --target install
 
       - name: SHA256 checksums
