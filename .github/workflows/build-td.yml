@@ -603,7 +603,8 @@ jobs:
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_INSTALL_PREFIX:PATH=../tdlib \
           -DCMAKE_C_FLAGS="-D_FILE_OFFSET_BITS=64" \
-          -DCMAKE_CXX_FLAGS="-D_FILE_OFFSET_BITS=64" \
+          -DCMAKE_CXX_FLAGS="-D_FILE_OFFSET_BITS=64" 
+          
           cmake --build . --target install
 
       - name: SHA256 checksums
