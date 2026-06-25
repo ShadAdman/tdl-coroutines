@@ -628,9 +628,9 @@ jobs:
 #          cp $(gcc -print-libgcc-file-name) "$DEST/libs/"
 
 
-#      - name: Verify
-#        shell: bash
-#        run: ./gradlew :example:verification:app:linux:runReleaseExecutableLinuxX64
+      - name: Verify
+        shell: bash
+        run: ./gradlew :example:verification:app:linux:runReleaseExecutableLinuxX64
 
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
