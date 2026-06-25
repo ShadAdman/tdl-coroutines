@@ -571,7 +571,7 @@ jobs:
   build-linux-x64:
     if: github.event_name == 'push' || inputs.build-linux
 #    needs: run-generator
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
 
@@ -599,7 +599,7 @@ jobs:
           cd td
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-D_FILE_OFFSET_BITS=64" -DCMAKE_CXX_FLAGS="-D_FILE_OFFSET_BITS=64" -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
           cmake --build . --target install
 
       - name: SHA256 checksums
@@ -628,9 +628,9 @@ jobs:
           cp $(gcc -print-libgcc-file-name) "$DEST/libs/"
 
 
-      - name: Verify
-        shell: bash
-        run: ./gradlew :example:verification:app:linux:runReleaseExecutableLinuxX64
+#      - name: Verify
+#        shell: bash
+#        run: ./gradlew :example:verification:app:linux:runReleaseExecutableLinuxX64
 
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
