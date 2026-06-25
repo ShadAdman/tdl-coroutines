@@ -6,4 +6,4 @@ package = org.drinkless.tdlib
 
 staticLibraries = libtdjson_static.a libtdjson_private.a libtdclient.a libtdcore.a libtdapi.a libtdactor.a libtddb.a libtde2e.a libtdmtproto.a libtdnet.a libtdsqlite.a libtdutils.a libssl.a libcrypto.a libz.a
 
-linkerOpts.linux_x64 = -ltdjson_static -ltdjson_private -ltdclient -ltdcore -ltdapi -ltdactor -ltddb -ltde2e -ltdmtproto -ltdnet -ltdsqlite -ltdutils -lssl -lcrypto -lz -lstdc++ -lpthread -lm -ldl
+linkerOpts.linux_x64 = -lz -lstdc++ -lpthread -lm -ldl
