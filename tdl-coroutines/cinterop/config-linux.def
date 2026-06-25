@@ -8,5 +8,5 @@ staticLibraries = libtdjson_static.a libtdjson_private.a libtdclient.a libtdcore
 
 compilerOpts.linux_x64 = -DSQLITE_OMIT_LOAD_EXTENSION
 
-linkerOpts.linux_x64 = --allow-shlib-undefined -L/usr/lib/x86_64-linux-gnu -L/lib/x86_64-linux-gnu -lstdc++ -lpthread -lm -ldl
+linkerOpts.linux_x64 = --allow-shlib-undefined /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libc.so.6 /usr/lib/x86_64-linux-gnu/libm.so.6
 #--defsym=__libc_single_threaded=0 -lz -lstdc++
