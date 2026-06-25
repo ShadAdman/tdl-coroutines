@@ -6,5 +6,5 @@ package = org.drinkless.tdlib
 
 staticLibraries = libtdjson_static.a libtdjson_private.a libtdclient.a libtdcore.a libtdapi.a libtdactor.a libtddb.a libtde2e.a libtdmtproto.a libtdnet.a libtdsqlite.a libtdutils.a libssl.a libcrypto.a libz.a
 
-linkerOpts.linux_x64 = /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libc.so /usr/lib/x86_64-linux-gnu/libpthread.so /usr/lib/x86_64-linux-gnu/libdl.so /usr/lib/x86_64-linux-gnu/librt.so /lib/x86_64-linux-gnu/libm.so.6
+linkerOpts.linux_x64 = /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libc.so /lib/x86_64-linux-gnu/libm.so.6 -lpthread -ldl
 #--defsym=__libc_single_threaded=0 -lz -lstdc++
