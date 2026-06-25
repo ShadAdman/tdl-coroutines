@@ -6,5 +6,7 @@ package = org.drinkless.tdlib
 
 staticLibraries = libtdjson_static.a libtdjson_private.a libtdclient.a libtdcore.a libtdapi.a libtdactor.a libtddb.a libtde2e.a libtdmtproto.a libtdnet.a libtdsqlite.a libtdutils.a libssl.a libcrypto.a libz.a
 
-linkerOpts.linux_x64 = /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libc.so /lib/x86_64-linux-gnu/libm.so.6 -lpthread -ldl
+compilerOpts.linux_x64 = -std=c++17 -DSQLITE_OMIT_LOAD_EXTENSION
+
+linkerOpts.linux_x64 = -Wl,--allow-shlib-undefined -L/usr/lib/x86_64-linux-gnu -L/lib/x86_64-linux-gnu -lstdc++ -lpthread -lm -ldl
 #--defsym=__libc_single_threaded=0 -lz -lstdc++
