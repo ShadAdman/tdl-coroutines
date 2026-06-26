@@ -1,12 +1,8 @@
 headers = td/telegram/td_json_client.h
 package = org.drinkless.tdlib
 
-#compilerOpts = -D_FILE_OFFSET_BITS=64
-#linkerOpts = --defsym=__libc_single_threaded=0
-
 staticLibraries = libtdjson_static.a libtdjson_private.a libtdclient.a libtdcore.a libtdapi.a libtdactor.a libtddb.a libtde2e.a libtdmtproto.a libtdnet.a libtdsqlite.a libtdutils.a libssl.a libcrypto.a libz.a
 
-compilerOpts.linux_x64 = -DSQLITE_OMIT_LOAD_EXTENSION
+compilerOpts = -DSQLITE_OMIT_LOAD_EXTENSION
 
 linkerOpts.linux_x64 = --allow-shlib-undefined /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/x86_64-linux-gnu/libc.so.6 /usr/lib/x86_64-linux-gnu/libm.so.6
-#--defsym=__libc_single_threaded=0 -lz -lstdc++

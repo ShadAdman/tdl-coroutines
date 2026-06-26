@@ -568,31 +568,31 @@ jobs:
 #          message: TDLib for Windows x64 [skip ci]
 #          add: tdl-coroutines
 
-  build-linux-x64:
-    if: github.event_name == 'push' || inputs.build-linux
+#  build-linux-x64:
+#    if: github.event_name == 'push' || inputs.build-linux
 #    needs: run-generator
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref_name }}
-          lfs: true
-          submodules: true
-
-      - name: Clean submodule
-        run: |
-          cd td
-          git clean -ffdx
-
-      - name: Set up Java
-        uses: ./.github/actions/set-up-java
-
-      - name: Set up dependencies
-        run: sudo apt-get update && sudo apt-get install -y cmake gperf php-cli g++ libssl-dev zlib1g-dev
+#    runs-on: ubuntu-24.04
+#    permissions:
+#      contents: write
+#
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#        with:
+#          ref: ${{ github.ref_name }}
+#          lfs: true
+#          submodules: true
+#
+#      - name: Clean submodule
+#        run: |
+#          cd td
+#          git clean -ffdx
+#
+#      - name: Set up Java
+#        uses: ./.github/actions/set-up-java
+#
+#      - name: Set up dependencies
+#        run: sudo apt-get update && sudo apt-get install -y cmake gperf php-cli g++ libssl-dev zlib1g-dev
 
 #      - name: Build TDLib Native
 #        run: |
@@ -628,69 +628,69 @@ jobs:
 #          cp $(gcc -print-libgcc-file-name) "$DEST/libs/"
 
 
-      - name: Verify
-        shell: bash
-        run: ./gradlew :example:verification:app:linux:runReleaseExecutableLinuxX64
-
-      - name: Commit and push
-        uses: ./.github/actions/commit-and-push
-        with:
-          message: TDLib for Linux x64 [skip ci]
-          add: tdl-coroutines
-
-#  build-linux-arm64:
-#    if: github.event_name == 'push' || inputs.build-linux
-#    needs: run-generator
-#    runs-on: ubuntu-24.04-arm
-#    permissions:
-#      contents: write
+#      - name: Verify
+#        shell: bash
+#        run: ./gradlew :example:verification:app:linux:runReleaseExecutableLinuxX64
 #
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
+#      - name: Commit and push
+#        uses: ./.github/actions/commit-and-push
 #        with:
-#          ref: ${{ github.ref_name }}
-#          lfs: true
-#          submodules: true
-#
-#      - name: Clean submodule
-#        run: |
-#          cd td
-#          git clean -ffdx
-#
-#      - name: Set up dependencies
-#        run: sudo apt-get update && sudo apt-get install -y cmake gperf php-cli g++ libssl-dev zlib1g-dev
+#          message: TDLib for Linux x64 [skip ci]
+#          add: tdl-coroutines
 
-#      - name: Build TDLib Native
-#        run: |
-#          cd td
-#          mkdir build
-#          cd build
-#          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
-#          cmake --build . --target install
+  build-linux-arm64:
+    if: github.event_name == 'push' || inputs.build-linux
+    needs: run-generator
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: write
 
-#      - name: SHA256 checksums
-#        run: shasum -a 256 td/tdlib/lib/*.a
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          lfs: true
+          submodules: true
 
-#      - name: Copy files
-#        run: |
-#          DEST="tdl-coroutines/generated/linux/x64"
-#          mkdir -p "$DEST/include/td/telegram"
-#          mkdir -p "$DEST/libs"
-#
-#          cp /usr/lib/aarch64-linux-gnu/libssl.a "$DEST/libs/"
-#          cp /usr/lib/aarch64-linux-gnu/libcrypto.a "$DEST/libs/"
-#          cp /usr/lib/aarch64-linux-gnu/libz.a "$DEST/libs/"
+      - name: Clean submodule
+        run: |
+          cd td
+          git clean -ffdx
+
+      - name: Set up dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake gperf php-cli g++ libssl-dev zlib1g-dev
+
+      - name: Build TDLib Native
+        run: |
+          cd td
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
+          cmake --build . --target install
+
+      - name: SHA256 checksums
+        run: shasum -a 256 td/tdlib/lib/*.a
+
+      - name: Copy files
+        run: |
+          DEST="tdl-coroutines/generated/linux/x64"
+          mkdir -p "$DEST/include/td/telegram"
+          mkdir -p "$DEST/libs"
+
+          cp /usr/lib/aarch64-linux-gnu/libssl.a "$DEST/libs/"
+          cp /usr/lib/aarch64-linux-gnu/libcrypto.a "$DEST/libs/"
+          cp /usr/lib/aarch64-linux-gnu/libz.a "$DEST/libs/"
 
 #      - name: Verify
 #        shell: bash
 #        run: ./gradlew :example:verification:app:linux:linkReleaseExecutableLinuxArm64
 #
-#      - name: Commit and push
-#        uses: ./.github/actions/commit-and-push
-#        with:
-#          message: TDLib for Linux Arm64 [skip ci]
-#          add: tdl-coroutines
+      - name: Commit and push
+        uses: ./.github/actions/commit-and-push
+        with:
+          message: TDLib for Linux Arm64 [skip ci]
+          add: tdl-coroutines
 
 #  build-ios-arm64:
 #    if: github.event_name == 'push' || inputs.build-ios
