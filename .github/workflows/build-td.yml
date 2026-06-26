@@ -688,8 +688,8 @@ jobs:
 
       - name: Locate and Run Executable
         run: |
-          echo "=== Checking directory structure ==="
-          ls example/verification/app/linux
+          echo "=== Searching for all compiled native binaries ==="
+          find . -name "*.kexe" -type f
         
           echo "=== Executing wildcard path ==="
           ./example/verification/app/linux/build/bin/linuxArm64/releaseExecutable/*.kexe
