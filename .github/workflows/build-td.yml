@@ -684,7 +684,7 @@ jobs:
 
       - name: Verify
         shell: bash
-        run: ./gradlew :example:verification:app:linux:linkReleaseExecutableLinuxArm64
+        run: ./gradlew :example:verification:app:linux:runReleaseExecutableLinuxArm64
 
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
