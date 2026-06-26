@@ -684,7 +684,7 @@ jobs:
 
       - name: Verify
         shell: bash
-        run: ./gradlew :example:verification:app:linux:LinkReleaseExecutableLinuxArm64
+        run: ./gradlew :example:verification:app:linux:linkReleaseExecutableLinuxArm64
 
       - name: Locate and Run Executable
         run: |
