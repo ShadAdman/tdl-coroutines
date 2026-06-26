@@ -684,7 +684,10 @@ jobs:
 
       - name: Verify
         shell: bash
-        run: ./gradlew :example:verification:app:linux:runReleaseExecutableLinuxArm64
+        run: ./gradlew :example:verification:app:linux:LinkReleaseExecutableLinuxArm64
+
+      - name: Run Executable Directly
+        run: ./example/verification:app/linux/build/bin/linuxArm64/releaseExecutable/app.kexe
 
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
