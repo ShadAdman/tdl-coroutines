@@ -689,7 +689,7 @@ jobs:
       - name: Locate and Run Executable
         run: |
           echo "=== Checking directory structure ==="
-          find example/verification/app/linux/build/bin -type f
+          ls example/verification/app/linux
         
           echo "=== Executing wildcard path ==="
           ./example/verification/app/linux/build/bin/linuxArm64/releaseExecutable/*.kexe
