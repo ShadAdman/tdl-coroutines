@@ -661,31 +661,31 @@ jobs:
       - name: Set up dependencies
         run: sudo apt-get update && sudo apt-get install -y cmake gperf php-cli g++ libssl-dev zlib1g-dev
 
-      - name: Build TDLib Native
-        run: |
-          cd td
-          mkdir build
-          cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
-          cmake --build . --target install
-
-      - name: SHA256 checksums
-        run: shasum -a 256 td/tdlib/lib/*.a
-
-      - name: Copy files
-        run: |
-          DEST="tdl-coroutines/generated/linux/x64"
-          mkdir -p "$DEST/include/td/telegram"
-          mkdir -p "$DEST/libs"
-
-          cp /usr/lib/aarch64-linux-gnu/libssl.a "$DEST/libs/"
-          cp /usr/lib/aarch64-linux-gnu/libcrypto.a "$DEST/libs/"
-          cp /usr/lib/aarch64-linux-gnu/libz.a "$DEST/libs/"
-
-#      - name: Verify
-#        shell: bash
-#        run: ./gradlew :example:verification:app:linux:linkReleaseExecutableLinuxArm64
+#      - name: Build TDLib Native
+#        run: |
+#          cd td
+#          mkdir build
+#          cd build
+#          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
+#          cmake --build . --target install
 #
+#      - name: SHA256 checksums
+#        run: shasum -a 256 td/tdlib/lib/*.a
+#
+#      - name: Copy files
+#        run: |
+#          DEST="tdl-coroutines/generated/linux/x64"
+#          mkdir -p "$DEST/include/td/telegram"
+#          mkdir -p "$DEST/libs"
+#
+#          cp /usr/lib/aarch64-linux-gnu/libssl.a "$DEST/libs/"
+#          cp /usr/lib/aarch64-linux-gnu/libcrypto.a "$DEST/libs/"
+#          cp /usr/lib/aarch64-linux-gnu/libz.a "$DEST/libs/"
+
+      - name: Verify
+        shell: bash
+        run: ./gradlew :example:verification:app:linux:linkReleaseExecutableLinuxArm64
+
       - name: Commit and push
         uses: ./.github/actions/commit-and-push
         with:
