@@ -682,12 +682,15 @@ jobs:
 #          cp /usr/lib/aarch64-linux-gnu/libcrypto.a "$DEST/libs/"
 #          cp /usr/lib/aarch64-linux-gnu/libz.a "$DEST/libs/"
 
-      - name: Verify
-        shell: bash
-        run: ./gradlew :example:verification:app:linux:linkReleaseExecutableLinuxArm64
+#      - name: Verify
+#        shell: bash
+#        run: ./gradlew :example:verification:app:linux:linkReleaseExecutableLinuxArm64
 
-      - name: Locate and Run Executable
+      - name: Verify
         run: |
+          # 1. Force a clean build ignoring the cache to physically write the file
+          ./gradlew :example:verification:app:linux:linkReleaseExecutableLinuxArm64 --rerun-tasks --no-build-cache
+          
           echo "=== Searching for all compiled native binaries ==="
           find . -name "*.kexe" -type f
         
