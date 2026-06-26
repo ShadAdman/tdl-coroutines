@@ -641,7 +641,7 @@ jobs:
   build-linux-arm64:
     if: github.event_name == 'push' || inputs.build-linux
 #    needs: run-generator
-    runs-on: macos-latest
+    runs-on: ubuntu-24.04-arm
     permissions:
       contents: write
 
@@ -690,9 +690,6 @@ jobs:
         run: |
           # 1. Force a clean build ignoring the cache to physically write the file
           ./gradlew :example:verification:app:linux:linkReleaseExecutableLinuxArm64 --rerun-tasks --no-build-cache
-          
-          echo "=== Searching for all compiled native binaries ==="
-          find . -name "*.kexe" -type f
         
           echo "=== Executing wildcard path ==="
           ./example/verification/app/linux/build/bin/linuxArm64/releaseExecutable/*.kexe
